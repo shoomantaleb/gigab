@@ -16,11 +16,17 @@ body{
     justify-content:space-between;
     align-items: stretch;
     gap: 2rem;
-    padding: 0 1rem;
+    padding: 0rem;
 }
 
 .site-title{
-    font-size: 2rem;
+    background-color: #186D8F;
+    padding: 2rem;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: italic;
+    font-weight: 700;
+    line-height: normal;
 }
 
 .nav ul {
@@ -38,14 +44,22 @@ body{
     height: 100%;
     display: flex;
     align-items: center;
-    padding: .25rem; 
+    padding:1.25rem 1.25rem; 
+}
+
+.nav a[href="/Lifting"], .nav a[href="/Friends"] {
+    font-size: 1.5rem;
+    font-family: Inter;
+    font-style: italic;
+    font-weight: 700;
+    line-height: normal;
 }
 
 .nav li.active{
-    background-color: #555
+    background-color: #186D8F;
 } 
 
 .nav li:hover{
-    background-color: #777;
+    background-color: #186D8F;
 }
 

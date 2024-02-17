@@ -108,7 +108,6 @@ function HomePage() {
   
   return (<>
     <main>
-      <SignOut />
       
       <Navbar/>
       <div className="container"> 
@@ -118,6 +117,8 @@ function HomePage() {
           <Route path ="/Friends" element ={<Friends />} />
         </Routes>
         </div>
+      
+      <SignOut />
       </main>
 {/*
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
