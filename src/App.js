@@ -1,5 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
+import Navbar from "./Navbar"
 import './App.css';
+import Lifting from "./pages/Lifting"
+import Friends from "./pages/Friends"
+import Home from "./pages/Home"
+import {Route, Routes} from "react-router-dom"
 
 //Tutorial for firebase x react:
 //https://www.youtube.com/watch?v=zQyrwxMPm88&ab_channel=Fireship
@@ -48,6 +53,7 @@ export default function App() {
       </section>
     </div>
   );
+  
 }
 
 function SignIn(){
@@ -70,7 +76,8 @@ function SignOut() {
 }
 
 function HomePage() {
-  const dummy = useRef();
+
+ /* const dummy = useRef();
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
@@ -93,15 +100,30 @@ function HomePage() {
 
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
-  }
+    
+   
 
+  }
+*/
+  
   return (<>
     <main>
       <SignOut />
+      
+      <Navbar/>
+      <div className="container"> 
+        <Routes>
+          <Route path ="/" element ={<Home />} />
+          <Route path ="/Lifting" element ={<Lifting />} />
+          <Route path ="/Friends" element ={<Friends />} />
+        </Routes>
+        </div>
+      </main>
+{/*
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-
+     
       <span ref={dummy}></span>
-
+      
     </main>
 
     <form onSubmit={sendMessage}>
@@ -111,9 +133,13 @@ function HomePage() {
       <button type="submit" disabled={!formValue}>🕊️</button>
 
     </form>
+  */}
+
   </>)
 }
 
+
+/*
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
 
@@ -126,3 +152,4 @@ function ChatMessage(props) {
     </div>
   </>)
 }
+*/
