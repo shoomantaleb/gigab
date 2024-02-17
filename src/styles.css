@@ -13,17 +13,17 @@ body{
     background-color: #032550;
     color:white;
     display: flex;
-    justify-content:space-between;
+    justify-content: left;
     align-items: stretch;
-    gap: 2rem;
+    gap: 1rem;
     padding: 0rem;
 }
 
 .site-title{
     background-color: #186D8F;
-    padding: 2rem;
+    padding: 1rem;
     font-family: Inter;
-    font-size: 48px;
+    font-size: 40px;
     font-style: italic;
     font-weight: 700;
     line-height: normal;
@@ -34,7 +34,7 @@ body{
     margin: 0;
     list-style: none; 
     display: flex;
-    gap: 1rem;
+    /* gap: 1rem; */
 
 }
 
@@ -50,16 +50,25 @@ body{
 .nav a[href="/Lifting"], .nav a[href="/Friends"] {
     font-size: 1.5rem;
     font-family: Inter;
-    font-style: italic;
-    font-weight: 700;
+    /* font-style: italic; */
+    /* font-weight: 400; */
     line-height: normal;
+    color: #E6E6E6;
 }
 
-.nav li.active{
-    background-color: #186D8F;
+.nav li {
+    width: 50%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.nav li.active {
+    font-weight: 600;
+    color: #ffffff;
+    /* background-color: #186D8F; */
 } 
 
 .nav li:hover{
-    background-color: #186D8F;
+    transform: scale(1.03); /* Adjust the scale factor as needed */
+    /* background-color:  #4d4d4d; */
 }
 
