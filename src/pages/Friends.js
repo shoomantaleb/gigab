@@ -1,3 +1,7 @@
 export default function Friends(){
-    return <h1> Friends </h1>
+    return (
+    <div className='page'>
+        <h1> Friends </h1>
+    </div>
+    )
 }

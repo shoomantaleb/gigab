@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Navbar from "./Navbar"
 import './App.css';
-import Lifting from "./pages/Lifting"
+import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
-import Home from "./pages/Home"
 import {Route, Routes} from "react-router-dom"
 
 //Tutorial for firebase x react:
@@ -112,13 +111,13 @@ function HomePage() {
       <Navbar/>
       <div className="container"> 
         <Routes>
-          <Route path ="/" element ={<Home />} />
-          <Route path ="/Lifting" element ={<Lifting />} />
+          <Route path ="/" element ={<Workout />} />
           <Route path ="/Friends" element ={<Friends />} />
+          <Route path ="/Workout" element ={<Workout />} />
         </Routes>
         </div>
       
-      <SignOut />
+
       </main>
 {/*
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}

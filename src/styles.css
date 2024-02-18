@@ -3,13 +3,25 @@
 }
 
 body{
-    margin: 0
+    margin: 0;
+    height: 100%;
+    overflow-y: hidden; /* Enable vertical scrolling if content overflows */
+}
+.page {
+    --nav-height: 65px;
+    padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
 .container{
     margin: 1rem;
     text-align: center;
 }
 .nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure the navbar stays on top of other elements */
+
     background-color: #032550;
     color:white;
     display: flex;
@@ -17,6 +29,7 @@ body{
     align-items: stretch;
     gap: 1rem;
     padding: 0rem;
+
 }
 
 .site-title{
@@ -27,6 +40,13 @@ body{
     font-style: italic;
     font-weight: 700;
     line-height: normal;
+}
+
+h1 {
+    /* font-weight: 900; */
+    font-size: 2rem;
+    font-family: Inter;
+    color: #535353;
 }
 
 .nav ul {
@@ -47,7 +67,7 @@ body{
     padding:1.25rem 1.25rem; 
 }
 
-.nav a[href="/Lifting"], .nav a[href="/Friends"] {
+.nav a[href="/Friends"], .nav a[href="/Workout"] {
     font-size: 1.5rem;
     font-family: Inter;
     /* font-style: italic; */
@@ -62,7 +82,7 @@ body{
 }
 
 .nav li.active {
-    font-weight: 600;
+    font-weight: 700;
     color: #ffffff;
     /* background-color: #186D8F; */
 } 
@@ -70,5 +90,87 @@ body{
 .nav li:hover{
     transform: scale(1.03); /* Adjust the scale factor as needed */
     /* background-color:  #4d4d4d; */
+}
+
+
+
+
+
+
+
+
+/***** WORKOUT PLAN EXERCISE COMPOENENTS ***************/
+.exercise-list {
+    background-color: #F0F0F0;
+    border-radius: 30px;
+    width: 60%;
+    max-width: 600px; /* Set a maximum width */
+
+    padding: 20px;
+
+    height: calc(100vh - var(--nav-height) - 80px);
+
+    box-sizing: border-box;
+    
+    margin: 0 auto; /* Center horizontally */
+
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+.exercise-list::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.exercise-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Horizontally spread out content */
+    border-radius: 10px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #669CB2;
+    margin-bottom: 10px;
+    
+    overflow-x: auto;
+}
+
+.exercise-title {
+    display: flex;
+    margin-right: auto;
+    font-size: 25px;
+    margin-bottom: 3px;
+}
+.exercise-weight{
+    font-size: 30px;
+    margin-right: 10px;
+}
+  
+.content {
+    border-radius: 10px;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    white-space: nowrap; 
+
+    padding: 10px 20px 10px 20px ;
+    background-color: rgb(255, 255, 255);
+}
+  
+.buttons {
+    display: flex;
+    justify-content: space-around; /* Evenly distribute buttons */
+    width: 100%; /*Ensure buttons fill the entire width*/
+}
+.circle-button {
+    border: 3px solid #000;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-left: 5px; /* Add some spacing between buttons */
+    background-color: white;
+}
+
+.circle-button.checked {
+    background-color: #656565;
 }
 
