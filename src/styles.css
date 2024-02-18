@@ -5,7 +5,8 @@
 body{
     margin: 0;
     height: 100%;
-    overflow-y: hidden; /* Enable vertical scrolling if content overflows */
+    overflow-y: hidden; 
+    /* Enable vertical scrolling if content overflows */
 }
 .page {
     --nav-height: 65px;
@@ -114,7 +115,9 @@ h1 {
     
     margin: 0 auto; /* Center horizontally */
 
-    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    overflow: scroll;
+
+    /* overflow-y: auto; Enable vertical scrolling if content overflows */
 }
 
 .exercise-list::-webkit-scrollbar { 
@@ -159,7 +162,7 @@ h1 {
 .buttons {
     display: flex;
     justify-content: space-around; /* Evenly distribute buttons */
-    width: 100%; /*Ensure buttons fill the entire width*/
+    width: 80%; /*Ensure buttons fill the entire width*/
 }
 .circle-button {
     border: 3px solid #000;

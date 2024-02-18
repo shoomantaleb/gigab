@@ -2,18 +2,21 @@ import React, { useState } from 'react';
 import '../styles.css';
 
 export default function Workout() {
+    //Exercise list array should be imported from the database, whatever that means;
+    const exerciseListArray = [
+        ["Squats", "100", 3, "10"], 
+        ["Deadlift", "50", 5, "8"], 
+        ["Leg Press", "200", 4, "6"], 
+        ["Rock climb", "100", 3, "10"]];
+    const [exercises, setExercises] = useState(exerciseListArray);
+
     return <>
     <div className='page'>
     <h1 className='workout-title'> Monday </h1> 
     <div className="exercise-list">
-        <ExerciseBox exercise="Squats" weight="100" sets={3} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={5} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={4} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={4} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={4} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={4} reps="10" />
-        <ExerciseBox exercise="Squats" weight="100" sets={4} reps="10" />
-
+        {exercises.map((index) => (
+            <ExerciseBox exercise={index[0]} weight={index[1]} sets={index[2]} reps={index[3]} />
+        ))}
     </div>
     </div>
     </>
