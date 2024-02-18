@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles.css';
+import '../styles/workout.css';
 
 export default function Workout() {
     //Exercise list array should be imported from the database, whatever that means;

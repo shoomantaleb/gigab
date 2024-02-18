@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import Navbar from "./Navbar"
+import Navbar from "./components/Navbar"
 import './styles/App.css';
 import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
