@@ -1,6 +1,7 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import Navbar from "./Navbar"
-import './App.css';
+import './styles/App.css';
 import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
 import {Route, Routes} from "react-router-dom"
@@ -63,14 +64,15 @@ function SignIn(){
   }
 
   return (
-    <button onClick={signInWithGoogle}>Sign in with Google</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
+    
   )
 }
 
 function SignOut() {
   //Signs user out
   return auth.currentUser && (
-    <button onClick={() => auth.signOut()}>Sign Out</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
 
