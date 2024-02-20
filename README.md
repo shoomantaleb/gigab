@@ -1,4 +1,4 @@
-###### GigaB: boost user motivation and community engagement. 
+##### GigaB: boost fitness motivation and community engagement. 
 
 #Getting Started with Create React App
 
