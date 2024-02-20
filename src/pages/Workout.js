@@ -2,69 +2,92 @@ import React, { useState } from 'react';
 import '../styles/workout.css';
 
 export default function Workout() {
-    //Exercise list array should be imported from the database, whatever that means;
     const exerciseListArray = [
         ["Squats", "100", 3, "10"], 
         ["Deadlift", "50", 5, "8"], 
         ["Leg Press", "200", 4, "6"], 
-        ["Rock climb", "100", 3, "10"]];
+        ["Rock climb", "100", 3, "10"]
+    ];
     const [exercises, setExercises] = useState(exerciseListArray);
 
-    return <>
-    <div className='page'>
-    <h1 className='workout-title'> Monday </h1> 
-    <div className="exercise-list">
-        {exercises.map((index) => (
-            <ExerciseBox exercise={index[0]} weight={index[1]} sets={index[2]} reps={index[3]} />
-        ))}
-    </div>
-    </div>
-    </>
+    // Function to update the weight for an exercise
+    const updateWeight = (index, newWeight) => {
+        const updatedExercises = exercises.map((exercise, i) => {
+            if (i === index) {
+                return [exercise[0], newWeight, exercise[2], exercise[3]];
+            }
+            return exercise;
+        });
+        setExercises(updatedExercises);
+    };
+
+    return (
+        <>
+            <div className='page'>
+                <h1 className='workout-title'> Monday </h1>
+                <div className="exercise-list">
+                    {exercises.map((exercise, index) => (
+                        <ExerciseBox
+                            key={index}
+                            exercise={exercise[0]}
+                            weight={exercise[1]}
+                            sets={exercise[2]}
+                            reps={exercise[3]}
+                            updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
+                        />
+                    ))}
+                </div>
+            </div>
+        </>
+    );
 }
 
-const ExerciseBox = ({ exercise, weight, sets, reps }) => {
-    const initialCheckedButtons = Array.from({ length: sets }, () => false);
-    const [checkedButtons, setCheckedButtons] = useState(initialCheckedButtons);
+const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
+    const [checkedButtons, setCheckedButtons] = useState(Array.from({ length: sets }, () => false));
+    const [selectedWeight, setSelectedWeight] = useState(weight); // Use the weight from props
 
     const handleToggle = (index) => {
-        setCheckedButtons((prevCheckedButtons) => {
-        const newCheckedButtons = [...prevCheckedButtons];
-        newCheckedButtons[index] = !newCheckedButtons[index];
-        return newCheckedButtons;
+        setCheckedButtons(prevCheckedButtons => {
+            const newCheckedButtons = [...prevCheckedButtons];
+            newCheckedButtons[index] = !newCheckedButtons[index];
+            return newCheckedButtons;
         });
     };
 
-
-  
-    console.log("Checked buttons array:", checkedButtons);
+    const handleWeightChange = (event) => {
+        const newWeight = event.target.value;
+        setSelectedWeight(newWeight);
+        updateWeight(newWeight); // Call the passed updateWeight function with the new weight
+    };
 
     return (
-      <>
-      <div className='exercise-title'> <b>{exercise}</b></div>
-      <div className="exercise-box">
-        <div className="content">
-          <div className="exercise-weight" >{weight} lbs</div>
-          <div className="sets-reps">
-            <div>{sets} sets</div>
-            <div>{reps} reps</div>
-          </div>
-        </div>
-        
-        <div className="buttons">
+        <>
+        <div className='exercise-title'><b>{exercise}</b></div>
+        <div className="exercise-box">
+            <div className="content">
+                <div className="exercise-weight">
+                    <select value={selectedWeight} onChange={handleWeightChange} className="weight-selector">
+                        {Array.from({ length: (250 / 5) + 1 }, (_, i) => i * 5).map(weight => (
+                            <option key={weight} value={weight}>{weight} lbs</option>
+                            ))}
+                    </select>
+                </div>
+                <div className="sets-reps">
+                    <div>{sets} sets</div>
+                    <div>{reps} reps</div>
+                </div>
+            </div>
+
             <div className="buttons">
                 {checkedButtons.map((isChecked, index) => (
-                    // <p>{index}</p>
                     <button
                         key={index}
                         className={`circle-button ${isChecked ? 'checked' : ''}`}
-                        onClick={() => handleToggle(index)} 
-                    >
-                    </button>
-                ))}
+                        onClick={() => handleToggle(index)}
+                        ></button>
+                        ))}
             </div>
         </div>
-      </div>
-      </>
-    );
-  };
-  
+        </>
+        );
+}
