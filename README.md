@@ -1,4 +1,4 @@
-##### GigaB: boost fitness motivation and community engagement. 
+## GigaB: boost fitness motivation and community engagement. 
 
 
 
