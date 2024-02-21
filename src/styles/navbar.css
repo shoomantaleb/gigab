@@ -68,7 +68,7 @@ h1 {
     padding:1.25rem 1.25rem; 
 }
 
-.nav a[href="/Friends"], .nav a[href="/Workout"] {
+.nav a[href="/Friends"], .nav a[href="/Workout"], .nav a[href="/Profile"]{
     font-size: 1.5rem;
     font-family: Inter;
     /* font-style: italic; */
