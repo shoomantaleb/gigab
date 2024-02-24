@@ -2,35 +2,34 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     margin: 0;
     height: 100%;
-    overflow-y: hidden; 
-    /* Enable vertical scrolling if content overflows */
+    overflow-y: auto;
 }
+
 .page {
     --nav-height: 65px;
-    padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
+    padding-top: var(--nav-height);
 }
-.container{
+
+.container {
     margin: 1rem;
     text-align: center;
 }
-.nav{
+
+.nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Ensure the navbar stays on top of other elements */
-
+    z-index: 1000; 
     background-color: #032550;
-    color:white;
+    color: white;
     display: flex;
-    justify-content: left;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 0rem;
-
+    justify-content: space-between; 
+    align-items: center;
+    padding: 0 1rem; 
 }
 
 .site-title{
@@ -43,59 +42,35 @@ body{
     line-height: normal;
 }
 
-h1 {
-    /* font-weight: 900; */
-    font-size: 2rem;
-    font-family: Inter;
-    color: #535353;
-}
-
 .nav ul {
+    display: flex;
     padding: 0;
     margin: 0;
-    list-style: none; 
-    display: flex;
-    /* gap: 1rem; */
-
+    list-style: none;
 }
 
-.nav a{
+.nav a {
     color: inherit;
-    text-decoration: none; 
-    height: 100%;
+    text-decoration: none;
+    padding: 1rem; 
     display: flex;
     align-items: center;
-    padding:1.25rem 1.25rem; 
 }
 
-.nav a[href="/Friends"], .nav a[href="/Workout"], .nav a[href="/Profile"]{
-    font-size: 1.5rem;
-    font-family: Inter;
-    /* font-style: italic; */
-    /* font-weight: 400; */
-    line-height: normal;
-    color: #E6E6E6;
+.nav .left-region, .nav .right-region {
+    display: flex;
+    align-items: center;
+}
+
+.nav a:hover, .nav li.active > a {
+    background-color: #1A5276; 
+    color: #ffffff;
 }
 
 .nav li {
-    width: 50%;
     transition: transform 0.2s ease-in-out;
 }
 
-.nav li.active {
-    font-weight: 700;
-    color: #ffffff;
-    /* background-color: #186D8F; */
-} 
-
-.nav li:hover{
-    transform: scale(1.03); /* Adjust the scale factor as needed */
-    /* background-color:  #4d4d4d; */
+.nav li:hover {
+    transform: scale(1.05); 
 }
-
-
-
-
-
-
-
