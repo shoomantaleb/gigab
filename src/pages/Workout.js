@@ -37,9 +37,13 @@ export default function Workout() {
                             updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
                         />
                     ))}
+
+                    <button> Save </button>
                 </div>
                 </div>
+
             </div>
+            <Timer/>
         </>
     );
 }
@@ -62,7 +66,7 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         updateWeight(newWeight); // Call the passed updateWeight function with the new weight
         
         //also fix size of the input fields
-        const SIZE_OF_LETTERS = 18;
+        const SIZE_OF_LETTERS = 15;
         const textWidth = event.target.value.length * SIZE_OF_LETTERS; //
 
         // Set the input field width to match the width of the text
@@ -106,4 +110,57 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         </div>
         </>
         );
+}
+
+const Timer = () => {
+    const [seconds, setSeconds] = useState(60);
+    const [isRunning, setIsRunning] = useState(false);
+    let timer;
+  
+    const formatTime = (time) => {
+      const minutes = Math.floor(time / 60);
+      const seconds = ('0' + (time % 60)).slice(-2);
+      return `${minutes}:${seconds}`;
+    };
+  
+    const decreaseTime = () => {
+      setSeconds((prevSeconds) => prevSeconds - 5);
+    };
+  
+    const increaseTime = () => {
+      setSeconds((prevSeconds) => prevSeconds + 5);
+    };
+  
+    const startTimer = () => {
+      setIsRunning(true);
+      timer = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds <= 0) {
+            clearInterval(timer);
+            setIsRunning(false);
+            return 0;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    };
+  
+    const stopTimer = () => {
+      clearInterval(timer);
+      setIsRunning(false);
+    };
+  
+    return (
+      <div className="timer">
+        <div className="time-display">{formatTime(seconds)}</div>
+        <div className="controls">
+            <button className="btn" onClick={decreaseTime}>-</button>
+            <button className="btn" onClick={increaseTime}>+</button>
+            <button className="btn start-btn" onClick={isRunning ? stopTimer : startTimer}>
+                {isRunning ? 'Stop' : 'Start'}
+            </button>
+        </div>
+        
+      </div>
+    );
 }
