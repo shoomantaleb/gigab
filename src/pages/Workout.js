@@ -58,6 +58,14 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         const newWeight = event.target.value;
         setSelectedWeight(newWeight);
         updateWeight(newWeight); // Call the passed updateWeight function with the new weight
+        
+        //also fix size of the input fields
+        const SIZE_OF_LETTERS = 18;
+        const textWidth = event.target.value.length * SIZE_OF_LETTERS; //
+
+        // Set the input field width to match the width of the text
+        event.target.style.width = `${textWidth}px`;
+   
     };
 
     return (
@@ -66,11 +74,17 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         <div className="exercise-box">
             <div className="content">
                 <div className="exercise-weight">
-                    <select value={selectedWeight} onChange={handleWeightChange} className="weight-selector">
+                    {/* <select value={selectedWeight} onChange={handleWeightChange} className="weight-selector">
                         {Array.from({ length: (250 / 5) + 1 }, (_, i) => i * 5).map(weight => (
                             <option key={weight} value={weight}>{weight} lbs</option>
                             ))}
-                    </select>
+                    </select> */}
+                    <input  value={selectedWeight} 
+                            onChange={handleWeightChange} 
+                            className="weight-selector"
+                            maxlength="7"
+                            minlength="1">
+                    </input>
                 </div>
                 <div className="sets-reps">
                     <div>{sets} sets</div>

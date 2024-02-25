@@ -9,7 +9,7 @@ body{
     /* Enable vertical scrolling if content overflows */
 }
 .page {
-    --nav-height: 65px;
+    --nav-height: 75px;
     padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
 .container{
