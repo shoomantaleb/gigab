@@ -1,23 +1,5 @@
 
 /***** WORKOUT PLAN EXERCISE COMPOENENTS ***************/
-.exercise-list {
-  background-color: #F0F0F0;
-  border-radius: 30px;
-  
-  width: 60%;
-  max-width: 600px; /* Set a maximum width */
-  height: calc(100vh - var(--nav-height) - 80px);
-
-  padding: 20px;
-
-  box-sizing: border-box;
-  margin: 0 auto; /*Center horizontally*/
-  overflow: scroll;
-}
-
-.exercise-list::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
-}
 
 .exercise-box {
   display: flex;
@@ -38,7 +20,6 @@
   font-size: 25px;
   margin-bottom: 3px;
 }
-
 
 .content {
   border-radius: 10px;

@@ -12,10 +12,7 @@ body{
     --nav-height: 75px;
     padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
-.container{
-    margin: 1rem;
-    text-align: center;
-}
+
 .nav{
     position: fixed;
     top: 0;

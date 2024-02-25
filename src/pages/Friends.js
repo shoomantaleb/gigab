@@ -2,28 +2,58 @@ import React, { useState } from 'react';
 import '../styles/friends.css';
 
 export default function Friends() {
+    const example_friends = [
+        ["Zonk", 150, 20], 
+        ["Omer", 30, 45], 
+        ["Shown", 100, 15], 
+        ["Busted", 10, 50],
+        ["Sharl", 97, 60], 
+        ["Claleb", 1031, 3]];
+    
+    const [friends, setFriends] = useState(example_friends);
+
     return (
         <div className='page'>
             <h1> Friends </h1>
             <div className='container'>
-                <div className="box leaderboard">
-                    {/* {exercises.map((exercise, index) => (
-                        <ExerciseBox
-                            key={index}
-                            exercise={exercise[0]}
-                            weight={exercise[1]}
-                            sets={exercise[2]}
-                            reps={exercise[3]}
-                            updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
-                        />
-                    ))} */}
+                
+            <div className='box' id="friends-board">
+                    <div id="search-friends"></div>
+                    <div id="friend-list">
+                        {/* DISPLAY USERS THAT MATCH THE SEARCH  */}
+                        {/* 1) Find subset of all users  */}
+                        {/* 2) Display that subset  */}
+                            {/* Default - show current friends */}
+
+                        
+                        {/* {user_subset.map((user_subset, index) => (
+                            <UserBox
+                                key ={index}
+                                name ={user_subset[0]}
+                                curr_score ={user_subset[1]}
+                                high_score ={user_subset[2]}
+                                friended ={user_subset[3]} //whether the user has already friended this person
+                                // addFriend={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
+                            />
+                        ))} */}
+                    </div>
                 </div>
                 
-                <div className='box friend-list'>
-
-
-
+                <div className="box" id='leaderboard'>
+                    <h2> Leaderboard </h2>
+                    <div className='leaderboard-list'>
+                        {/* {friends.map((friends, index) => (
+                            <LeaderboardBox
+                                key ={index}
+                                name ={friends[0]}
+                                curr_score ={friends[1]}
+                                high_score ={friends[2]}
+                                // updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
+                            />
+                        ))} */}
+                    </div>
                 </div>
+                
             </div>  
         </div>
     );

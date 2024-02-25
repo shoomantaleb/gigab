@@ -1,29 +1,12 @@
 
 /***** FRIENDS ***************/
-.container {
-    display: flex;
-  }
-  
-.box {
-    background-color: #F0F0F0;
-    border-radius: 30px;
+
+
+
+#leaderboard {
     
-    width: 100%;
-    max-width: 600px; /* Set a maximum width */
-    height: calc(100vh - var(--nav-height) - 160px);
-  
-    padding: 20px;
-  
-    box-sizing: border-box;
-    margin: 0 auto; /*Center horizontally*/
-    overflow: scroll;
 }
 
-.leaderboard {
+#friends-board{
     
-  }
-  
-.leaderboard-list::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
 }
-  

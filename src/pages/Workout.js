@@ -24,8 +24,9 @@ export default function Workout() {
     return (
         <>
             <div className='page'>
-                <h1 className='workout-title'> Monday </h1>
-                <div className="exercise-list">
+                <h1 className=''> Monday </h1>
+                <div className='container'>
+                <div className="box">
                     {exercises.map((exercise, index) => (
                         <ExerciseBox
                             key={index}
@@ -36,6 +37,7 @@ export default function Workout() {
                             updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
                         />
                     ))}
+                </div>
                 </div>
             </div>
         </>
