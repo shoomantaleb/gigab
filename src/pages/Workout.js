@@ -89,6 +89,8 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
         const newSets = event.target.value; // Keep as string for input handling
         setSelectedSets(newSets);
         updateExercise(index, { sets: newSets }); // No need to parse here; parsing moved to updateExercise
+        // Update checkedButtons to reflect the new number of sets
+        setCheckedButtons(Array.from({ length: Number(newSets) }, () => false));
     };
 
     const handleRepsChange = (event) => {
