@@ -1,72 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
-import '../styles/workout.css';
+import React, { useState, useEffect, useRef } from "react";
+import "../styles/workout.css";
 
 export default function Workout() {
-    const exerciseListArray = [
-        //[Excercise, Weight, Sets, Reps]
-        ["Squats", "100", 3, "10"], 
-        ["Deadlift", "50", 5, "8"], 
-        ["Leg Press", "200", 4, "6"], 
-        ["Rock climb", "100", 3, "10"]
-    ];
-    const [exercises, setExercises] = useState(exerciseListArray); // Function to update the fields for an exercise
-    const updateExercise = (index, details) => {
-        const updatedExercises = exercises.map((exercise, i) => {
-            if (i === index) {
-                return [
-                    exercise[0], //Exercise
-                    details.weight !== undefined ? Number(details.weight) : exercise[1],
-                    details.sets !== undefined ? Number(details.sets) : exercise[2],
-                    details.reps !== undefined ? Number(details.reps) : exercise[3]
-                ];
-            }
-            return exercise;
-        });
-        setExercises(updatedExercises);
-    };
+  const exerciseListArray = [
+    //[Excercise, Weight, Sets, Reps]
+    ["Squats", "100", 3, "10"],
+    ["Deadlift", "50", 5, "8"],
+    ["Leg Press", "200", 4, "6"],
+    ["Rock climb", "100", 3, "10"],
+  ];
+  const [exercises, setExercises] = useState(exerciseListArray); // Function to update the fields for an exercise
+  const updateExercise = (index, details) => {
+    const updatedExercises = exercises.map((exercise, i) => {
+      if (i === index) {
+        return [
+          exercise[0], //Exercise
+          details.weight !== undefined ? Number(details.weight) : exercise[1],
+          details.sets !== undefined ? Number(details.sets) : exercise[2],
+          details.reps !== undefined ? Number(details.reps) : exercise[3],
+        ];
+      }
+      return exercise;
+    });
+    setExercises(updatedExercises);
+  };
 
-    return (
-        <>
-            <div className='page'>
-                <h1 className=''> Monday </h1>
-                <div className='container'>
-                <div className="box">
-                    {exercises.map((exercise, index) => (
-                        <ExerciseBox
-                            key={index}
-                            exercise={exercise[0]}
-                            weight={exercise[1]}
-                            sets={exercise[2]}
-                            reps={exercise[3]}
-                            updateExercise={updateExercise}// Pass updateWeight function here
-                        />
-                    ))}
+  return (
+    <>
+      <div className="page">
+        <h1 className=""> Monday </h1>
+        <div className="container">
+          <div className="box">
+            {exercises.map((exercise, index) => (
+              <ExerciseBox
+                key={index}
+                exercise={exercise[0]}
+                weight={exercise[1]}
+                sets={exercise[2]}
+                reps={exercise[3]}
+                  updateExercise={updateExercise} // Pass updateWeight function here
+              />
+              ))}
 
-                    <button> Save </button>
-                </div>
-                </div>
-
-            </div>
-            <Timer/>
-        </>
+              <button> Save </button>
+          </div>
+        </div>
+      </div>
+    <Timer />
+    </>
     );
 }
 
-const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) => {
-    const [checkedButtons, setCheckedButtons] = useState(Array.from({ length: sets }, () => false));
+const ExerciseBox = ({
+    index,
+    exercise,
+    weight,
+    sets,
+    reps,
+    updateExercise,
+}) => {
+    const [checkedButtons, setCheckedButtons] = useState(
+        Array.from({ length: sets }, () => false)
+        );
     const [selectedWeight, setSelectedWeight] = useState(weight.toString()); // Keep as string for input control
     const [selectedSets, setSelectedSets] = useState(sets.toString()); // Keep as string for input control
     const [selectedReps, setSelectedReps] = useState(reps.toString()); // Keep as string for input control
 
-   const handleToggle = (index) => {
-        setCheckedButtons(prevCheckedButtons => {
+    const handleToggle = (index) => {
+        setCheckedButtons((prevCheckedButtons) => {
             const newCheckedButtons = [...prevCheckedButtons];
             newCheckedButtons[index] = !newCheckedButtons[index];
             return newCheckedButtons;
         });
     };
 
-  /*  const handleWeightChange = (event) => {
+    /*  const handleWeightChange = (event) => {
         const newWeight = event.target.value;
         setSelectedWeight(newWeight);
         updateExercise(index, { weight: newWeight }); // Adjusted to use the updated function signature
@@ -76,7 +84,7 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
 
         // Set the input field width to match the width of the text
         event.target.style.width = `${textWidth}px`;
-   
+
     };*/
 
     const handleWeightChange = (event) => {
@@ -101,11 +109,13 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
 
     return (
         <>
-        <div className='exercise-title'><b>{exercise}</b></div>
+        <div className="exercise-title">
+            <b>{exercise}</b>
+        </div>
         <div className="exercise-box">
             <div className="content">
                 <div className="exercise-weight">
-                      <input
+                    <input
                         type="number"
                         value={selectedWeight}
                         onChange={handleWeightChange}
@@ -121,7 +131,8 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
                         className="sets-input"
                         min="1"
                         max="6"
-                    /> Sets
+                    />{" "}
+                    Sets
                     <input
                         type="number"
                         value={selectedReps}
@@ -129,7 +140,8 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
                         className="reps-input"
                         min="1"
                         max="50"
-                    /> Reps
+                    />{" "}
+                    Reps
                 </div>
             </div>
 
@@ -137,7 +149,7 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
                 {checkedButtons.map((isChecked, index) => (
                     <button
                         key={index}
-                        className={`circle-button ${isChecked ? 'checked' : ''}`}
+                        className={`circle-button ${isChecked ? "checked" : ""}`}
                         onClick={() => handleToggle(index)}
                         ></button>
                         ))}
@@ -145,7 +157,7 @@ const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) =>
         </div>
         </>
         );
-}
+};
 
 const Timer = () => {
     const [seconds, setSeconds] = useState(60);
@@ -158,22 +170,22 @@ const Timer = () => {
                 clearInterval(timerRef.current);
             }
         };
-    }, []);
-  
+        }, []);
+
     const formatTime = (time) => {
-      const minutes = Math.floor(time / 60);
-      const seconds = ('0' + (time % 60)).slice(-2);
-      return `${minutes}:${seconds}`;
+        const minutes = Math.floor(time / 60);
+        const seconds = ("0" + (time % 60)).slice(-2);
+        return `${minutes}:${seconds}`;
     };
-  
+
     const decreaseTime = () => {
-      setSeconds((prevSeconds) => Math.max(prevSeconds - 5, 0));
+        setSeconds((prevSeconds) => Math.max(prevSeconds - 5, 0));
     };
-  
+
     const increaseTime = () => {
-      setSeconds((prevSeconds) => prevSeconds + 5);
+        setSeconds((prevSeconds) => prevSeconds + 5);
     };
-  
+
     const startTimer = () => {
         if (!isRunning) {
             setIsRunning(true);
@@ -187,26 +199,32 @@ const Timer = () => {
                     }
                     return prevSeconds - 1;
                 });
-            }, 1000);
+                }, 1000);
         }
     };
-  
+
     const stopTimer = () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      setIsRunning(false);
+        if (timerRef.current) clearInterval(timerRef.current);
+        setIsRunning(false);
     };
-  
+
     return (
-      <div className="timer">
-        <div className="time-display">{formatTime(seconds)}</div>
-        <div className="controls">
-            <button className="btn" onClick={decreaseTime}>-</button>
-            <button className="btn" onClick={increaseTime}>+</button>
-            <button className="btn start-btn" onClick={isRunning ? stopTimer : startTimer}>
-                {isRunning ? 'Stop' : 'Start'}
-            </button>
+        <div className="timer">
+            <div className="time-display">{formatTime(seconds)}</div>
+            <div className="controls">
+                <button className="btn" onClick={decreaseTime}>
+                    -
+                </button>
+                <button className="btn" onClick={increaseTime}>
+                    +
+                </button>
+                <button
+                    className="btn start-btn"
+                    onClick={isRunning ? stopTimer : startTimer}
+                    >
+                    {isRunning ? "Stop" : "Start"}
+                </button>
+            </div>
         </div>
-        
-      </div>
-    );
-}
+        );
+};
