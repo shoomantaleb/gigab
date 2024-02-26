@@ -121,6 +121,8 @@ const ExerciseBox = ({
         </div>
         <div className="exercise-box">
             {editMode ? ( // Edit mode: Display input fields for editing
+            
+            
             <div className="content">
                 <div className="edit-exercise-weight">
                     <input
@@ -128,7 +130,7 @@ const ExerciseBox = ({
                         value={selectedWeight}
                         onChange={handleWeightChange}
                         className="weight-input"
-                        step="0.5" //Increment weight by 0.5
+                        step="2.5" //Increment weight by 0.5
                     />
                 </div>
                 <div className="edit-sets-reps">
@@ -136,22 +138,23 @@ const ExerciseBox = ({
                         type="number"
                         value={selectedSets}
                         onChange={handleSetsChange}
-                        className="sets-input"
+                        class="sets-input"
                         min="1"
                         max="6"
-                    />{" "}
-                    Sets
+                    />
+                    <div class="input-label-sets">Sets</div>
                     <input
                         type="number"
                         value={selectedReps}
                         onChange={handleRepsChange}
-                        className="reps-input"
+                        class="reps-input"
                         min="1"
                         max="50"
-                    />{" "}
-                    Reps
+                    />
+                    <div class="input-label-reps">Reps</div>
                 </div>
             </div>
+
             ) : (
         // View mode: Display current values without input fields
           <div className="content">
@@ -175,6 +178,12 @@ const ExerciseBox = ({
         </>
         );
 };
+
+
+
+
+
+
 
 const Timer = () => {
     const [seconds, setSeconds] = useState(60);
