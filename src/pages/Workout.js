@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/workout.css';
 
 export default function Workout() {
@@ -115,7 +115,15 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
 const Timer = () => {
     const [seconds, setSeconds] = useState(60);
     const [isRunning, setIsRunning] = useState(false);
-    let timer;
+    const timerRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, []);
   
     const formatTime = (time) => {
       const minutes = Math.floor(time / 60);
@@ -124,7 +132,7 @@ const Timer = () => {
     };
   
     const decreaseTime = () => {
-      setSeconds((prevSeconds) => prevSeconds - 5);
+      setSeconds((prevSeconds) => Math.max(prevSeconds - 5, 0));
     };
   
     const increaseTime = () => {
@@ -132,21 +140,24 @@ const Timer = () => {
     };
   
     const startTimer = () => {
-      setIsRunning(true);
-      timer = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds <= 0) {
-            clearInterval(timer);
-            setIsRunning(false);
-            return 0;
-          }
-          return prevSeconds - 1;
-        });
-      }, 1000);
+        if (!isRunning) {
+            setIsRunning(true);
+            if (timerRef.current) clearInterval(timerRef.current);
+            timerRef.current = setInterval(() => {
+                setSeconds((prevSeconds) => {
+                    if (prevSeconds <= 0) {
+                        clearInterval(timerRef.current);
+                        setIsRunning(false);
+                        return 0;
+                    }
+                    return prevSeconds - 1;
+                });
+            }, 1000);
+        }
     };
   
     const stopTimer = () => {
-      clearInterval(timer);
+      if (timerRef.current) clearInterval(timerRef.current);
       setIsRunning(false);
     };
   
