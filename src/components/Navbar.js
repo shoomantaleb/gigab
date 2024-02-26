@@ -8,6 +8,7 @@ export default function Navbar() {
         <ul>
             <CustomLink to ="/Friends"> Friends </CustomLink>
             <CustomLink to ="/Workout"> Workout </CustomLink>
+            <CustomLink to ="/Profile"> Profile </CustomLink>
         </ul>
     </nav>
     )
