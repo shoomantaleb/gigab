@@ -155,10 +155,10 @@ const ExerciseBox = ({
             ) : (
         // View mode: Display current values without input fields
           <div className="content">
-              <div className="weight-state">{weight}</div>
+              <div className="weight-state">{selectedWeight}</div>
               <div className="sets-reps-container">
-                    <div className="reps-state">{sets} Sets</div>
-                    <div className="sets-state">{reps} Reps</div>
+                  <div className="reps-state">{selectedSets} Sets</div>
+                  <div className="sets-state">{selectedReps} Reps</div>
                 </div>
             </div>
           )}
