@@ -10,6 +10,7 @@ export default function Workout() {
     ["Rock climb", "100", 3, "10"],
   ];
   const [exercises, setExercises] = useState(exerciseListArray); // Function to update the fields for an exercise
+  const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const updateExercise = (index, details) => {
     const updatedExercises = exercises.map((exercise, i) => {
       if (i === index) {
@@ -25,6 +26,10 @@ export default function Workout() {
     setExercises(updatedExercises);
   };
 
+  // Toggle edit mode
+  const toggleEditMode = () => setEditMode(!editMode);
+
+
   return (
     <>
       <div className="page">
@@ -38,11 +43,12 @@ export default function Workout() {
                 weight={exercise[1]}
                 sets={exercise[2]}
                 reps={exercise[3]}
-                  updateExercise={updateExercise} // Pass updateWeight function here
+                updateExercise={updateExercise} // Pass updateWeight function here
+                editMode={editMode} // Pass edit mode to control input fields visibility
               />
               ))}
-
-              <button> Save </button>
+              <button onClick={toggleEditMode}>{editMode ? 'Cancel' : 'Edit'}</button> {/* Toggle between Edit and Cancel */}
+              <button onClick={() => setEditMode(false)}>Save</button> {/* Save button to exit edit mode */}
           </div>
         </div>
       </div>
@@ -58,13 +64,14 @@ const ExerciseBox = ({
     sets,
     reps,
     updateExercise,
+    editMode, // Prop to control the visibility of input fields
 }) => {
     const [checkedButtons, setCheckedButtons] = useState(
         Array.from({ length: sets }, () => false)
         );
-    const [selectedWeight, setSelectedWeight] = useState(weight.toString()); // Keep as string for input control
-    const [selectedSets, setSelectedSets] = useState(sets.toString()); // Keep as string for input control
-    const [selectedReps, setSelectedReps] = useState(reps.toString()); // Keep as string for input control
+    const [selectedWeight, setSelectedWeight] = useState(weight.toString());
+    const [selectedSets, setSelectedSets] = useState(sets.toString());
+    const [selectedReps, setSelectedReps] = useState(reps.toString());
 
     const handleToggle = (index) => {
         setCheckedButtons((prevCheckedButtons) => {
@@ -87,24 +94,24 @@ const ExerciseBox = ({
 
     };*/
 
-    const handleWeightChange = (event) => {
-        const newWeight = event.target.value; // Keep as string for input handling
-        setSelectedWeight(newWeight);
-        updateExercise(index, { weight: newWeight }); // No need to parse here; parsing moved to updateExercise
+    const handleWeightChange = (event) => { //Weight event
+        const newWeight = event.target.value;
+        setSelectedWeight(newWeight); //Update Weight state
+        updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
     };
 
-    const handleSetsChange = (event) => {
-        const newSets = event.target.value; // Keep as string for input handling
-        setSelectedSets(newSets);
-        updateExercise(index, { sets: newSets }); // No need to parse here; parsing moved to updateExercise
+    const handleSetsChange = (event) => { //Sets event
+        const newSets = event.target.value;
+        setSelectedSets(newSets); //Update Sets state
+        updateExercise(index, { sets: newSets }); //Update index@ Exercise.Sets to newSets
         // Update checkedButtons to reflect the new number of sets
         setCheckedButtons(Array.from({ length: Number(newSets) }, () => false));
     };
 
-    const handleRepsChange = (event) => {
-        const newReps = event.target.value; // Keep as string for input handling
-        setSelectedReps(newReps);
-        updateExercise(index, { reps: newReps }); // No need to parse here; parsing moved to updateExercise
+    const handleRepsChange = (event) => { //Reps event
+        const newReps = event.target.value; // Update reps state
+        setSelectedReps(newReps); //Update Reps State
+        updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
     };
 
     return (
@@ -113,17 +120,18 @@ const ExerciseBox = ({
             <b>{exercise}</b>
         </div>
         <div className="exercise-box">
+            {editMode ? ( // Edit mode: Display input fields for editing
             <div className="content">
-                <div className="exercise-weight">
+                <div className="edit-exercise-weight">
                     <input
                         type="number"
                         value={selectedWeight}
                         onChange={handleWeightChange}
                         className="weight-input"
-                        step="0.5" // Allow decimal values
+                        step="0.5" //Increment weight by 0.5
                     />
                 </div>
-                <div className="sets-reps">
+                <div className="edit-sets-reps">
                     <input
                         type="number"
                         value={selectedSets}
@@ -144,7 +152,16 @@ const ExerciseBox = ({
                     Reps
                 </div>
             </div>
-
+            ) : (
+        // View mode: Display current values without input fields
+          <div className="content">
+              <div className="weight-state">{weight}</div>
+              <div className="sets-reps-container">
+                    <div className="reps-state">{sets} Sets</div>
+                    <div className="sets-state">{reps} Reps</div>
+                </div>
+            </div>
+          )}
             <div className="buttons">
                 {checkedButtons.map((isChecked, index) => (
                     <button

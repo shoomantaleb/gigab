@@ -1,5 +1,5 @@
 
-/***** WORKOUT PLAN EXERCISE COMPOENENTS ***************/
+/***** WORKOUT PLAN EXERCISE COMPONENTS ***************/
 
 .exercise-box {
   display: flex;
@@ -7,9 +7,8 @@
   justify-content: space-between; /* Horizontally spread out content */
   border-radius: 10px;
   width: 100%;
-  margin: 0 auto;
   background-color: #669CB2;
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
   overflow-x: auto;
 }
 
@@ -29,13 +28,13 @@
   padding: 10px 20px 10px 20px ;
   background-color: rgb(255, 255, 255);
 }
-.exercise-weight {
+.edit-exercise-weight {
   font-size: 30px;
   margin-right: 10px;
   /* flex: 0; */
 }
 
-.sets-reps {
+.edit-sets-reps {
   display: flex;
   flex-direction: column; /* Stack children vertically */
   align-items: flex-end; /* Align children to the right */
@@ -46,8 +45,8 @@
   width: 30px; /* Keep the width as defined */
   margin-bottom: 1px; /* Add space between inputs */
   font-family: Inter, serif;
+  font-size: 20px;
   color: #7E7E7E;
-
 }
 
   .weight-input {
@@ -55,6 +54,27 @@
   flex: 0;
   width: 100px;
   min-width: 50px;
+}
+
+.weight-state {
+  display: flex;
+  flex: 0;
+  width: 100px;
+  min-width: 50px;
+  font-size: 30px;
+}
+
+.sets-reps-container{ /*view mode */
+  margin-left: auto; /* This will push the container to the right */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 20px;
+  color: #7E7E7E;
+}
+
+.sets-state, .reps-state {
+  /* Apply specific styles here */
 }
 
 .buttons {
