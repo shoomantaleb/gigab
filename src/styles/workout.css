@@ -10,7 +10,6 @@
   margin: 0 auto;
   background-color: #669CB2;
   margin-bottom: 10px;
-  
   overflow-x: auto;
 }
 
@@ -27,22 +26,37 @@
   flex: 1;
   flex-direction: row;
   white-space: nowrap; 
-
   padding: 10px 20px 10px 20px ;
   background-color: rgb(255, 255, 255);
 }
-.exercise-weight{
+.exercise-weight {
   font-size: 30px;
   margin-right: 10px;
   /* flex: 0; */
 }
 
-.weight-selector {
+.sets-reps {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: flex-end; /* Align children to the right */
+  font-size: 10px;
+}
+
+.sets-input, .reps-input {
+  width: 30px; /* Keep the width as defined */
+  margin-bottom: 1px; /* Add space between inputs */
+  font-family: Inter, serif;
+  color: #7E7E7E;
+
+}
+
+  .weight-input {
   display: flex;
   flex: 0;
   width: 100px;
   min-width: 50px;
 }
+
 .buttons {
   display: flex;
   justify-content: space-around; /* Evenly distribute buttons */
@@ -78,7 +92,6 @@
   background-color: white;
   border-radius: 15px;
   width: 70%;
-
   font-size: 40px;
   text-align: center;
 }

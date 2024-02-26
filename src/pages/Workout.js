@@ -3,18 +3,22 @@ import '../styles/workout.css';
 
 export default function Workout() {
     const exerciseListArray = [
+        //[Excercise, Weight, Sets, Reps]
         ["Squats", "100", 3, "10"], 
         ["Deadlift", "50", 5, "8"], 
         ["Leg Press", "200", 4, "6"], 
         ["Rock climb", "100", 3, "10"]
     ];
-    const [exercises, setExercises] = useState(exerciseListArray);
-
-    // Function to update the weight for an exercise
-    const updateWeight = (index, newWeight) => {
+    const [exercises, setExercises] = useState(exerciseListArray); // Function to update the fields for an exercise
+    const updateExercise = (index, details) => {
         const updatedExercises = exercises.map((exercise, i) => {
             if (i === index) {
-                return [exercise[0], newWeight, exercise[2], exercise[3]];
+                return [
+                    exercise[0], //Exercise
+                    details.weight !== undefined ? Number(details.weight) : exercise[1],
+                    details.sets !== undefined ? Number(details.sets) : exercise[2],
+                    details.reps !== undefined ? Number(details.reps) : exercise[3]
+                ];
             }
             return exercise;
         });
@@ -34,7 +38,7 @@ export default function Workout() {
                             weight={exercise[1]}
                             sets={exercise[2]}
                             reps={exercise[3]}
-                            updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
+                            updateExercise={updateExercise}// Pass updateWeight function here
                         />
                     ))}
 
@@ -48,11 +52,13 @@ export default function Workout() {
     );
 }
 
-const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
+const ExerciseBox = ({ index, exercise, weight, sets, reps, updateExercise }) => {
     const [checkedButtons, setCheckedButtons] = useState(Array.from({ length: sets }, () => false));
-    const [selectedWeight, setSelectedWeight] = useState(weight); // Use the weight from props
+    const [selectedWeight, setSelectedWeight] = useState(weight.toString()); // Keep as string for input control
+    const [selectedSets, setSelectedSets] = useState(sets.toString()); // Keep as string for input control
+    const [selectedReps, setSelectedReps] = useState(reps.toString()); // Keep as string for input control
 
-    const handleToggle = (index) => {
+   const handleToggle = (index) => {
         setCheckedButtons(prevCheckedButtons => {
             const newCheckedButtons = [...prevCheckedButtons];
             newCheckedButtons[index] = !newCheckedButtons[index];
@@ -60,11 +66,10 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         });
     };
 
-    const handleWeightChange = (event) => {
+  /*  const handleWeightChange = (event) => {
         const newWeight = event.target.value;
         setSelectedWeight(newWeight);
-        updateWeight(newWeight); // Call the passed updateWeight function with the new weight
-        
+        updateExercise(index, { weight: newWeight }); // Adjusted to use the updated function signature
         //also fix size of the input fields
         const SIZE_OF_LETTERS = 15;
         const textWidth = event.target.value.length * SIZE_OF_LETTERS; //
@@ -72,6 +77,24 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         // Set the input field width to match the width of the text
         event.target.style.width = `${textWidth}px`;
    
+    };*/
+
+    const handleWeightChange = (event) => {
+        const newWeight = event.target.value; // Keep as string for input handling
+        setSelectedWeight(newWeight);
+        updateExercise(index, { weight: newWeight }); // No need to parse here; parsing moved to updateExercise
+    };
+
+    const handleSetsChange = (event) => {
+        const newSets = event.target.value; // Keep as string for input handling
+        setSelectedSets(newSets);
+        updateExercise(index, { sets: newSets }); // No need to parse here; parsing moved to updateExercise
+    };
+
+    const handleRepsChange = (event) => {
+        const newReps = event.target.value; // Keep as string for input handling
+        setSelectedReps(newReps);
+        updateExercise(index, { reps: newReps }); // No need to parse here; parsing moved to updateExercise
     };
 
     return (
@@ -80,21 +103,31 @@ const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
         <div className="exercise-box">
             <div className="content">
                 <div className="exercise-weight">
-                    {/* <select value={selectedWeight} onChange={handleWeightChange} className="weight-selector">
-                        {Array.from({ length: (250 / 5) + 1 }, (_, i) => i * 5).map(weight => (
-                            <option key={weight} value={weight}>{weight} lbs</option>
-                            ))}
-                    </select> */}
-                    <input  value={selectedWeight} 
-                            onChange={handleWeightChange} 
-                            className="weight-selector"
-                            maxlength="7"
-                            minlength="1">
-                    </input>
+                      <input
+                        type="number"
+                        value={selectedWeight}
+                        onChange={handleWeightChange}
+                        className="weight-input"
+                        step="0.5" // Allow decimal values
+                    />
                 </div>
                 <div className="sets-reps">
-                    <div>{sets} sets</div>
-                    <div>{reps} reps</div>
+                    <input
+                        type="number"
+                        value={selectedSets}
+                        onChange={handleSetsChange}
+                        className="sets-input"
+                        min="1"
+                        max="6"
+                    /> Sets
+                    <input
+                        type="number"
+                        value={selectedReps}
+                        onChange={handleRepsChange}
+                        className="reps-input"
+                        min="1"
+                        max="50"
+                    /> Reps
                 </div>
             </div>
 
