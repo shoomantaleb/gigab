@@ -188,8 +188,9 @@ const ExerciseBox = ({
 const Timer = () => {
     const [seconds, setSeconds] = useState(60);
     const [isRunning, setIsRunning] = useState(false);
-    const timerRef = useRef(null);
+    const timerRef = useRef(null); //Changed "let timer" to properly reference the timer
 
+    //Implementation of cleanup function whenever timer goes out of scope
     useEffect(() => {
         return () => {
             if (timerRef.current) {
@@ -215,10 +216,10 @@ const Timer = () => {
     const startTimer = () => {
         if (!isRunning) {
             setIsRunning(true);
-            if (timerRef.current) clearInterval(timerRef.current);
+            if (timerRef.current) clearInterval(timerRef.current); //clears any existing timers before creating a new one
             timerRef.current = setInterval(() => {
                 setSeconds((prevSeconds) => {
-                    if (prevSeconds <= 0) {
+                    if (prevSeconds <= 0) { //Clears when timer reaches 0
                         clearInterval(timerRef.current);
                         setIsRunning(false);
                         return 0;
