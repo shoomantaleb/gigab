@@ -1,4 +1,4 @@
-* {
+{
     box-sizing: border-box;
 }
 
@@ -9,7 +9,7 @@ body {
 }
 
 .page {
-    --nav-height: 65px;
+    nav-height: 65px;
     padding-top: var(--nav-height);
 }
 
@@ -18,7 +18,7 @@ body {
     text-align: center;
 }
 
-.nav {
+.nav{
     position: fixed;
     top: 0;
     left: 0;
@@ -29,7 +29,8 @@ body {
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 0 1rem; 
+    nav-height: 75px;
+    padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
 
 .site-title{
