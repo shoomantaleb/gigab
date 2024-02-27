@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/profile.css';
 
-
 // Profile component
 export default function Profile() {
   return (
