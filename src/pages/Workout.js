@@ -28,8 +28,6 @@ export default function Workout() {
 
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
-
-
   return (
     <>
       <div className="page">
@@ -134,23 +132,30 @@ const ExerciseBox = ({
                     />
                 </div>
                 <div className="edit-sets-reps">
-                    <input
-                        type="number"
-                        value={selectedSets}
-                        onChange={handleSetsChange}
-                        class="sets-input"
-                        min="1"
-                        max="6"
-                    />
-                    <div class="input-label-sets">Sets</div>
-                    <input
-                        type="number"
-                        value={selectedReps}
-                        onChange={handleRepsChange}
-                        class="reps-input"
-                        min="1"
-                        max="50"
-                    />
+                <select value={selectedSets} onChange={handleSetsChange} className="sets-input">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+    <div className="input-label-sets">Sets</div>
+    <select value={selectedReps} onChange={handleRepsChange} className="reps-input">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        // Add more options as needed
+    </select>
                     <div class="input-label-reps">Reps</div>
                 </div>
             </div>

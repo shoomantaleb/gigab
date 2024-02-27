@@ -1,205 +1,169 @@
+/* Base Styles for Text and Fonts */
+* {
+font-family: Inter, serif;
+color: #525252; /* Default text color */
+}
 
-/***** WORKOUT PLAN EXERCISE COMPONENTS ***************/
+/* Hide default spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+input[type="number"] {
+  appearance: textfield;
+  
+}
+
+/* Adjusting Dropdown Styles */
+select {
+  background-color: white; /* Sets the dropdown background to white */
+  border: 1px solid #ccc; /* Optional: sets a light grey border */
+  color: #525252; /* Sets the text color to match other inputs */
+  padding: 5px; /* Adds some padding inside the dropdown for better text visibility */
+  border-radius: 5px; /* Optional: rounds the corners of the dropdown */
+  font-family: Inter, serif; /* Ensures font consistency */
+  font-size: 16px; /* Adjusts the font size for better readability */
+}
+
+/* Further style adjustments for option hover */
+select:hover {
+  background-color: #f9f9f9; /* Light grey background on hover for better user interaction */
+}
+
+/* Style adjustments for option focus */
+select:focus {
+  outline: none; /* Removes the default focus outline */
+  border-color: #669CB2; /* Adds a border color to match the theme when focused */
+}
+
+
+/* Workout Plan Exercise Components */
 .exercise-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* Horizontally spread out content */
-  border-radius: 10px;
-  width: 100%;
-  background-color: #669CB2;
-  margin: 0 auto 10px;
-  overflow-x: auto;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-radius: 10px;
+width: 100%;
+background-color: #669CB2;
+margin: 0 auto 10px;
+overflow-x: auto;
 }
-.exercise-title {
-  display: flex;
-  margin-right: auto;
-  font-size: 25px;
-  margin-bottom: 3px;
-  font-family: Inter;
-  color: #525252;
+
+
+.exercise-title, .edit-exercise-weight, .weight-state {
+display: flex;
+margin-right: auto; /* Specifically for exercise-title */
+font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+font-size: 25px; /* Default for exercise-title */
 }
+
+.edit-exercise-weight, .weight-state {
+font-size: 40px; /* Override for these classes */
+margin-right: 10px; /* Specifically for edit-exercise-weight */
+}
+
 .content {
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
-  padding: 10px 20px;
-  background-color: rgb(255, 255, 255);
+border-radius: 10px;
+display: flex;
+flex-direction: row;
+white-space: nowrap;
+padding: 10px 20px;
+background-color: rgb(255, 255, 255);
 }
 
-
-
-
-.edit-exercise-weight {
-  font-size: 30px;
-  margin-right: 10px;
-  /* flex: 0; */
-
-  font-family: Inter;
-  font-weight: 800;
-  color: #525252;
+.edit-sets-reps, .sets-reps-container {
+display: grid;
+font-size: 20px;
+color: #7E7E7E;
 }
 
 .edit-sets-reps {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 0;
-  padding: 0;
-  text-align: center;
-  font-family: Inter, serif;
-  font-size: 20px;
-  color: #7E7E7E;
+grid-template-columns: auto auto;
+gap: 0;
+padding: 0;
+text-align: center;
 }
 
-.reps-input, .sets-input {
-  width: 40px; /* Keep the width as defined */
-  margin-bottom: 1px; /* Add space between inputs */
-}
-.sets-input {
-  grid-row-start: 1;
-  grid-row-end: 1;
-  grid-column-start: 1;
-  grid-column-end: 2;
-}
-.input-label-sets{
-  grid-row-start: 1;
-  grid-row-end: 1;
-  grid-column-start: 2;
-  grid-column-end: 3;
-}
-.reps-input {
-  grid-row-start: 2;
-  grid-row-end: 2;
-  grid-column-start: 1;
-  grid-column-end: 2;
-}
-.input-label-reps{
-  grid-row-start: 2;
-  grid-row-end: 2;
-  grid-column-start: 2;
-  grid-column-end: 3;
+.sets-reps-container {
+margin-left: auto;
 }
 
-.weight-input {
-  /* display: flex; */
-  /* flex: 0; */
-  width: 100px;
-  min-width: 50px;
+.reps-input, .sets-input, .input-label-sets, .input-label-reps {
+grid-row: auto; /* Automatically place in the next available row */
+grid-column: auto; /* Automatically place in the next available column */
 }
 
-
-.weight-state {
-  /* display: flex;
-  flex: 0; */
-  width: 100px;
-  min-width: 50px;
-  font-size: 30px;
-  padding: 5px;
+.reps-input, .sets-input, select {
+width: 40px;
+margin-bottom: 1px;
 }
 
-.sets-reps-container{ /*view mode */
-  margin-left: auto; /* This will push the container to the right */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: flex-end; */
-  font-size: 20px;
-  color: #7E7E7E;
-}
-
-.sets-state, .reps-state {
-  /* Apply specific styles here */
-}
-
-
-.weight-state {
-  /* display: flex;
-  flex: 0; */
-  width: 100px;
-  min-width: 50px;
-  font-size: 30px;
-
-  font-family: Inter;
-  font-weight: 800;
-  color: #525252;
-}
-
-.sets-reps-container{ /*view mode */
-  margin-left: auto; /* This will push the container to the right */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: flex-end; */
-  font-size: 20px;
-  color: #7E7E7E;
-}
-
-.sets-state, .reps-state {
-  /* Apply specific styles here */
+.weight-input, .weight-state {
+width: 100px;
+min-width: 50px;
+font-size: 40px; /* Override for weight-state */
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-around; /* Evenly distribute buttons */
-  width: 80%; /*Ensure buttons fill the entire width*/
+display: flex;
+justify-content: space-around;
+width: 80%;
 }
+
 .circle-button {
-  border: 3px solid #2f2f2f;
-  border-radius: 30%;
-  width: 30px;
-  height: 30px;
-  margin-left: 5px; /* Add some spacing between buttons */
-  background-color: white;
+border: 3px solid #2f2f2f;
+border-radius: 30%;
+width: 30px;
+height: 30px;
+margin-left: 5px;
+background-color: white;
 }
+
 .circle-button.checked {
-  background-color: #2f2f2f;
+background-color: #2f2f2f;
 }
-
-
-
-
-
-
 
 .timer {
-  background-color: #042550;
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  display: flex;
-  width: 300px;
-  height: 100px;
-  border-radius: 20px;
-  padding: 20px;
+background-color: #042550;
+position: absolute;
+right: 20px;
+bottom: 20px;
+display: flex;
+width: 300px;
+height: 100px;
+border-radius: 20px;
+padding: 20px;
 
-  flex-direction: row;
+flex-direction: row;
 }
 .time-display{
-  background-color: white;
-  border-radius: 15px;
-  width: 70%;
-
-  font-family: Inter;
-  font-size: 40px;
-  text-align: center;
-  color: #525252;
+background-color: white;
+border-radius: 15px;
+width: 70%;
+font-family: Inter, serif;
+font-size: 40px;
+text-align: center;
+color: #525252;
 }
 .controls {
-  margin-left: 10px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
-  grid-gap: 10%; /* Adjust the gap between buttons */
-  width: 25%;
+margin-left: 10px;
+display: grid;
+grid-template-columns: repeat(2, 1fr); /* Two columns */
+grid-gap: 10%; /* Adjust the gap between buttons */
+width: 25%;
 
-  font-family: Inter;
-  color: #525252;
+font-family: Inter, serif;
+color: #525252;
 }
 .btn {
-  background-color: #F0F0F0;
-  text-align: center;
-  border-radius: 10px;
-  font-weight: bold;
+background-color: #F0F0F0;
+text-align: center;
+border-radius: 10px;
+font-weight: bold;
 }
 .start-btn{
-  grid-column-end: span 2; 
+grid-column-end: span 2; 
 }
 
