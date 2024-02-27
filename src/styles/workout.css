@@ -16,6 +16,8 @@
   margin-right: auto;
   font-size: 25px;
   margin-bottom: 3px;
+  font-family: Inter;
+  color: #525252;
 }
 .content {
   border-radius: 10px;
@@ -33,6 +35,10 @@
   font-size: 30px;
   margin-right: 10px;
   /* flex: 0; */
+
+  font-family: Inter;
+  font-weight: 800;
+  color: #525252;
 }
 
 .edit-sets-reps {
@@ -89,6 +95,33 @@
   width: 100px;
   min-width: 50px;
   font-size: 30px;
+  padding: 5px;
+}
+
+.sets-reps-container{ /*view mode */
+  margin-left: auto; /* This will push the container to the right */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: flex-end; */
+  font-size: 20px;
+  color: #7E7E7E;
+}
+
+.sets-state, .reps-state {
+  /* Apply specific styles here */
+}
+
+
+.weight-state {
+  /* display: flex;
+  flex: 0; */
+  width: 100px;
+  min-width: 50px;
+  font-size: 30px;
+
+  font-family: Inter;
+  font-weight: 800;
+  color: #525252;
 }
 
 .sets-reps-container{ /*view mode */
@@ -144,8 +177,11 @@
   background-color: white;
   border-radius: 15px;
   width: 70%;
+
+  font-family: Inter;
   font-size: 40px;
   text-align: center;
+  color: #525252;
 }
 .controls {
   margin-left: 10px;
@@ -153,6 +189,9 @@
   grid-template-columns: repeat(2, 1fr); /* Two columns */
   grid-gap: 10%; /* Adjust the gap between buttons */
   width: 25%;
+
+  font-family: Inter;
+  color: #525252;
 }
 .btn {
   background-color: #F0F0F0;
