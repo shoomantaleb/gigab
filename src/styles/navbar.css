@@ -34,7 +34,7 @@ body {
 
 .site-title{
     background-color: #186D8F;
-    padding: 1rem;
+    /* padding: 1rem; */
     font-family: Inter;
     font-size: 40px;
     font-style: italic;
