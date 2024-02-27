@@ -4,17 +4,7 @@ font-family: Inter, serif;
 color: #525252; /* Default text color */
 }
 
-/* Hide default spinners */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-input[type="number"] {
-  appearance: textfield;
-  
-}
 
 /* Adjusting Dropdown Styles */
 select {
@@ -101,7 +91,7 @@ margin-bottom: 1px;
 }
 
 .weight-input, .weight-state {
-width: 100px;
+width: 110px;
 min-width: 50px;
 font-size: 40px; /* Override for weight-state */
 }
