@@ -44,42 +44,46 @@ export default function Workout() {
                 updateExercise={updateExercise} // Pass updateWeight function here
                 editMode={editMode} // Pass edit mode to control input fields visibility
               />
-              ))}
-              <button onClick={toggleEditMode}>{editMode ? 'Cancel' : 'Edit'}</button> {/* Toggle between Edit and Cancel */}
-              <button onClick={() => setEditMode(false)}>Save</button> {/* Save button to exit edit mode */}
+            ))}
+            <button onClick={toggleEditMode}>
+              {editMode ? "Cancel" : "Edit"}
+            </button>{" "}
+            {/* Toggle between Edit and Cancel */}
+            <button onClick={() => setEditMode(false)}>Save</button>{" "}
+            {/* Save button to exit edit mode */}
           </div>
         </div>
       </div>
-    <Timer />
+      <Timer />
     </>
-    );
+  );
 }
 
 const ExerciseBox = ({
-    index,
-    exercise,
-    weight,
-    sets,
-    reps,
-    updateExercise,
-    editMode, // Prop to control the visibility of input fields
+  index,
+  exercise,
+  weight,
+  sets,
+  reps,
+  updateExercise,
+  editMode, // Prop to control the visibility of input fields
 }) => {
-    const [checkedButtons, setCheckedButtons] = useState(
-        Array.from({ length: sets }, () => false)
-        );
-    const [selectedWeight, setSelectedWeight] = useState(weight.toString());
-    const [selectedSets, setSelectedSets] = useState(sets.toString());
-    const [selectedReps, setSelectedReps] = useState(reps.toString());
+  const [checkedButtons, setCheckedButtons] = useState(
+    Array.from({ length: sets }, () => false)
+  );
+  const [selectedWeight, setSelectedWeight] = useState(weight.toString());
+  const [selectedSets, setSelectedSets] = useState(sets.toString());
+  const [selectedReps, setSelectedReps] = useState(reps.toString());
 
-    const handleToggle = (index) => {
-        setCheckedButtons((prevCheckedButtons) => {
-            const newCheckedButtons = [...prevCheckedButtons];
-            newCheckedButtons[index] = !newCheckedButtons[index];
-            return newCheckedButtons;
-        });
-    };
+  const handleToggle = (index) => {
+    setCheckedButtons((prevCheckedButtons) => {
+      const newCheckedButtons = [...prevCheckedButtons];
+      newCheckedButtons[index] = !newCheckedButtons[index];
+      return newCheckedButtons;
+    });
+  };
 
-    /*  const handleWeightChange = (event) => {
+  /*  const handleWeightChange = (event) => {
         const newWeight = event.target.value;
         setSelectedWeight(newWeight);
         updateExercise(index, { weight: newWeight }); // Adjusted to use the updated function signature
@@ -92,171 +96,174 @@ const ExerciseBox = ({
 
     };*/
 
-    const handleWeightChange = (event) => { //Weight event
-        const newWeight = event.target.value;
-        setSelectedWeight(newWeight); //Update Weight state
-        updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
-    };
+  const handleWeightChange = (event) => {
+    //Weight event
+    const newWeight = event.target.value;
+    setSelectedWeight(newWeight); //Update Weight state
+    updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
+  };
 
-    const handleSetsChange = (event) => { //Sets event
-        const newSets = event.target.value;
-        setSelectedSets(newSets); //Update Sets state
-        updateExercise(index, { sets: newSets }); //Update index@ Exercise.Sets to newSets
-        // Update checkedButtons to reflect the new number of sets
-        setCheckedButtons(Array.from({ length: Number(newSets) }, () => false));
-    };
+  const handleSetsChange = (event) => {
+    //Sets event
+    const newSets = event.target.value;
+    setSelectedSets(newSets); //Update Sets state
+    updateExercise(index, { sets: newSets }); //Update index@ Exercise.Sets to newSets
+    // Update checkedButtons to reflect the new number of sets
+    setCheckedButtons(Array.from({ length: Number(newSets) }, () => false));
+  };
 
-    const handleRepsChange = (event) => { //Reps event
-        const newReps = event.target.value; // Update reps state
-        setSelectedReps(newReps); //Update Reps State
-        updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
-    };
+  const handleRepsChange = (event) => {
+    //Reps event
+    const newReps = event.target.value; // Update reps state
+    setSelectedReps(newReps); //Update Reps State
+    updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
+  };
 
-    return (
-        <>
-        <div className="exercise-title">
-            <b>{exercise}</b>
-        </div>
-        <div className="exercise-box">
-            {editMode ? ( // Edit mode: Display input fields for editing
-            
-            
-            <div className="content">
-                <div className="edit-exercise-weight">
-                    <input
-                        type="number"
-                        value={selectedWeight}
-                        onChange={handleWeightChange}
-                        className="weight-input"
-                        step="2.5" //Increment weight by 0.5
-                    />
-                </div>
-                <div className="edit-sets-reps">
-                <select value={selectedSets} onChange={handleSetsChange} className="sets-input">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-    </select>
-    <div className="input-label-sets">Sets</div>
-    <select value={selectedReps} onChange={handleRepsChange} className="reps-input">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        // Add more options as needed
-    </select>
-                    <div class="input-label-reps">Reps</div>
-                </div>
-            </div>
-
-            ) : (
-        // View mode: Display current values without input fields
+  return (
+    <>
+      <div className="exercise-title">
+        <b>{exercise}</b>
+      </div>
+      <div className="exercise-box">
+        {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
-              <div className="weight-state">{selectedWeight}</div>
-              <div className="sets-reps-container">
-                  <div className="reps-state">{selectedSets} Sets</div>
-                  <div className="sets-state">{selectedReps} Reps</div>
-                </div>
+            <div className="edit-exercise-weight">
+              <input
+                type="number"
+                value={selectedWeight}
+                onChange={handleWeightChange}
+                className="weight-input"
+                step="2.5" //Increment weight by 0.5
+              />
             </div>
-          )}
-            <div className="buttons">
-                {checkedButtons.map((isChecked, index) => (
-                    <button
-                        key={index}
-                        className={`circle-button ${isChecked ? "checked" : ""}`}
-                        onClick={() => handleToggle(index)}
-                        ></button>
-                        ))}
+            <div className="edit-sets-reps">
+              <select
+                value={selectedSets}
+                onChange={handleSetsChange}
+                className="sets-input"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+              <div className="input-label-sets">Sets</div>
+              <select
+                value={selectedReps}
+                onChange={handleRepsChange}
+                className="reps-input"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                // Add more options as needed
+              </select>
+              <div class="input-label-reps">Reps</div>
             </div>
+          </div>
+        ) : (
+          // View mode: Display current values without input fields
+          <div className="content">
+            <div className="weight-state">{selectedWeight}</div>
+            <div className="sets-reps-container">
+              <div className="reps-state">{selectedSets} Sets</div>
+              <div className="sets-state">{selectedReps} Reps</div>
+            </div>
+          </div>
+        )}
+        <div className="buttons">
+          {checkedButtons.map((isChecked, index) => (
+            <button
+              key={index}
+              className={`circle-button ${isChecked ? "checked" : ""}`}
+              onClick={() => handleToggle(index)}
+            ></button>
+          ))}
         </div>
-        </>
-        );
+      </div>
+    </>
+  );
 };
 
-
-
-
-
-
-
 const Timer = () => {
-    const [seconds, setSeconds] = useState(60);
-    const [isRunning, setIsRunning] = useState(false);
-    const timerRef = useRef(null); //Changed "let timer" to properly reference the timer
+  const [seconds, setSeconds] = useState(60);
+  const [isRunning, setIsRunning] = useState(false);
+  const timerRef = useRef(null); //Changed "let timer" to properly reference the timer
 
-    //Implementation of cleanup function whenever timer goes out of scope
-    useEffect(() => {
-        return () => {
-            if (timerRef.current) {
-                clearInterval(timerRef.current);
-            }
-        };
-        }, []);
-
-    const formatTime = (time) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = ("0" + (time % 60)).slice(-2);
-        return `${minutes}:${seconds}`;
+  //Implementation of cleanup function whenever timer goes out of scope
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     };
+  }, []);
 
-    const decreaseTime = () => {
-        setSeconds((prevSeconds) => Math.max(prevSeconds - 5, 0));
-    };
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = ("0" + (time % 60)).slice(-2);
+    return `${minutes}:${seconds}`;
+  };
 
-    const increaseTime = () => {
-        setSeconds((prevSeconds) => prevSeconds + 5);
-    };
+  const decreaseTime = () => {
+    setSeconds((prevSeconds) => Math.max(prevSeconds - 5, 0));
+  };
 
-    const startTimer = () => {
-        if (!isRunning) {
-            setIsRunning(true);
-            if (timerRef.current) clearInterval(timerRef.current); //clears any existing timers before creating a new one
-            timerRef.current = setInterval(() => {
-                setSeconds((prevSeconds) => {
-                    if (prevSeconds <= 0) { //Clears when timer reaches 0
-                        clearInterval(timerRef.current);
-                        setIsRunning(false);
-                        return 0;
-                    }
-                    return prevSeconds - 1;
-                });
-                }, 1000);
-        }
-    };
+  const increaseTime = () => {
+    setSeconds((prevSeconds) => prevSeconds + 5);
+  };
 
-    const stopTimer = () => {
-        if (timerRef.current) clearInterval(timerRef.current);
-        setIsRunning(false);
-    };
+  const startTimer = () => {
+    if (!isRunning) {
+      setIsRunning(true);
+      if (timerRef.current) clearInterval(timerRef.current); //clears any existing timers before creating a new one
+      timerRef.current = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds <= 0) {
+            //Clears when timer reaches 0
+            clearInterval(timerRef.current);
+            setIsRunning(false);
+            return 0;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    }
+  };
 
-    return (
-        <div className="timer">
-            <div className="time-display">{formatTime(seconds)}</div>
-            <div className="controls">
-                <button className="btn" onClick={decreaseTime}>
-                    -
-                </button>
-                <button className="btn" onClick={increaseTime}>
-                    +
-                </button>
-                <button
-                    className="btn start-btn"
-                    onClick={isRunning ? stopTimer : startTimer}
-                    >
-                    {isRunning ? "Stop" : "Start"}
-                </button>
-            </div>
-        </div>
-        );
+  const stopTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setIsRunning(false);
+  };
+
+  return (
+    <div className="timer">
+      <div className="time-display">{formatTime(seconds)}</div>
+      <div className="controls">
+        <button className="btn" onClick={decreaseTime}>
+          -
+        </button>
+        <button className="btn" onClick={increaseTime}>
+          +
+        </button>
+        <button
+          className="btn start-btn"
+          onClick={isRunning ? stopTimer : startTimer}
+        >
+          {isRunning ? "Stop" : "Start"}
+        </button>
+      </div>
+    </div>
+  );
 };
