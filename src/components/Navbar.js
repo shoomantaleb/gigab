@@ -1,7 +1,7 @@
 import { Link , useMatch, useResolvedPath } from "react-router-dom"
 import 'firebase/compat/firestore'; //for the databse
 import 'firebase/compat/auth'; //for the authentication
-import { auth } from '/Users/omartaleb/Documents/GitHub/gigab/src/firebaseConfig.js';
+import { auth } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth'; 
 
 
