@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig"
 import { useAuthState } from 'react-firebase-hooks/auth'; 
 
@@ -10,6 +10,12 @@ export default function Workout() {
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const [user] = useAuthState(auth)
 
+
+  
+  
+
+
+  
   useEffect(() => {
     const fetchDocument = async () => {
       const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
@@ -23,30 +29,86 @@ export default function Workout() {
       }
     };
 
+    async function defaultWorkouts() {  
+      // Check if the document for the user already exists
+      const userDoc = await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').get();
+      // If the document does not exist, set the default data
+      if (!userDoc.exists) {
+        const defaultData = {
+          exercises: [
+            {
+              name: 'DefaultExercise1',
+              reps: 8,
+              sets: 3,
+              weight: 15
+            },
+            {
+              name: 'DefaultExercise2',
+              reps: 10,
+              sets: 2,
+              weight: 12
+            }
+          ]
+        };
+        // Set the default data for the user
+        await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').set(defaultData);
+  
+        const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
+  
+        const exercisesData = {
+          exercises: exercises.map(({name, weight, sets, reps}) => ({
+            name,
+            weight,
+            sets,
+            reps
+          })),
+        };
+        
+       // await setDoc(docRef, exercisesData);
+      }
+    }
+
+    defaultWorkouts();
     fetchDocument();
   }, [])
 
-  const updateExercise = (index, details) => {
+  const updateExercise = async (index, details) => {
     const updatedExercises = exercises.map((exercise, i) => {
       if (i === index) {
-        return [
-          exercise.name, //Exercise
-          details.weight !== undefined ? Number(details.weight) : exercise.weight,
-          details.sets !== undefined ? Number(details.sets) : exercise.sets,
-          details.reps !== undefined ? Number(details.reps) : exercise.reps,
-        ];
+        return {
+          ...exercise,
+          weight: details.weight !== undefined ? Number(details.weight) : exercise.weight,
+          sets: details.sets !== undefined ? Number(details.sets) : exercise.sets,
+          reps: details.reps !== undefined ? Number(details.reps) : exercise.reps,
+        };
       }
       return exercise;
     });
+  
+    console.log("Updating exercises:", updatedExercises);
+  
     setExercises(updatedExercises);
+  
+    
+    // Update the corresponding document in the database 
   };
-
+  
+  
+  
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
   return (
     <>
       <div className="page">
         <h1 className=""> Monday </h1>
+
+        <button onClick={toggleEditMode}>
+              {editMode ? "Cancel" : "Edit"}
+            </button>{" "}
+            {/* Toggle between Edit and Cancel */}
+            <button onClick={() => setEditMode(false)}>Save</button>{" "}
+            {/* Save button to exit edit mode */}
+
         <div className="container">
           <div className="box">
             {exercises.map((exercise, index) => 
@@ -61,12 +123,7 @@ export default function Workout() {
                 editMode={editMode} // Pass edit mode to control input fields visibility
               />
             ))}
-            <button onClick={toggleEditMode}>
-              {editMode ? "Cancel" : "Edit"}
-            </button>{" "}
-            {/* Toggle between Edit and Cancel */}
-            <button onClick={() => setEditMode(false)}>Save</button>{" "}
-            {/* Save button to exit edit mode */}
+            
           </div>
         </div>
       </div>
@@ -112,11 +169,12 @@ const ExerciseBox = ({
 
     };*/
 
-  const handleWeightChange = (event) => {
+  const handleWeightChange = async (event) => {
     //Weight event
     const newWeight = event.target.value;
     setSelectedWeight(newWeight); //Update Weight state
     updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
+   
   };
 
   const handleSetsChange = (event) => {
@@ -134,7 +192,7 @@ const ExerciseBox = ({
     setSelectedReps(newReps); //Update Reps State
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
-
+  
   return (
     <>
       <div className="exercise-title">
