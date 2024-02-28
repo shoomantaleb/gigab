@@ -1,24 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../styles/workout.css";
+import { doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../firebaseConfig"
+import { useAuthState } from 'react-firebase-hooks/auth'; 
+
 
 export default function Workout() {
-  const exerciseListArray = [
-    //[Excercise, Weight, Sets, Reps]
-    ["Squats", "100", 3, "10"],
-    ["Deadlift", "50", 5, "8"],
-    ["Leg Press", "200", 4, "6"],
-    ["Rock climb", "100", 3, "10"],
-  ];
-  const [exercises, setExercises] = useState(exerciseListArray); // Function to update the fields for an exercise
+  const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
+  const [dayOfWeek, setDayOfWeek] = useState('monday');
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
+  const [user] = useAuthState(auth)
+
+  useEffect(() => {
+    const fetchDocument = async () => {
+      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        setExercises(docSnap.data().exercises);
+      } else {
+        console.log("No such document!");
+      }
+    };
+
+    fetchDocument();
+  }, [])
+
   const updateExercise = (index, details) => {
     const updatedExercises = exercises.map((exercise, i) => {
       if (i === index) {
         return [
-          exercise[0], //Exercise
-          details.weight !== undefined ? Number(details.weight) : exercise[1],
-          details.sets !== undefined ? Number(details.sets) : exercise[2],
-          details.reps !== undefined ? Number(details.reps) : exercise[3],
+          exercise.name, //Exercise
+          details.weight !== undefined ? Number(details.weight) : exercise.weight,
+          details.sets !== undefined ? Number(details.sets) : exercise.sets,
+          details.reps !== undefined ? Number(details.reps) : exercise.reps,
         ];
       }
       return exercise;
@@ -34,13 +49,14 @@ export default function Workout() {
         <h1 className=""> Monday </h1>
         <div className="container">
           <div className="box">
-            {exercises.map((exercise, index) => (
+            {exercises.map((exercise, index) => 
+              (
               <ExerciseBox
                 key={index}
-                exercise={exercise[0]}
-                weight={exercise[1]}
-                sets={exercise[2]}
-                reps={exercise[3]}
+                exercise={exercise.name}
+                weight={exercise.weight}
+                sets={exercise.sets}
+                reps={exercise.reps}
                 updateExercise={updateExercise} // Pass updateWeight function here
                 editMode={editMode} // Pass edit mode to control input fields visibility
               />
@@ -71,9 +87,9 @@ const ExerciseBox = ({
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
   );
-  const [selectedWeight, setSelectedWeight] = useState(weight.toString());
-  const [selectedSets, setSelectedSets] = useState(sets.toString());
-  const [selectedReps, setSelectedReps] = useState(reps.toString());
+  const [selectedWeight, setSelectedWeight] = useState(weight);
+  const [selectedSets, setSelectedSets] = useState(sets);
+  const [selectedReps, setSelectedReps] = useState(reps);
 
   const handleToggle = (index) => {
     setCheckedButtons((prevCheckedButtons) => {
