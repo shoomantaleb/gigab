@@ -83,8 +83,8 @@ margin-left: auto;
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
 grid-row: auto; /* Automatically place in the next available row */
 grid-column: auto; /* Automatically place in the next available column */
+border: 0;
 }
-
 .reps-input, .sets-input, select {
 width: 40px;
 margin-bottom: 1px;
@@ -94,6 +94,9 @@ margin-bottom: 1px;
 width: 110px;
 min-width: 50px;
 font-size: 40px; /* Override for weight-state */
+}
+.weight-input {
+  border-bottom: 1px #2F2F2F solid;
 }
 
 .buttons {
