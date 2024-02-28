@@ -77,9 +77,9 @@ export default function Workout() {
     if (!user) {
       return;
     }
-    if (user) {
+    if (user && exercises.length > 0) {
       const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
-      const exercisesData = { exercises };
+      const exercisesData = { 'exercises': exercises }
 
       const updateExercisesInFirebase = async () => {
         await setDoc(docRef, exercisesData, { merge: true });
@@ -91,13 +91,14 @@ export default function Workout() {
   }, [exercises, user, dayOfWeek]);
 
   const updateExercise = async (index, details) => {
+    console.log(index)
     const updatedExercises = exercises.map((exercise, i) => {
       if (i === index) {
         return {
           ...exercise,
-          weight: details.weight !== undefined ? Number(details.weight) : exercise.weight,
-          sets: details.sets !== undefined ? Number(details.sets) : exercise.sets,
-          reps: details.reps !== undefined ? Number(details.reps) : exercise.reps,
+          weight: details.weight != null ? Number(details.weight) : exercise.weight,
+          sets: details.sets != null ? Number(details.sets) : exercise.sets,
+          reps: details.reps != null ? Number(details.reps) : exercise.reps,
         };
       }
       return exercise;
@@ -132,6 +133,7 @@ export default function Workout() {
               (
               <ExerciseBox
                 key={index}
+                index={index}
                 exercise={exercise.name}
                 weight={exercise.weight}
                 sets={exercise.sets}
