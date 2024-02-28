@@ -6,6 +6,9 @@ import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
 import Profile from "./pages/Profile"
 import {Route, Routes} from "react-router-dom"
+import { auth } from './firebaseConfig';
+import { db } from './firebaseConfig';
+import { setDoc, doc } from 'firebase/firestore';
 
 //Tutorial for firebase x react:
 //https://www.youtube.com/watch?v=zQyrwxMPm88&ab_channel=Fireship
@@ -15,30 +18,10 @@ import 'firebase/compat/auth'; //for the authentication
 
 //makes it easier to work with firebase in react
 import { useAuthState } from 'react-firebase-hooks/auth'; 
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-firebase.initializeApp({
-// const firebaseConfig = {
-  apiKey: "AIzaSyAYxjvnG_EtV5OJ2YZKsu0NuOtBhmyY_uQ",
-  authDomain: "gigab-d299f.firebaseapp.com",
-  projectId: "gigab-d299f",
-  storageBucket: "gigab-d299f.appspot.com",
-  messagingSenderId: "67991910335",
-  appId: "1:67991910335:web:856b643435b1aa5340d30a",
-  measurementId: "G-0G9GXYGCE1"
-})
-
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-
-
-
 
 export default function App() {
   const [user] = useAuthState(auth);
+  const [isGuest, setIsGuest] = useState(false); // + New state for guest users
   //Signed in - user is an object
   //Signed out - user is null
 
@@ -50,23 +33,38 @@ export default function App() {
       
       <section >
         {/* Sign in component */}
-        {user ? <HomePage /> : <SignIn />}
+        {user ? <HomePage /> : isGuest ? <HomePage /> : <SignIn setIsGuest={setIsGuest} />} 
+      
       </section>
     </div>
   );
   
 }
 
-function SignIn(){
+function SignIn({ setIsGuest }){
   //Opens google sign in window
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    auth.signInWithPopup(provider).then(async (res) => {
+      const user = res.user
+
+      const data = {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      }
+
+      await setDoc(doc(db, 'users', user.uid), data)
+      
+    })
+
   }
 
   return (
+    <>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
-    
+    <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setIsGuest(true)}>Continue as Guest</button> 
+    </>// + Button for guest users
   )
 }
 
