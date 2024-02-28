@@ -10,13 +10,19 @@ export default function Workout() {
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const [user] = useAuthState(auth)
 
-
-  
-  
-
-
   
   useEffect(() => {
+    if (!user) {
+      console.log("Guest user detected. Setting default exercises.");
+      setExercises([
+        { name: 'Smoke', reps: 5, sets: 2, weight: 10 },
+        { name: 'Cray', reps: 8, sets: 3, weight: 15 },
+        { name: 'Pog', reps: 8, sets: 3, weight: 15 },
+        { name: 'Gop', reps: 8, sets: 3, weight: 15 }
+        
+      ]);
+      return;
+    }
     const fetchDocument = async () => {
       const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
       const docSnap = await getDoc(docRef);
@@ -30,6 +36,9 @@ export default function Workout() {
     };
 
     async function defaultWorkouts() {  
+      if (!user) {
+        return;
+      }
       // Check if the document for the user already exists
       const userDoc = await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').get();
       // If the document does not exist, set the default data
@@ -54,15 +63,7 @@ export default function Workout() {
         await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').set(defaultData);
   
         const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
-  
-        const exercisesData = {
-          exercises: exercises.map(({name, weight, sets, reps}) => ({
-            name,
-            weight,
-            sets,
-            reps
-          })),
-        };
+
         
        // await setDoc(docRef, exercisesData);
       }
@@ -71,6 +72,23 @@ export default function Workout() {
     defaultWorkouts();
     fetchDocument();
   }, [])
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    if (user) {
+      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
+      const exercisesData = { exercises };
+
+      const updateExercisesInFirebase = async () => {
+        await setDoc(docRef, exercisesData, { merge: true });
+        console.log("Exercises updated in Firebase");
+      };
+
+      updateExercisesInFirebase();
+    }
+  }, [exercises, user, dayOfWeek]);
 
   const updateExercise = async (index, details) => {
     const updatedExercises = exercises.map((exercise, i) => {
@@ -88,8 +106,7 @@ export default function Workout() {
     console.log("Updating exercises:", updatedExercises);
   
     setExercises(updatedExercises);
-  
-    
+
     // Update the corresponding document in the database 
   };
   

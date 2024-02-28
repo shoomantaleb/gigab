@@ -21,6 +21,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function App() {
   const [user] = useAuthState(auth);
+  const [isGuest, setIsGuest] = useState(false); // + New state for guest users
   //Signed in - user is an object
   //Signed out - user is null
 
@@ -32,14 +33,15 @@ export default function App() {
       
       <section >
         {/* Sign in component */}
-        {user ? <HomePage /> : <SignIn />}
+        {user ? <HomePage /> : isGuest ? <HomePage /> : <SignIn setIsGuest={setIsGuest} />} 
+      
       </section>
     </div>
   );
   
 }
 
-function SignIn(){
+function SignIn({ setIsGuest }){
   //Opens google sign in window
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -59,8 +61,10 @@ function SignIn(){
   }
 
   return (
+    <>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
-    
+    <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setIsGuest(true)}>Continue as Guest</button> 
+    </>// + Button for guest users
   )
 }
 
