@@ -13,6 +13,11 @@ body{
     padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
 
+
+
+
+
+
 .nav{
     position: fixed;
     top: 0;
@@ -74,7 +79,7 @@ h1 {
     color: #E6E6E6;
 }
 
-.nav li {
+.nav .normal {
     width: 50%;
     transition: transform 0.2s ease-in-out;
 }
@@ -85,8 +90,18 @@ h1 {
     /* background-color: #186D8F; */
 } 
 
-.nav li:hover{
-    transform: scale(1.03); /* Adjust the scale factor as needed */
+.nav .normal:hover{
+    transform: scale(1.04); /* Adjust the scale factor as needed */
+    /* background-color:  #4d4d4d; */
+}
+
+.profile-link {
+    position: absolute;
+    right: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+.profile-link:hover{
+    transform: scale(1.04); /* Adjust the scale factor as needed */
     /* background-color:  #4d4d4d; */
 }
 

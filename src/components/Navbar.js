@@ -17,14 +17,17 @@ export default function Navbar() {
       <nav className="nav">
         <Link to="/" className="site-title"> GigaB</Link>
         <ul>
-            <CustomLink to ="/Friends"> Friends </CustomLink>
-            <CustomLink to ="/Workout"> Workout </CustomLink>
-            <CustomLink to ="/Profile"> Profile </CustomLink>
+            <CustomLink to ="/Friends" className="normal"> Friends </CustomLink>
+            <CustomLink to ="/Workout" className="normal"> Workout </CustomLink>
             {user && (
                     <li>
                         <button onClick={signOutUser} style={{padding: '8px', background: 'none', border: 'none', color:'white', font: 'inherit', cursor: 'pointer',}}>Sign Out</button>
                     </li>
                 )}
+           
+            <CustomLink to ="/Profile" className="profile-link"> username here </CustomLink>
+            {/* PROFILE PHOTO */}
+            {/* <img href="profile-photo"></img> */} 
         </ul>
     </nav>
     )
