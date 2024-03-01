@@ -42,12 +42,12 @@ function CustomLink({ to, children, displayName, photoURL, ...props }) {
         <li className={isActive ? "active" : ""}>
             <Link to={to} {...props}>
                 {displayName && (
-                    <span style={{ marginRight: '8px' }}>
+                    <span style={{ marginRight: '15px' }}>
                         {displayName}
                     </span>
                 )}
                 {photoURL && (
-                    <img src={photoURL} alt="Profile" style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+                    <img src={photoURL} alt="Profile" style={{ width: '50px', height: '50px', borderRadius: '50%', marginLeft: '8px' }} />
                 )}
                 {children}
             </Link>

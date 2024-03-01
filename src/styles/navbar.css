@@ -13,11 +13,6 @@ body{
     padding-top: var(--nav-height); /* ADJUST BASED ON NAVBAR SIZE */
 }
 
-
-
-
-
-
 .nav{
     position: fixed;
     top: 0;
@@ -35,15 +30,28 @@ body{
 
 }
 
-.site-title{
-    background-color: #186D8F;
-    padding: 1rem;
+.site-title {
+    position: relative;
     font-family: Inter;
     font-size: 40px;
     font-style: italic;
     font-weight: 700;
     line-height: normal;
+    z-index: 1;
 }
+
+.site-title::before {
+    content: "";
+    position: absolute;
+    top: -10px; /* Adjust to hide the dark blue area */
+    left: -20px; /* Adjust to hide the dark blue area */
+    width: calc(100% + 20px); /* Adjust width to cover the entire skewed area */
+    height: calc(100% + 10px); /* Adjust height to cover the entire skewed area */
+    background-color: #186D8F;
+    z-index: -1;
+    transform: skewX(-20deg); /* Adjust the degree of skewing as needed */
+}
+
 
 h1 {
     /* font-weight: 900; */
