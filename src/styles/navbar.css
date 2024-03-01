@@ -99,6 +99,7 @@ h1 {
     position: absolute;
     right: 20px;
     transition: transform 0.2s ease-in-out;
+    color: #E6E6E6;
 }
 .profile-link:hover{
     transform: scale(1.04); /* Adjust the scale factor as needed */

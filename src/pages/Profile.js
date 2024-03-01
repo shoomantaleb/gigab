@@ -1,44 +1,165 @@
-// Import necessary modules/components
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import '../styles/profile.css';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig.js';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import WeightGraph from './WeightGraph.js';
 
-// Profile component
 export default function Profile() {
+  const [user] = useAuthState(auth);
+  const [inputWeight, setInputWeight] = useState('');
+  const [displayedWeight, setDisplayedWeight] = useState('150');
+  const [streak, setStreak] = useState(0);
+  const [highscore, setHighscore] = useState(0);
+  const [weights, setWeights] = useState([]);
+  
+  const handleInputChange = (event) => {
+    setInputWeight(event.target.value);
+  };
+
+  const handleSaveClick = async () => {
+    setDisplayedWeight(inputWeight);
+    setInputWeight('');
+
+    // updateStreak();
+
+    const savedWeight = await saveWeightToFirestore(inputWeight);
+    setWeights([...weights, savedWeight]);
+  };
+
+  const defaultWorkouts = async () => {
+    const workoutsCollectionRef = collection(db, 'workouts');
+    const workoutsSnapshot = await getDocs(workoutsCollectionRef);
+
+    workoutsSnapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data());
+    });
+  };
+
+  const saveWeightToFirestore = async (weight) => {
+    if (user) {
+      const weightsCollectionRef = collection(db, 'weights');
+      await addDoc(weightsCollectionRef, {
+        userId: user.uid,
+        weight: parseFloat(weight),
+        timestamp: new Date(),
+      });
+  
+      const storedWeights = JSON.parse(localStorage.getItem('weights')) || [];
+      storedWeights.push(parseFloat(weight));
+      localStorage.setItem('weights', JSON.stringify(storedWeights));
+    }
+  };
+  
+
+  const updateStreak = async () => {
+  if (user) {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const lastSignInDate = userDoc.data().lastSignInDate?.toDate();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let currentStreak = 1;
+
+      if (lastSignInDate) {
+        if (lastSignInDate.getTime() === today.getTime() - 24 * 60 * 60 * 1000) {
+          currentStreak = userDoc.data().currentStreak + 1;
+        }
+      }
+
+      await updateDoc(userDocRef, { currentStreak, lastSignInDate: today });
+
+      setStreak(currentStreak);
+
+      const currentHighScore = userDoc.data().highScore || 0;
+      if (currentStreak > currentHighScore) {
+        await updateDoc(userDocRef, { highScore: currentStreak });
+        setHighscore(currentStreak); 
+      } else {
+        setHighscore(currentHighScore); 
+      }
+    }
+  }
+};
+
+
+  const fetchWeights = async () => {
+    if (user) {
+      const weightsQuery = query(collection(db, 'weights'), where('userId', '==', user.uid));
+      const weightsSnapshot = await getDocs(weightsQuery);
+      const userWeights = [];
+      weightsSnapshot.forEach((doc) => {
+        userWeights.push(doc.data().weight);
+      });
+  
+      setWeights(userWeights);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (user) {
+    updateStreak();
+    fetchWeights(); 
+    }
+  }, [user]);
+
   return (
     <div className='page'>
       <div className='profile-card'>
         <div className='user-info'>
           <div className='username'>
-            <p>420Gamer</p>
+            <p>{user ? user.displayName : '420Gamer'}</p>
           </div>
           <p className='tier-subheading'>
-            <span className='tier'>gigachad</span> <span className='tier'>tier</span>
+            <span className='tier-subheading'>gigachad</span>{' '}
+            <span className='tier'>tier</span>
           </p>
         </div>
         <div className='score-info'>
           <div className='score-column'>
             <p>Current Score</p>
-            <p className='score'>17</p>
+            <p className='score'>{streak}</p>
           </div>
           <div className='score-column'>
             <p>High Score</p>
-            <p className='score'>995</p>
+            <p className='score'>{highscore}</p>
           </div>
         </div>
         <div className='horizontal-line'></div>
+        {/* Displayed Weight Section */}
         <div className='custom-text'>
           <p className='left-align'>Track Weight Here</p>
-          <p className='right-align'>150</p>
+          <p className='right-align'>{displayedWeight}</p>
         </div>
         <div className='weightgraph-card'>
           <p>Weight Graph</p>
+          <WeightGraph weights={weights} />
         </div>
+
+        {/* Input and Save Section */}
         <div className='input-save-container'>
           <div className='input-box'>
-            <input type='text' placeholder='Input your weight' />
+            <input
+              type='text'
+              placeholder='Input your weight'
+              value={inputWeight}
+              onChange={handleInputChange}
+            />
           </div>
-          <div className='save-button'>
+          <div className='save-button' onClick={handleSaveClick}>
             <p>Save</p>
           </div>
         </div>
@@ -46,3 +167,4 @@ export default function Profile() {
     </div>
   );
 }
+
