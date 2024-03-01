@@ -17,11 +17,14 @@ import WeightGraph from './WeightGraph.js';
 export default function Profile() {
   const [user] = useAuthState(auth);
   const [inputWeight, setInputWeight] = useState('');
-  const [displayedWeight, setDisplayedWeight] = useState('150');
+  const [displayedWeight, setDisplayedWeight] = useState(() => {
+    const storedWeight = localStorage.getItem('displayedWeight');
+    return storedWeight ? storedWeight : '150';
+  });
   const [streak, setStreak] = useState(0);
   const [highscore, setHighscore] = useState(0);
   const [weights, setWeights] = useState([]);
-  
+
   const handleInputChange = (event) => {
     setInputWeight(event.target.value);
   };
@@ -30,20 +33,21 @@ export default function Profile() {
     setDisplayedWeight(inputWeight);
     setInputWeight('');
 
-    // updateStreak();
+    // Save to local storage
+    localStorage.setItem('displayedWeight', inputWeight);
 
     const savedWeight = await saveWeightToFirestore(inputWeight);
     setWeights([...weights, savedWeight]);
   };
 
-  const defaultWorkouts = async () => {
-    const workoutsCollectionRef = collection(db, 'workouts');
-    const workoutsSnapshot = await getDocs(workoutsCollectionRef);
+  // const defaultWorkouts = async () => {
+  //   const workoutsCollectionRef = collection(db, 'workouts');
+  //   const workoutsSnapshot = await getDocs(workoutsCollectionRef);
 
-    workoutsSnapshot.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
-    });
-  };
+  //   workoutsSnapshot.forEach((doc) => {
+  //     console.log(doc.id, '=>', doc.data());
+  //   });
+  // };
 
   const saveWeightToFirestore = async (weight) => {
     if (user) {
@@ -61,60 +65,62 @@ export default function Profile() {
   };
   
 
-  const updateStreak = async () => {
-  if (user) {
-    const userDocRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const lastSignInDate = userDoc.data().lastSignInDate?.toDate();
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let currentStreak = 1;
-
-      if (lastSignInDate) {
-        if (lastSignInDate.getTime() === today.getTime() - 24 * 60 * 60 * 1000) {
-          currentStreak = userDoc.data().currentStreak + 1;
+  useEffect(() => {
+    const updateStreak = async () => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+    
+        if (userDoc.exists()) {
+          const lastSignInDate = userDoc.data().lastSignInDate?.toDate();
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+    
+          let currentStreak = 1;
+    
+          if (lastSignInDate) {
+            if (lastSignInDate.getTime() === today.getTime() - 24 * 60 * 60 * 1000) {
+              currentStreak = userDoc.data().currentStreak + 1;
+            }
+          }
+    
+          await updateDoc(userDocRef, { currentStreak, lastSignInDate: today });
+    
+          setStreak(currentStreak);
+    
+          const currentHighScore = userDoc.data().highScore || 0;
+          if (currentStreak > currentHighScore) {
+            await updateDoc(userDocRef, { highScore: currentStreak });
+            setHighscore(currentStreak); 
+          } else {
+            setHighscore(currentHighScore); 
+          }
         }
       }
+    };
+    
+    const fetchWeights = async () => {
+      if (user) {
+        const weightsQuery = query(collection(db, 'weights'), where('userId', '==', user.uid));
+        const weightsSnapshot = await getDocs(weightsQuery);
+        const userWeights = [];
+        weightsSnapshot.forEach((doc) => {
+          userWeights.push(doc.data().weight);
+        });
+    
+        setWeights(userWeights);
+      }
+    };
 
-      await updateDoc(userDocRef, { currentStreak, lastSignInDate: today });
-
-      setStreak(currentStreak);
-
-      const currentHighScore = userDoc.data().highScore || 0;
-      if (currentStreak > currentHighScore) {
-        await updateDoc(userDocRef, { highScore: currentStreak });
-        setHighscore(currentStreak); 
-      } else {
-        setHighscore(currentHighScore); 
+    if (user) {
+      updateStreak();
+      fetchWeights();
+      const storedWeight = localStorage.getItem('displayedWeight');
+      if (storedWeight) {
+        setDisplayedWeight(storedWeight);
       }
     }
-  }
-};
-
-
-  const fetchWeights = async () => {
-    if (user) {
-      const weightsQuery = query(collection(db, 'weights'), where('userId', '==', user.uid));
-      const weightsSnapshot = await getDocs(weightsQuery);
-      const userWeights = [];
-      weightsSnapshot.forEach((doc) => {
-        userWeights.push(doc.data().weight);
-      });
-  
-      setWeights(userWeights);
-    }
-  };
-  
-
-  useEffect(() => {
-    if (user) {
-    updateStreak();
-    fetchWeights(); 
-    }
-  }, [user]);
+  }, [user]); 
 
   return (
     <div className='page'>
@@ -148,15 +154,18 @@ export default function Profile() {
           <p>Weight Graph</p>
           <WeightGraph weights={weights} />
         </div>
-
         {/* Input and Save Section */}
         <div className='input-save-container'>
           <div className='input-box'>
             <input
               type='text'
               placeholder='Input your weight'
-              value={inputWeight}
               onChange={handleInputChange}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleSaveClick();
+                }
+              }}
             />
           </div>
           <div className='save-button' onClick={handleSaveClick}>
