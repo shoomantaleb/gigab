@@ -73,6 +73,16 @@ export default function Workout() {
     fetchDocument();
   }, [])
 
+  const addExercise = () => {
+    const newExercise = {
+      name: 'New Exercise', // You can set a default name or leave it empty
+      reps: 8,
+      sets: 3,
+      weight: 15,
+    };
+    setExercises((prevExercises) => [...prevExercises, newExercise]);
+  }
+
   useEffect(() => {
     if (!user) {
       return;
@@ -110,9 +120,13 @@ export default function Workout() {
 
     // Update the corresponding document in the database 
   };
-  
-  
-  
+
+  const removeExercise = (index) => {
+    setExercises((prevExercises) =>
+      prevExercises.filter((exercise, i) => i !== index)
+    );
+  };
+
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
   return (
@@ -125,6 +139,7 @@ export default function Workout() {
             </button>{" "}
             {/* Toggle between Edit and Cancel */}
             <button onClick={() => setEditMode(false)}>Save</button>{" "}
+            <button onClick={() => addExercise()}>add</button>
             {/* Save button to exit edit mode */}
 
         <div className="container">
@@ -140,6 +155,7 @@ export default function Workout() {
                 reps={exercise.reps}
                 updateExercise={updateExercise} // Pass updateWeight function here
                 editMode={editMode} // Pass edit mode to control input fields visibility
+                onDelete={removeExercise}
               />
             ))}
             
@@ -159,6 +175,7 @@ const ExerciseBox = ({
   reps,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
+  onDelete
 }) => {
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
@@ -276,6 +293,7 @@ const ExerciseBox = ({
           </div>
         )}
         <div className="buttons">
+        <button onClick={() => onDelete(index)}>Delete</button>
           {checkedButtons.map((isChecked, index) => (
             <button
               key={index}
