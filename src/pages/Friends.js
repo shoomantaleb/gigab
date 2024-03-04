@@ -1,16 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import '../styles/profile.css';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig.js';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import '../styles/friends.css';
 
 export default function Friends() {
-    const example_friends = [
-        ["Zonk", 150, 20], 
-        ["Omer", 30, 45], 
-        ["Shown", 100, 15], 
-        ["Busted", 10, 50],
-        ["Sharl", 97, 60], 
-        ["Claleb", 1031, 3]];
+    const [user] = useAuthState(auth);
+    const [inputSearch, setInputSearch] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+    const [friendList, setFriendList] = useState([]);
     
-    const [friends, setFriends] = useState(example_friends);
+    // Populate friendList when page loads 
+    useEffect(() => {
+        searchUsername();
+        // Function to fetch friend list based on userID
+        const fetchFriendList = async () => {
+          try {
+            const userRef = db.collection("users").doc(user.uid);
+            const userDoc = await userRef.get();
+            // console.log(userDoc.data());
+
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              if (userData && userData.friends) {
+                setFriendList(userData.friends);
+              }
+
+            } else {
+              console.log("No such document!");
+            }
+          } catch (error) {
+            console.error("Error fetching friend list:", error);
+          }
+        };
+    
+        // Fetch friend list when component mounts
+        fetchFriendList();
+    
+        // Cleanup function if needed
+        return () => {
+          // Cleanup tasks if any
+        };
+    }, [friendList, user.uid]); // Re-run effect when userID changes
+
+    // Dynamically update the input search (fix the 1 step lag)
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            searchUsername(inputSearch);
+        }, 100); // Adjust the debounce delay as needed (e.g., 300 milliseconds)
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [inputSearch, friendList, user.uid]);
+    
+
+    // Handle change of search input
+    const handleInputChange = async (event) => {
+        setInputSearch(event.target.value);
+        searchUsername();
+        console.log("Input change");
+    };
+
+    const handleFollow = async (isFollowed, newID) => {
+        if (user){
+            // user collection, update "friends" field
+            const cityRef = db.collection("users").doc(user.uid);
+            const friendCopy = friendList;
+
+            if (isFollowed){
+                // Unfollow this bitch
+                console.log(friendCopy.indexOf(newID));
+                friendCopy.splice(friendCopy.indexOf(newID), 1)
+            } else {
+                //Add to followers list
+                friendCopy.push(newID);
+            }
+            console.log(friendCopy);
+            await cityRef.update({friends: friendCopy});
+            setFriendList(friendCopy);
+        }
+    }
+
+    const searchUsername = async () => {
+        // console.log(inputSearch)
+        try {
+            const snapshot = await db.collection("users").orderBy('displayName').startAt(inputSearch).endAt(inputSearch + '\uf8ff').get();
+            if (snapshot.empty) {
+                setSearchResults([]);
+                console.log("No documents found with substring:", inputSearch);
+            } else {
+                setSearchResults([]);
+                // Reset results array
+                let resultsArray = [];
+
+                //Go through each document in the user dataset that matches 
+                snapshot.forEach(doc => {
+                    // Find the info necessary to create a friend-box
+                    // {uid, username, photoURL, score, isFollowed}
+                    let uid = doc.id;
+                    let username = doc.data().displayName;
+                    let photoURL = doc.data().photoURL;
+                    let score = doc.data().highScore;
+                    // Find if already friends
+                    // console.log(friendList)
+                    let isFriend = friendList.includes(uid);
+                    
+                    resultsArray.push([uid,username,photoURL,score,isFriend]);
+                    // resultsArray.push([doc.id, doc.data()]);
+                });
+
+                setSearchResults(resultsArray);
+                // console.log(resultsArray);
+            }
+          } catch (error) {
+            console.error("Error searching for substring:", error);
+          }        
+    }
+
 
     return (
         <div className='page'>
@@ -18,45 +136,76 @@ export default function Friends() {
             <div className='container'>
                 
             <div className='box' id="friends-board">
-                    <div id="search-friends"></div>
+                    <div className='friend-option-buttons'>
+                        <div></div>
+                        <button id='search-friends'>Friends</button>
+                        <button id='search-users'>Users</button>
+                        <div></div>
+                    </div>
+
+
+                    <div id="search-friends">
+                        <div className='friend-input-box'>
+                            <input
+                            type='text'
+                            placeholder='Search for gym bros '
+                            onChange={handleInputChange}
+                            />
+                        </div>
+                    </div>
+
+
                     <div id="friend-list">
                         {/* DISPLAY USERS THAT MATCH THE SEARCH  */}
-                        {/* 1) Find subset of all users  */}
-                        {/* 2) Display that subset  */}
-                            {/* Default - show current friends */}
-
-                        
-                        {/* {user_subset.map((user_subset, index) => (
+                        {searchResults.map((user, index) => (
+                            // {uid, username, photoURL, score, isFollowed}
                             <UserBox
-                                key ={index}
-                                name ={user_subset[0]}
-                                curr_score ={user_subset[1]}
-                                high_score ={user_subset[2]}
-                                friended ={user_subset[3]} //whether the user has already friended this person
-                                // addFriend={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
+                                key={index}
+                                uid={user[0]}
+                                username={user[1]}
+                                photoURL={user[2]}
+                                score={user[3]}
+                                isFollowed={user[4]}
+                                handleFollow={(uid, isFollowed) => handleFollow(uid, isFollowed)} // Pass updateWeight function here
                             />
-                        ))} */}
+                        ))}
                     </div>
+
                 </div>
                 
                 <div className="box" id='leaderboard'>
                     <h2> Leaderboard </h2>
                     <div className='leaderboard-list'>
-                        {/* {friends.map((friends, index) => (
-                            <LeaderboardBox
-                                key ={index}
-                                name ={friends[0]}
-                                curr_score ={friends[1]}
-                                high_score ={friends[2]}
-                                // updateWeight={(newWeight) => updateWeight(index, newWeight)} // Pass updateWeight function here
-                            />
-                        ))} */}
                     </div>
                 </div>
                 
             </div>  
         </div>
     );
+}
+
+const UserBox = ({uid, username, photoURL, score, isFollowed, handleFollow}) => {
+
+    return (
+        <div className='friend-box'>
+            {/* <div className='friend-box-left-elements'> */}
+                {photoURL && (
+                    <img src={photoURL} id='friend-box-pfp' alt="Profile" style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
+                )}
+                <p id='friend-box-username'>{username}</p>
+                <p id='friend-box-score'>{score} 🔥</p>
+            {/* </div> */}
+
+
+            {/* <button id= {'add-friend-btn' + {isFollowed ? "Follow" : "Following"}}>{isFollowed ? "Follow" : "Following"}</button> */}
+            <button 
+                className="add-friend-btn" 
+                onClick={() => handleFollow(isFollowed, uid)}
+                id={isFollowed ? "following" : ""}>
+                    {isFollowed ? "Unfollow" : "Follow"}
+            </button>
+        </div>
+    )
 }
 
 
