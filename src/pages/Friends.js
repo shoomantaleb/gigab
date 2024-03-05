@@ -19,8 +19,11 @@ export default function Friends() {
     const [inputSearch, setInputSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
+    const [updateVar, setUpdateVar] = useState(0);
+
     const [friendList, setFriendList] = useState([]);
-    
+    const [leaderBoardList, setLeaderBoardList] = useState([]);
+
     // Populate friendList when page loads 
     useEffect(() => {
         searchUsername();
@@ -32,13 +35,19 @@ export default function Friends() {
             // console.log(userDoc.data());
 
             if (userDoc.exists) {
-              const userData = userDoc.data();
-              if (userData && userData.friends) {
-                setFriendList(userData.friends);
-              }
+                const userData = userDoc.data();
+                if (userData) {
+                    if (userData.friends){
+                        setFriendList(userData.friends);
+                    } else {
+                        //If friends field doesn't exist, create it
+                        // await db.collection("users").doc(user.uid).update({"friends": []});
+                    }
+                } 
 
             } else {
-              console.log("No such document!");
+                //If document doesn't exist, create it
+                console.log("No such document!");
             }
           } catch (error) {
             console.error("Error fetching friend list:", error);
@@ -52,9 +61,12 @@ export default function Friends() {
         return () => {
           // Cleanup tasks if any
         };
-    }, [friendList, user.uid]); // Re-run effect when userID changes
+    }, [updateVar, user.uid]); // Re-run effect when userID changes
 
-    // Dynamically update the input search (fix the 1 step lag)
+
+
+
+    // Dynamically update the leaderboard based on followers (fix the 1 step lag)
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             searchUsername(inputSearch);
@@ -66,7 +78,72 @@ export default function Friends() {
     }, [inputSearch, friendList, user.uid]);
     
 
-    // Handle change of search input
+    // Create leaderboard information based off of friendList ID's
+    useEffect(() => {
+        let unsortedFriends = [];
+
+        const populateFriendListData = async () => {
+            // console.log(inputSearch)
+            try {
+                const snapshot = await db.collection("users").get();
+                if (snapshot.empty) {
+                    console.log("No friends womp womp");
+                    return([]);
+                } else {
+                    // Reset sorted array
+                    unsortedFriends = [];
+    
+                    //Go through each document in the user dataset that matches 
+                    snapshot.forEach(doc => {
+                        // console.log(doc.id);
+                        if(friendList.includes(doc.id)){
+                            console.log(friendList)
+                            console.log(doc.id)
+                            console.log(doc.data().displayName)
+
+                            let username = doc.data().displayName;
+                            let photoURL = doc.data().photoURL;
+                            let score = doc.data().highScore;
+                            unsortedFriends.push([0, doc.id, username,photoURL,score]);
+                        }
+                    });
+
+                    setLeaderBoardList(sortFriends(unsortedFriends));
+
+                }
+            } catch (error) {
+                console.error("Error searching for friends", error);
+            }   
+        }
+        populateFriendListData();
+        // Sort the friends list data by score;
+
+    }, [friendList]);
+
+
+
+
+    const sortFriends = (friendsArray) => {
+        //score is unsortedFriendsArray[4]
+
+        friendsArray.sort(sortFunction);
+
+        // Rearrange them 
+        function sortFunction(a, b) {
+            if (a[4] === b[4]) {
+                return 0;
+            }
+            else {
+                return (a[4] < b[4]) ? -1 : 1;
+            }
+        } 
+
+        for (let i = 0; i < friendsArray.length; i++) {
+            friendsArray[i][0] = i + 1;
+        }
+        return friendsArray;
+    }
+
     const handleInputChange = async (event) => {
         setInputSearch(event.target.value);
         searchUsername();
@@ -90,9 +167,11 @@ export default function Friends() {
             console.log(friendCopy);
             await cityRef.update({friends: friendCopy});
             setFriendList(friendCopy);
+            setUpdateVar(updateVar + 1); //updates the friend list/follow without recursively editing friendlist
         }
     }
 
+    // Handle change of search input
     const searchUsername = async () => {
         // console.log(inputSearch)
         try {
@@ -176,6 +255,18 @@ export default function Friends() {
                 <div className="box" id='leaderboard'>
                     <h2> Leaderboard </h2>
                     <div className='leaderboard-list'>
+                        {
+                        leaderBoardList.map((user, index) => (
+                            // [pos, doc.id, username,photoURL,score]
+                            <LeaderBoardBox
+                                key={index}
+                                position={user[0]}
+                                uid={user[1]}
+                                username={user[2]}
+                                photoURL={user[3]}
+                                score={user[4]}
+                            />
+                        ))}
                     </div>
                 </div>
                 
@@ -209,66 +300,18 @@ const UserBox = ({uid, username, photoURL, score, isFollowed, handleFollow}) => 
 }
 
 
-// const ExerciseBox = ({ exercise, weight, sets, reps, updateWeight }) => {
-//     const [checkedButtons, setCheckedButtons] = useState(Array.from({ length: sets }, () => false));
-//     const [selectedWeight, setSelectedWeight] = useState(weight); // Use the weight from props
 
-//     const handleToggle = (index) => {
-//         setCheckedButtons(prevCheckedButtons => {
-//             const newCheckedButtons = [...prevCheckedButtons];
-//             newCheckedButtons[index] = !newCheckedButtons[index];
-//             return newCheckedButtons;
-//         });
-//     };
-
-//     const handleWeightChange = (event) => {
-//         const newWeight = event.target.value;
-//         setSelectedWeight(newWeight);
-//         updateWeight(newWeight); // Call the passed updateWeight function with the new weight
-        
-//         //also fix size of the input fields
-//         const SIZE_OF_LETTERS = 18;
-//         const textWidth = event.target.value.length * SIZE_OF_LETTERS; //
-
-//         // Set the input field width to match the width of the text
-//         event.target.style.width = `${textWidth}px`;
-   
-//     };
-
-//     return (
-//         <>
-//         <div className='exercise-title'><b>{exercise}</b></div>
-//         <div className="exercise-box">
-//             <div className="content">
-//                 <div className="exercise-weight">
-//                     {/* <select value={selectedWeight} onChange={handleWeightChange} className="weight-selector">
-//                         {Array.from({ length: (250 / 5) + 1 }, (_, i) => i * 5).map(weight => (
-//                             <option key={weight} value={weight}>{weight} lbs</option>
-//                             ))}
-//                     </select> */}
-//                     <input  value={selectedWeight} 
-//                             onChange={handleWeightChange} 
-//                             className="weight-selector"
-//                             maxlength="7"
-//                             minlength="1">
-//                     </input>
-//                 </div>
-//                 <div className="sets-reps">
-//                     <div>{sets} sets</div>
-//                     <div>{reps} reps</div>
-//                 </div>
-//             </div>
-
-//             <div className="buttons">
-//                 {checkedButtons.map((isChecked, index) => (
-//                     <button
-//                         key={index}
-//                         className={`circle-button ${isChecked ? 'checked' : ''}`}
-//                         onClick={() => handleToggle(index)}
-//                         ></button>
-//                         ))}
-//             </div>
-//         </div>
-//         </>
-//         );
-// }
+const LeaderBoardBox = ({position, uid, username, photoURL, score}) => {
+    return (
+        <div className='friend-box leaderboard-box' style={{backgroundColor: `rgba(255, 85, 0, ${1/(Math.exp(.3*position))})`    }}>
+            {/* <div className='friend-box-left-elements'> */}
+                <p id = "leaderboard-box-pos">{position}</p>
+                {photoURL && (
+                    <img src={photoURL} id='friend-box-pfp' alt="Profile" style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
+                )}
+                <p id='leaderboard-box-username'>{username}</p>
+                <p id='leaderboard-box-score'>{score} 🔥</p>
+            {/* </div> */}
+        </div>
+    )
+}
