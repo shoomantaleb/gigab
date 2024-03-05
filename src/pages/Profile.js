@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import WeightGraph from './WeightGraph.js';
+import WeightGraph from '../components/WeightGraph.js';
 
 export default function Profile() {
   const [user] = useAuthState(auth);
@@ -125,10 +125,9 @@ export default function Profile() {
   return (
     <div className='page'>
       <div className='profile-card'>
+        
         <div className='user-info'>
-          <div className='username'>
-            <p>{user ? user.displayName : '420Gamer'}</p>
-          </div>
+            <p className='username' >{user ? user.displayName : 'User'}</p>
           <p className='tier-subheading'>
             <span className='tier-subheading'>gigachad</span>{' '}
             <span className='tier'>tier</span>
@@ -172,6 +171,7 @@ export default function Profile() {
             <p>Save</p>
           </div>
         </div>
+      {/* </div> */}
       </div>
     </div>
   );

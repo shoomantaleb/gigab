@@ -42,7 +42,7 @@ function CustomLink({ to, children, displayName, photoURL, ...props }) {
         <li className={isActive ? "active" : ""}>
             <Link to={to} {...props}>
                 {displayName && (
-                    <span style={{ marginRight: '15px' }}>
+                    <span className="profile-name" style={{ marginRight: '15px' }}>
                         {displayName}
                     </span>
                 )}
