@@ -24,7 +24,7 @@ export default function Friends() {
     const [friendList, setFriendList] = useState([]);
     const [leaderBoardList, setLeaderBoardList] = useState([]);
 
-    // Populate friendList when page loads 
+    // Populate friendList when page loads - save from database
     useEffect(() => {
         searchUsername();
         // Function to fetch friend list based on userID
@@ -78,9 +78,14 @@ export default function Friends() {
     }, [inputSearch, friendList, user.uid]);
     
 
+
     // Create leaderboard information based off of friendList ID's
     useEffect(() => {
         let unsortedFriends = [];
+
+        const addCurrentStreakField = async (doc) => {
+            await doc.update({currentStreak: 0});;
+        }    
 
         const populateFriendListData = async () => {
             // console.log(inputSearch)
@@ -94,8 +99,13 @@ export default function Friends() {
                     unsortedFriends = [];
     
                     //Go through each document in the user dataset that matches 
-                    snapshot.forEach(doc => {
+                    snapshot.forEach(async (doc) => {
                         // console.log(doc.id);
+                        if(doc.data().currentStreak == undefined){
+                            await doc.ref.set({ currentStreak: 0 }, { merge: true });
+                            console.log(`Updated user ${doc.id}: added currentStreak field with value 0`);
+                        }
+                        
                         if(friendList.includes(doc.id)){
                             console.log(friendList)
                             console.log(doc.id)
@@ -103,7 +113,15 @@ export default function Friends() {
 
                             let username = doc.data().displayName;
                             let photoURL = doc.data().photoURL;
-                            let score = doc.data().highScore;
+                            let score;
+
+                            if(doc.data().currentStreak){
+                                score = doc.data().currentStreak;
+                                console.log("currentStreak exists for: ", doc.data().displayName);
+                            } else {
+                                score = 0;
+                                console.log("currentStreak doesn't exist for: ", doc.data().displayName);
+                            }
                             unsortedFriends.push([0, doc.id, username,photoURL,score]);
                         }
                     });
@@ -125,16 +143,17 @@ export default function Friends() {
 
     const sortFriends = (friendsArray) => {
         //score is unsortedFriendsArray[4]
-
+        //[0, doc.id, username,photoURL,score]
         friendsArray.sort(sortFunction);
 
         // Rearrange them 
         function sortFunction(a, b) {
+            console.log(a[4])
             if (a[4] === b[4]) {
                 return 0;
             }
             else {
-                return (a[4] < b[4]) ? -1 : 1;
+                return (a[4] > b[4]) ? -1 : 1;
             }
         } 
 
@@ -191,7 +210,10 @@ export default function Friends() {
                     let uid = doc.id;
                     let username = doc.data().displayName;
                     let photoURL = doc.data().photoURL;
-                    let score = doc.data().highScore;
+
+                    let score = doc.data().currentStreak;
+                
+
                     // Find if already friends
                     // console.log(friendList)
                     let isFriend = friendList.includes(uid);
@@ -205,7 +227,8 @@ export default function Friends() {
             }
           } catch (error) {
             console.error("Error searching for substring:", error);
-          }        
+          }  
+        
     }
 
 

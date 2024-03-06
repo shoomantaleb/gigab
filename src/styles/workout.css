@@ -1,8 +1,3 @@
-/* Base Styles for Text and Fonts */
-* {
-font-family: Inter, serif;
-color: #525252; /* Default text color */
-}
 
 
 
@@ -13,7 +8,7 @@ select {
   color: #525252; /* Sets the text color to match other inputs */
   padding: 5px; /* Adds some padding inside the dropdown for better text visibility */
   border-radius: 5px; /* Optional: rounds the corners of the dropdown */
-  font-family: Inter, serif; /* Ensures font consistency */
+  font-family: Inter, Tahoma, sans-serif; /* Ensures font consistency */
   font-size: 16px; /* Adjusts the font size for better readability */
 }
 
@@ -135,7 +130,7 @@ flex-direction: row;
 background-color: white;
 border-radius: 15px;
 width: 70%;
-font-family: Inter, serif;
+font-family: Inter, Tahoma, serif;
 font-size: 40px;
 text-align: center;
 color: #525252;
@@ -147,7 +142,7 @@ grid-template-columns: repeat(2, 1fr); /* Two columns */
 grid-gap: 10%; /* Adjust the gap between buttons */
 width: 25%;
 
-font-family: Inter, serif;
+font-family: Inter, Tahoma, serif;
 color: #525252;
 }
 .btn {

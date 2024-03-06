@@ -2,11 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base Styles for Text and Fonts */
+* {
+  font-family: Tahoma, sans-serif;
+  color: #525252; /* Default text color */
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Inter',
     sans-serif;
+
+  
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

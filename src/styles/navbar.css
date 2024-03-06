@@ -32,7 +32,7 @@ body{
 
 .site-title {
     position: relative;
-    font-family: Inter;
+    font-family: Tahoma, sans-serif;
     font-size: 40px;
     font-style: italic;
     font-weight: 700;
@@ -56,7 +56,7 @@ body{
 h1 {
     /* font-weight: 900; */
     font-size: 2rem;
-    font-family: Inter;
+    font-family: Inter, Tahoma, sans-serif;
     color: #535353;
 }
 
@@ -80,7 +80,7 @@ h1 {
 
 .nav a[href="/Friends"], .nav a[href="/Workout"], .nav a[href="/Profile"]{
     font-size: 1.5rem;
-    font-family: Inter;
+    font-family: Inter, Tahoma, sans-serif;
     /* font-style: italic; */
     /* font-weight: 400; */
     line-height: normal;
