@@ -1,0 +1,74 @@
+.exercises-box {
+    flex-direction: column;
+    background-color: #F0F0F0;
+    border-radius: 30px;
+    
+    width: 100%;
+    max-width: 600px; /* Set a maximum width */
+    height: calc(100vh - var(--nav-height) - 200px);
+  
+    padding: 20px;
+  
+    box-sizing: border-box;
+    margin: 0 auto; /*Center horizontally*/
+    overflow: scroll;
+    margin-top: -10px;
+}
+.exercises-box::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+  }
+
+.search-bar-container {
+    position: relative;
+    padding: 10px; /* Padding around the input field */
+    border: 2px solid #ccc; /* Border around the container */
+    border-radius: 20px; /* Rounded corners for the container */
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 30px;
+}
+
+/* Ensures the search bar and list are centered and not too wide */
+.search-input {
+    margin: 20px auto;
+    padding: 10px;
+    width: 100%; /* Adjust width as needed */
+    height: 10px;
+    border: none;
+    background-color: #F0F0F0;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.workouts-columns {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.workout-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+  
+.workout-item {
+    display: flex;
+    justify-content: space-between; /* Aligns name and category on opposite ends */
+    padding: 5px 0; /* Gives a bit of vertical space between items */
+    border-bottom: 1px solid #ccc;
+}
+
+.workout-name {
+    text-align: left;
+}
+
+.workout-category {
+    text-align: right;
+    margin-left: auto;
+    font-weight: bold;
+}
+  

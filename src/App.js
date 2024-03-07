@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar"
 import './styles/App.css';
 import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
+import Exercises from "./pages/Exercises"
 import Profile from "./pages/Profile"
 import {Route, Routes} from "react-router-dom"
 import { auth } from './firebaseConfig';
@@ -115,6 +116,7 @@ function HomePage() {
           <Route path ="/" element ={<Workout />} />
           <Route path ="/Friends" element ={<Friends />} />
           <Route path ="/Workout" element ={<Workout />} />
+          <Route path ="/exercises" element ={<Exercises />} />
           <Route path ="/Profile" element ={<Profile />} />
         </Routes>
         </div>
