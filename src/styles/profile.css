@@ -9,12 +9,13 @@ body {
   max-width: 600px;
   box-sizing: border-box;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 100px;
   overflow: hidden;
+  position: relative;
 }
 
 .user-info {
-  background: #186C8F;
+  background: #032550;
   border-radius: 39px 39px 0px 0px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   padding: 20px;
@@ -22,29 +23,31 @@ body {
   text-align: center;
   width: 100%;
   margin: 0;
+  position: relative;
 }
 
 .username {
   color: #FFFFFF;
   font-size: 50px;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 700;
   line-height: normal;
 }
 
 .tier {
-  color: #f0f0f0; /* Set text color to white */
-  font-style: italic; /* Italicize the text */
+  color: #F0F0F0;
+  font-style: italic; 
   padding: 0;
   font-size: 23px;
-  font-weight: 400;
+  font-weight: 200;
+  margin-left: 2%;
 }
 
 .tier-subheading {
   font-style: italic;
   color: #f0f0f0;
   font-size: 23px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .profile-card::-webkit-scrollbar { 
@@ -64,11 +67,6 @@ body {
 
 .user-info h2 {
   margin-bottom: 5px;
-}
-
-.tier {
-  font-style: italic;
-  color: #888;
 }
 
 .score-info {
@@ -119,11 +117,12 @@ body {
   padding-left: 40px;
   padding-right: 40px;
   text-align: right;
+  display: flex;
 }
 
 .left-align {
   text-align: left;
-}
+  }
 
 .weightgraph-card {
   background-color: white;
@@ -165,4 +164,23 @@ body {
   margin-right: 40px;
 }
 
+.user-photo {
+  position: absolute;
+  width: 150px;
+  flex-shrink: 0;
+  border: 3px solid #E6E6E6;
+  object-fit: cover;
+  border-radius: 50%;
+  top: 120px;
+  transform: translateX(-150%);
+  margin-left: 730px;
+  z-index: 10;
+}
 
+.align {
+  margin-left: 28.5%;
+}
+
+.emoji {
+  font-size: 45px;
+}

@@ -124,11 +124,11 @@ export default function Profile() {
 
   return (
     <div className='page'>
+      <img src={user.photoURL} alt="User" className="user-photo" />
       <div className='profile-card'>
-        
         <div className='user-info'>
-            <p className='username' >{user ? user.displayName : 'User'}</p>
-          <p className='tier-subheading'>
+            <p className='username left-align align' >{user ? user.displayName : 'User'}</p>
+          <p className='tier-subheading left-align align'>
             <span className='tier-subheading'>gigachad</span>{' '}
             <span className='tier'>tier</span>
           </p>
@@ -136,11 +136,11 @@ export default function Profile() {
         <div className='score-info'>
           <div className='score-column'>
             <p>Current Score</p>
-            <p className='score'>{streak}</p>
+            <p className='score'>{streak}<span className='emoji'>🔥</span></p>
           </div>
           <div className='score-column'>
             <p>High Score</p>
-            <p className='score'>{highscore}</p>
+            <p className='score'>{highscore}<span className='emoji'>⭐️</span></p>
           </div>
         </div>
         <div className='horizontal-line'></div>
