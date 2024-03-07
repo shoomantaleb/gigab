@@ -18,6 +18,7 @@ export default function Navbar() {
             <ul>
                 <CustomLink to="/Friends" className="normal"> Friends </CustomLink>
                 <CustomLink to="/Workout" className="normal"> Workout </CustomLink>
+                <CustomLink to="/Exercises" className="normal"> Exercises</CustomLink>
                 {user && (
                     <li>
                         <button onClick={signOutUser} style={{ padding: '8px', background: 'none', border: 'none', color: 'white', font: 'inherit', cursor: 'pointer', }}>Sign Out</button>
