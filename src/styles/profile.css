@@ -15,6 +15,8 @@ body {
 }
 
 .user-info {
+  display: flex;
+  align-items: center;
   background: #032550;
   border-radius: 39px 39px 0px 0px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -24,6 +26,14 @@ body {
   width: 100%;
   margin: 0;
   position: relative;
+}
+
+.user-photo {
+  width: 150px;
+  flex-shrink: 0;
+  border: 3px solid #E6E6E6;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .username {
@@ -40,7 +50,7 @@ body {
   padding: 0;
   font-size: 23px;
   font-weight: 200;
-  margin-left: 2%;
+
 }
 
 .tier-subheading {
@@ -164,18 +174,22 @@ body {
   margin-right: 40px;
 }
 
-.user-photo {
-  position: absolute;
-  width: 150px;
-  flex-shrink: 0;
-  border: 3px solid #E6E6E6;
-  object-fit: cover;
-  border-radius: 50%;
-  top: 120px;
-  transform: translateX(-150%);
-  margin-left: 730px;
-  z-index: 10;
+.signOut-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #dc3545; /* Choose your desired background color */
+  color: #fff; /* Choose your desired text color */
+  border: 1px solid #dc3545; /* Use the same color as background or a contrasting color for the border */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+
+
 
 .align {
   margin-left: 28.5%;
@@ -183,4 +197,12 @@ body {
 
 .emoji {
   font-size: 45px;
+}
+
+body.scrollable-page {
+  overflow-y: auto;
+}
+.scrollable-page {
+  max-height: 100vh; /* Set the maximum height of the page */
+  overflow-y: auto; /* Enable vertical scrolling */
 }

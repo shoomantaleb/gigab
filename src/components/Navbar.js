@@ -8,9 +8,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function Navbar() {
     const [user] = useAuthState(auth);
-    const signOutUser = () => {
-        auth.signOut();
-    };
+    
 
     return (
         <nav className="nav">
@@ -19,11 +17,7 @@ export default function Navbar() {
                 <CustomLink to="/Friends" className="normal"> Friends </CustomLink>
                 <CustomLink to="/Workout" className="normal"> Workout </CustomLink>
                 <CustomLink to="/Exercises" className="normal"> Exercises</CustomLink>
-                {user && (
-                    <li>
-                        <button onClick={signOutUser} style={{ padding: '8px', background: 'none', border: 'none', color: 'white', font: 'inherit', cursor: 'pointer', }}>Sign Out</button>
-                    </li>
-                )}
+                
 
                 {user ? (
                     <CustomLink to="/Profile" className="profile-link" displayName={user.displayName} photoURL={user.photoURL} />

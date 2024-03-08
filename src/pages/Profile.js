@@ -25,6 +25,10 @@ export default function Profile() {
   const [highscore, setHighscore] = useState(0);
   const [weights, setWeights] = useState([]);
 
+  
+  const signOutUser = () => {
+    auth.signOut();
+  }
   const handleInputChange = (event) => {
     setInputWeight(event.target.value);
   };
@@ -32,6 +36,7 @@ export default function Profile() {
   const handleSaveClick = async () => {
     setDisplayedWeight(inputWeight);
     setInputWeight('');
+  
 
     // Save to local storage
     localStorage.setItem('displayedWeight', inputWeight);
@@ -66,6 +71,10 @@ export default function Profile() {
   
 
   useEffect(() => {
+    document.body.classList.add('scrollable-page');
+
+    // Cleanup function to remove the class when the component unmounts
+
     const updateStreak = async () => {
       if (user) {
         const userDocRef = doc(db, 'users', user.uid);
@@ -124,14 +133,16 @@ export default function Profile() {
 
   return (
     <div className='page'>
-      <img src={user.photoURL} alt="User" className="user-photo" />
       <div className='profile-card'>
         <div className='user-info'>
-            <p className='username left-align align' >{user ? user.displayName : 'User'}</p>
-          <p className='tier-subheading left-align align'>
+        <img src={user.photoURL} alt="User" className="user-photo" />
+        <div className='columnOrganizer'>
+            <p className='username' >{user ? user.displayName : 'User'}</p>
+          <p className='tier-subheading'>
             <span className='tier-subheading'>gigachad</span>{' '}
             <span className='tier'>tier</span>
           </p>
+          </div>
         </div>
         <div className='score-info'>
           <div className='score-column'>
@@ -171,9 +182,13 @@ export default function Profile() {
             <p>Save</p>
           </div>
         </div>
+          <div className='signOut-button' onClick={signOutUser}>
+              <p> Sign Out</p>
+           </div>
       {/* </div> */}
       </div>
     </div>
+    
   );
 }
 
