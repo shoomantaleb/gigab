@@ -81,22 +81,21 @@ export default function Friends() {
 
     // Create leaderboard information based off of friendList ID's
     useEffect(() => {
-        let unsortedFriends = [];
-
-        const addCurrentStreakField = async (doc) => {
-            await doc.update({currentStreak: 0});;
-        }    
+        let unsortedFriends = [[0, user.uid, user.displayName, 4]];
 
         const populateFriendListData = async () => {
             // console.log(inputSearch)
             try {
                 const snapshot = await db.collection("users").get();
+
                 if (snapshot.empty) {
                     console.log("No friends womp womp");
                     return([]);
                 } else {
+                    
                     // Reset sorted array
                     unsortedFriends = [];
+                    console.log(unsortedFriends)
     
                     //Go through each document in the user dataset that matches 
                     snapshot.forEach(async (doc) => {
@@ -106,7 +105,7 @@ export default function Friends() {
                             console.log(`Updated user ${doc.id}: added currentStreak field with value 0`);
                         }
                         
-                        if(friendList.includes(doc.id)){
+                        if(friendList.includes(doc.id) || doc.id == user.uid){
                             console.log(friendList)
                             console.log(doc.id)
                             console.log(doc.data().displayName)
@@ -139,11 +138,12 @@ export default function Friends() {
     }, [friendList]);
 
 
-
-
+    // Sort friends for leaderboard 
     const sortFriends = (friendsArray) => {
-        //score is unsortedFriendsArray[4]
-        //[0, doc.id, username,photoURL,score]
+        // score is unsortedFriendsArray[4]
+        // [0, doc.id, username,photoURL,score]
+        // And yes there is a way to sort the users by streak before this 
+            // .collection("users").orderBy("currentStreak", "asc")
         friendsArray.sort(sortFunction);
 
         // Rearrange them 
@@ -163,12 +163,58 @@ export default function Friends() {
         return friendsArray;
     }
 
+    // Handle change in search bar 
     const handleInputChange = async (event) => {
         setInputSearch(event.target.value);
         searchUsername();
         console.log("Input change");
     };
 
+
+    // Handle change of search input
+    const searchUsername = async () => {
+        // console.log(inputSearch)
+        try {
+            const snapshot = await db.collection("users").orderBy('displayName').startAt(inputSearch).endAt(inputSearch + '\uf8ff').get();
+            if (snapshot.empty) {
+                setSearchResults([]);
+                console.log("No documents found with substring:", inputSearch);
+            } else {
+                setSearchResults([]);
+                // Reset results array
+                let resultsArray = [];
+
+                //Go through each document in the user dataset that matches 
+                snapshot.forEach(doc => {
+                    if(doc.id != user.uid){ //Don't display the current user
+                        // Find the info necessary to create a friend-box
+                        // {uid, username, photoURL, score, isFollowed}
+                        let userId = doc.id;
+                        let username = doc.data().displayName;
+                        let photoURL = doc.data().photoURL;
+
+                        let score = doc.data().currentStreak;
+                    
+
+                        // Find if already friends
+                        // console.log(friendList)
+                        let isFriend = friendList.includes(userId);
+                        
+                        resultsArray.push([userId,username,photoURL,score,isFriend]);
+                        // resultsArray.push([doc.id, doc.data()]);
+                    }
+                });
+
+                setSearchResults(resultsArray);
+                // console.log(resultsArray);
+            }
+          } catch (error) {
+            console.error("Error searching for substring:", error);
+          }  
+        
+    }
+
+    // Follow button pressed
     const handleFollow = async (isFollowed, newID) => {
         if (user){
             // user collection, update "friends" field
@@ -189,48 +235,7 @@ export default function Friends() {
             setUpdateVar(updateVar + 1); //updates the friend list/follow without recursively editing friendlist
         }
     }
-
-    // Handle change of search input
-    const searchUsername = async () => {
-        // console.log(inputSearch)
-        try {
-            const snapshot = await db.collection("users").orderBy('displayName').startAt(inputSearch).endAt(inputSearch + '\uf8ff').get();
-            if (snapshot.empty) {
-                setSearchResults([]);
-                console.log("No documents found with substring:", inputSearch);
-            } else {
-                setSearchResults([]);
-                // Reset results array
-                let resultsArray = [];
-
-                //Go through each document in the user dataset that matches 
-                snapshot.forEach(doc => {
-                    // Find the info necessary to create a friend-box
-                    // {uid, username, photoURL, score, isFollowed}
-                    let uid = doc.id;
-                    let username = doc.data().displayName;
-                    let photoURL = doc.data().photoURL;
-
-                    let score = doc.data().currentStreak;
-                
-
-                    // Find if already friends
-                    // console.log(friendList)
-                    let isFriend = friendList.includes(uid);
-                    
-                    resultsArray.push([uid,username,photoURL,score,isFriend]);
-                    // resultsArray.push([doc.id, doc.data()]);
-                });
-
-                setSearchResults(resultsArray);
-                // console.log(resultsArray);
-            }
-          } catch (error) {
-            console.error("Error searching for substring:", error);
-          }  
-        
-    }
-
+    
 
     return (
         <div className='page'>
