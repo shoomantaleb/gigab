@@ -2,23 +2,26 @@
 /***** FRIENDS ***************/
 
 
-
 #leaderboard {
-    
+    /* width: 100%; */
 }
-
 #friends-board{
     overflow-y: hidden;
+    background-color: #bbbbbb;
 }
 
+
+.friend-title {
+    font-size: 15pt;
+    font-weight: 500;
+}
+
+
+/* SEARCH USERS */
 .friend-option-buttons {
     display: flex;
     justify-content: space-around;
 }
-/* .search-friends { margin-right: 30px; }
-.search-users { margin-left: 20px; } */
-
-  
 .friend-input-box input {
     width: 95%;
     padding: 10px;
@@ -30,11 +33,14 @@
 
     margin-top: 10px;
     /* margin-bottom: 10px; */
-
-    box-shadow: 0 2px 3px rgba(123, 123, 123, 0.386);
+    box-shadow: 0 2px 3px rgba(23, 23, 23, 0.386);
+}
+#search-friends{
+    height: 60px;
+    /* box-shadow: 0 4px 4px #f0f0f0; */
 }
 
-/*              */
+
 /* FRIEND LIST  */
 #friend-list {
     height: 90%;
@@ -59,6 +65,8 @@
     align-items: center;
     /* justify-content: flex-start; */
     /* flex-wrap: nowrap; */
+
+    box-shadow: 0px 1px 3px rgba(59, 59, 59, 0.648);
 }
 #friend-box-username {
     margin-left: 15px;

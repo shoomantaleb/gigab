@@ -243,12 +243,13 @@ export default function Friends() {
             <div className='container'>
                 
             <div className='box' id="friends-board">
-                    <div className='friend-option-buttons'>
+                    <h2 className="friend-title"> Add Friends </h2>
+                    {/* <div className='friend-option-buttons'>
                         <div></div>
                         <button id='search-friends'>Friends</button>
                         <button id='search-users'>Users</button>
                         <div></div>
-                    </div>
+                    </div> */}
 
 
                     <div id="search-friends">
@@ -281,7 +282,7 @@ export default function Friends() {
                 </div>
                 
                 <div className="box" id='leaderboard'>
-                    <h2> Leaderboard </h2>
+                    <h2 className="friend-title"> Leaderboard <i style={{fontSize:"12pt"}}>(Current Streak)</i></h2>
                     <div className='leaderboard-list'>
                         {
                         leaderBoardList.map((user, index) => (
