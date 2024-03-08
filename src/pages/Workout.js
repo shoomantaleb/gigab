@@ -82,7 +82,12 @@ export default function Workout() {
     };
     setExercises((prevExercises) => [...prevExercises, newExercise]);
   }
-
+  const removeExercise = (index) => {
+    const newExercises = exercises.filter((exercise, i) => i !== index);
+    setExercises(newExercises);
+  };
+  
+  
   useEffect(() => {
     if (!user) {
       return;
@@ -106,6 +111,7 @@ export default function Workout() {
       if (i === index) {
         return {
           ...exercise,
+          name: details.name != null ? details.name : exercise.name,
           weight: details.weight != null ? Number(details.weight) : exercise.weight,
           sets: details.sets != null ? Number(details.sets) : exercise.sets,
           reps: details.reps != null ? Number(details.reps) : exercise.reps,
@@ -121,11 +127,7 @@ export default function Workout() {
     // Update the corresponding document in the database 
   };
 
-  const removeExercise = (index) => {
-    setExercises((prevExercises) =>
-      prevExercises.filter((exercise, i) => i !== index)
-    );
-  };
+  
 
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
@@ -144,8 +146,7 @@ export default function Workout() {
 
         <div className="container">
           <div className="box">
-            {exercises.map((exercise, index) => 
-              (
+            {exercises.map((exercise, index) =>  (
               <ExerciseBox
                 key={index}
                 index={index}
@@ -155,9 +156,10 @@ export default function Workout() {
                 reps={exercise.reps}
                 updateExercise={updateExercise} // Pass updateWeight function here
                 editMode={editMode} // Pass edit mode to control input fields visibility
-                onDelete={removeExercise}
+                onDelete={() => removeExercise(index)}
               />
             ))}
+            
             
           </div>
         </div>
@@ -180,6 +182,7 @@ const ExerciseBox = ({
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
   );
+  const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
@@ -204,6 +207,12 @@ const ExerciseBox = ({
         event.target.style.width = `${textWidth}px`;
 
     };*/
+    const handleNameChange = (event) => {
+      //Name event
+      const newName = event.target.value;
+      setEditedExerciseName(newName); //Update Weight State
+      updateExercise(index, { name: newName }); //Update index@ Exercise.Name to newName
+    };
 
   const handleWeightChange = async (event) => {
     //Weight event
@@ -232,8 +241,18 @@ const ExerciseBox = ({
   return (
     <>
       <div className="exercise-title">
-        <b>{exercise}</b>
-      </div>
+  {editMode ? (
+    <input
+      type="text"
+      value={editedExerciseName}
+      onChange={handleNameChange}
+      className="name-input"
+    />
+  ) : (
+    <b>{exercise}</b>
+  )}
+</div>
+
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
@@ -277,7 +296,7 @@ const ExerciseBox = ({
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
-                // Add more options as needed
+                //Add more options as needed
               </select>
               <div class="input-label-reps">Reps</div>
             </div>
@@ -293,7 +312,7 @@ const ExerciseBox = ({
           </div>
         )}
         <div className="buttons">
-        <button onClick={() => onDelete(index)}>Delete</button>
+        <button onClick={onDelete}>Delete</button>
           {checkedButtons.map((isChecked, index) => (
             <button
               key={index}
