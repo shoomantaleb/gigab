@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import '../styles/exercises.css';
+import Sidebar from '../components/Sidebar';
 
-const Exercises = () => {
+const Exercises = ({sidebarWidth, style}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
+
+  const customStyle = {
+    maxWidth: sidebarWidth, // Ensure the component doesn't overflow the sidebar
+    // Additional responsive styling can go here
+  };
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
@@ -19,7 +25,7 @@ const Exercises = () => {
   const rightColumnWorkouts = filteredWorkouts.slice(midIndex);
 
   return (
-    <div className='page'>
+    <div style={{ ...style, width: `${sidebarWidth}px` }}>    <div className='page'>
       <h1> Exercises </h1>
       <div className="container">
         <div className="exercises-box">
@@ -53,10 +59,11 @@ const Exercises = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
-const workouts = [
+export const workouts = [
   { id: 1, name: "Push-ups", category: "Chest" },
   { id: 2, name: "Dips", category: "Chest" },
   { id: 3, name: "Bench Press", category: "Chest" },

@@ -113,6 +113,11 @@ background-color: white;
 background-color: #2f2f2f;
 }
 
+.-toggle{
+  z-index: 999;
+
+}
+
 .timer {
 background-color: #042550;
 position: absolute;
@@ -155,3 +160,10 @@ font-weight: bold;
 grid-column-end: span 2; 
 }
 
+
+.workout-form {
+  display: flex;
+  flex-direction: column; /* Stack dropdowns vertically */
+  justify-content: flex-start;
+  align-items: flex-end; /* Align dropdowns to the right */ 
+}

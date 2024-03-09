@@ -1,25 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth } from "../firebaseConfig"
-import { useAuthState } from 'react-firebase-hooks/auth'; 
-
+import { db, auth } from "../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { workouts } from "./Exercises";
+import Sidebar from "../components/Sidebar";
+import "../styles/sidebar.css";
 
 export default function Workout() {
   const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
-  const [dayOfWeek, setDayOfWeek] = useState('monday');
+  const [dayOfWeek, setDayOfWeek] = useState("monday");
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
-  const [user] = useAuthState(auth)
+  const [user] = useAuthState(auth);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  
+  // Function to toggle sidebar open/close state
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   useEffect(() => {
     if (!user) {
       console.log("Guest user detected. Setting default exercises.");
       setExercises([
-        { name: 'Smoke', reps: 5, sets: 2, weight: 10 },
-        { name: 'Cray', reps: 8, sets: 3, weight: 15 },
-        { name: 'Pog', reps: 8, sets: 3, weight: 15 },
-        { name: 'Gop', reps: 8, sets: 3, weight: 15 }
-        
+        { name: "Smoke", reps: 5, sets: 2, weight: 10 },
+        { name: "Cray", reps: 8, sets: 3, weight: 15 },
+        { name: "Pog", reps: 8, sets: 3, weight: 15 },
+        { name: "Gop", reps: 8, sets: 3, weight: 15 },
       ]);
       return;
     }
@@ -35,66 +39,74 @@ export default function Workout() {
       }
     };
 
-    async function defaultWorkouts() {  
+    async function defaultWorkouts() {
       if (!user) {
         return;
       }
       // Check if the document for the user already exists
-      const userDoc = await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').get();
+      const userDoc = await db
+        .collection("users")
+        .doc(user.uid)
+        .collection("workout-plan")
+        .doc("monday")
+        .get();
       // If the document does not exist, set the default data
       if (!userDoc.exists) {
         const defaultData = {
           exercises: [
             {
-              name: 'DefaultExercise1',
+              name: "DefaultExercise1",
               reps: 8,
               sets: 3,
-              weight: 15
+              weight: 15,
             },
             {
-              name: 'DefaultExercise2',
+              name: "DefaultExercise2",
               reps: 10,
               sets: 2,
-              weight: 12
-            }
-          ]
+              weight: 12,
+            },
+          ],
         };
         // Set the default data for the user
-        await db.collection('users').doc(user.uid).collection('workout-plan').doc('monday').set(defaultData);
-  
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .collection("workout-plan")
+          .doc("monday")
+          .set(defaultData);
+
         const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
 
-        
-       // await setDoc(docRef, exercisesData);
+        // await setDoc(docRef, exercisesData);
       }
     }
 
     defaultWorkouts();
     fetchDocument();
-  }, [])
+  }, []);
 
   const addExercise = () => {
     const newExercise = {
-      name: 'New Exercise', // You can set a default name or leave it empty
+      name: "New Exercise", // You can set a default name or leave it empty
       reps: 8,
       sets: 3,
       weight: 15,
     };
     setExercises((prevExercises) => [...prevExercises, newExercise]);
-  }
+  };
   const removeExercise = (index) => {
     const newExercises = exercises.filter((exercise, i) => i !== index);
     setExercises(newExercises);
   };
-  
-  
+
   useEffect(() => {
     if (!user) {
       return;
     }
     if (user && exercises.length > 0) {
       const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
-      const exercisesData = { 'exercises': exercises }
+      const exercisesData = { exercises: exercises };
 
       const updateExercisesInFirebase = async () => {
         await setDoc(docRef, exercisesData, { merge: true });
@@ -106,47 +118,52 @@ export default function Workout() {
   }, [exercises, user, dayOfWeek]);
 
   const updateExercise = async (index, details) => {
-    console.log(index)
+    // Assuming details can include name, category, weight, sets, reps
     const updatedExercises = exercises.map((exercise, i) => {
       if (i === index) {
         return {
           ...exercise,
-          name: details.name != null ? details.name : exercise.name,
-          weight: details.weight != null ? Number(details.weight) : exercise.weight,
-          sets: details.sets != null ? Number(details.sets) : exercise.sets,
-          reps: details.reps != null ? Number(details.reps) : exercise.reps,
+          ...details,
         };
       }
       return exercise;
     });
-  
+
     console.log("Updating exercises:", updatedExercises);
-  
+
     setExercises(updatedExercises);
 
-    // Update the corresponding document in the database 
+    // Update the corresponding document in the database
   };
-
-  
 
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
+
+  //Workout Structure********************************************************************************************************************
   return (
     <>
+      {/*sidebar*/}
+      <button className="-toggle" onClick={toggleSidebar}>
+        {isSidebarOpen ? (
+          <i class="fas fa-chevron-left"></i>
+        ) : (
+          <i class="fas fa-chevron-right"></i>
+        )}
+      </button>
+      <Sidebar isOpen={isSidebarOpen} />
+      {/*page*/}
       <div className="page">
         <h1 className=""> Monday </h1>
-
         <button onClick={toggleEditMode}>
-              {editMode ? "Cancel" : "Edit"}
-            </button>{" "}
-            {/* Toggle between Edit and Cancel */}
-            <button onClick={() => setEditMode(false)}>Save</button>{" "}
-            <button onClick={() => addExercise()}>add</button>
-            {/* Save button to exit edit mode */}
-
+          {editMode ? "Cancel" : "Edit"}
+        </button>{" "}
+        {/* Toggle between Edit and Cancel */}
+        <button onClick={() => setEditMode(false)}>Save</button>{" "}
+        <button onClick={() => addExercise()}>add</button>
+        {/* Save button to exit edit mode */}
         <div className="container">
           <div className="box">
-            {exercises.map((exercise, index) =>  (
+            {exercises.map((exercise, index) => (
               <ExerciseBox
                 key={index}
                 index={index}
@@ -159,8 +176,6 @@ export default function Workout() {
                 onDelete={() => removeExercise(index)}
               />
             ))}
-            
-            
           </div>
         </div>
       </div>
@@ -177,7 +192,7 @@ const ExerciseBox = ({
   reps,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
-  onDelete
+  onDelete,
 }) => {
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
@@ -187,6 +202,8 @@ const ExerciseBox = ({
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
 
+  //HANDLES********************************************************************************************************************
+
   const handleToggle = (index) => {
     setCheckedButtons((prevCheckedButtons) => {
       const newCheckedButtons = [...prevCheckedButtons];
@@ -195,31 +212,11 @@ const ExerciseBox = ({
     });
   };
 
-  /*  const handleWeightChange = (event) => {
-        const newWeight = event.target.value;
-        setSelectedWeight(newWeight);
-        updateExercise(index, { weight: newWeight }); // Adjusted to use the updated function signature
-        //also fix size of the input fields
-        const SIZE_OF_LETTERS = 15;
-        const textWidth = event.target.value.length * SIZE_OF_LETTERS; //
-
-        // Set the input field width to match the width of the text
-        event.target.style.width = `${textWidth}px`;
-
-    };*/
-    const handleNameChange = (event) => {
-      //Name event
-      const newName = event.target.value;
-      setEditedExerciseName(newName); //Update Weight State
-      updateExercise(index, { name: newName }); //Update index@ Exercise.Name to newName
-    };
-
   const handleWeightChange = async (event) => {
     //Weight event
     const newWeight = event.target.value;
     setSelectedWeight(newWeight); //Update Weight state
     updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
-   
   };
 
   const handleSetsChange = (event) => {
@@ -237,25 +234,25 @@ const ExerciseBox = ({
     setSelectedReps(newReps); //Update Reps State
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
-  
+
   return (
     <>
       <div className="exercise-title">
-  {editMode ? (
-    <input
-      type="text"
-      value={editedExerciseName}
-      onChange={handleNameChange}
-      className="name-input"
-    />
-  ) : (
-    <b>{exercise}</b>
-  )}
-</div>
-
+        {editMode ? (
+          <input
+            type="text"
+            value={editedExerciseName}
+            onChange={(e) => setEditedExerciseName(e.target.value)}
+            className="name-input"
+          />
+        ) : (
+          <b>{exercise}</b>
+        )}
+      </div>
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
+          <button onClick={onDelete}>Delete</button>
             <div className="edit-exercise-weight">
               <input
                 type="number"
@@ -312,7 +309,6 @@ const ExerciseBox = ({
           </div>
         )}
         <div className="buttons">
-        <button onClick={onDelete}>Delete</button>
           {checkedButtons.map((isChecked, index) => (
             <button
               key={index}
