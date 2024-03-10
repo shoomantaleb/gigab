@@ -11,8 +11,15 @@ select {
   font-family: Inter, Tahoma, sans-serif; /* Ensures font consistency */
   font-size: 16px; /* Adjusts the font size for better readability */
 }
+.box{
+  align-items: center;
+  position: relative;
 
-/* Further style adjustments for option hover */
+
+
+}
+
+/* Further style adjustments  option hover */
 select:hover {
   background-color: #f9f9f9; /* Light grey background on hover for better user interaction */
 }
@@ -58,6 +65,7 @@ padding: 10px 20px;
 background-color: rgb(255, 255, 255);
 }
 
+
 .edit-sets-reps, .sets-reps-container {
 display: grid;
 font-size: 20px;
@@ -73,6 +81,7 @@ text-align: center;
 
 .sets-reps-container {
 margin-left: auto;
+padding-left: auto;
 }
 
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
@@ -87,7 +96,7 @@ margin-bottom: 1px;
 
 .weight-input, .weight-state {
 width: 110px;
-min-width: 50px;
+max-width: 85px;
 font-size: 40px; /* Override for weight-state */
 }
 .weight-input {
@@ -115,8 +124,19 @@ background-color: #2f2f2f;
 
 .-toggle{
   z-index: 999;
+  font-size: 25px;
 
 }
+
+.editMode{
+
+}
+
+.plus{
+margin-left: 5px;
+}
+
+
 
 .timer {
 background-color: #042550;

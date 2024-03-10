@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import '../styles/sidebar.css';
 import useWindowSize from '../components/WindowResize';
 import Exercises from '../pages/Exercises';
-import Friends from '../pages/Friends';
 const Sidebar = ({ isOpen }) => {
 
 

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/exercises.css';
-import Sidebar from '../components/Sidebar';
 
 const Exercises = ({sidebarWidth, style}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
-
-  const customStyle = {
-    maxWidth: sidebarWidth, // Ensure the component doesn't overflow the sidebar
-    // Additional responsive styling can go here
-  };
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();

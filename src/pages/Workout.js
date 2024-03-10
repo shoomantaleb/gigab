@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { workouts } from "./Exercises";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 
+//Workout********************************************************************************************************************
 export default function Workout() {
   const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
   const [dayOfWeek, setDayOfWeek] = useState("monday");
@@ -139,7 +139,7 @@ export default function Workout() {
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
 
-  //Workout Structure********************************************************************************************************************
+  //Workout Structure********************************************************************************
   return (
     <>
       {/*sidebar*/}
@@ -150,18 +150,95 @@ export default function Workout() {
           <i class="fas fa-chevron-right"></i>
         )}
       </button>
-      <Sidebar isOpen={isSidebarOpen} />
+      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
       {/*page*/}
       <div className="page">
-        <h1 className=""> Monday </h1>
-        <button onClick={toggleEditMode}>
-          {editMode ? "Cancel" : "Edit"}
-        </button>{" "}
-        {/* Toggle between Edit and Cancel */}
-        <button onClick={() => setEditMode(false)}>Save</button>{" "}
-        <button onClick={() => addExercise()}>add</button>
-        {/* Save button to exit edit mode */}
-        <div className="container">
+        <h1
+          className="day"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginLeft: "auto",
+            paddingLeft: "140px",
+            position: "relative",
+          }}
+        >
+          {" "}
+          Monday
+        </h1>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            position: "relative",
+            maxWidth: "100%",
+            marginLeft: "auto",
+            marginTop: "70px", //the margin sets the distance from the top of the page
+            paddingLeft: isSidebarOpen ? "140px" : "0",
+            display: "flex",
+          }}
+        >
+          <div
+            className="editMode"
+            style={{
+              display: "flex",
+              paddingLeft: isSidebarOpen ? "300px" : "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
+              position: "absolute",
+              justifyContent: "space-around",
+              maxWidth: "60%",
+              top: -60,
+              left: 0,
+              right: 0,
+              display: "flex",
+              fontSize: "20px",
+            }}
+          >
+            <div
+              style={{
+                marginTop: "10px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                paddingLeft: "auto",
+                right: 250,
+                position: "relative",
+                display: "flex",
+              }}
+            >
+              <button onClick={toggleEditMode}>
+                {editMode ? "Cancel" : "Edit"}
+              </button>
+              <button
+                style={{
+                  marginLeft: "12px",
+                }}
+                onClick={() => {
+                  setEditMode(false);
+                  toggleEditMode();
+                }}
+              >
+                Save
+              </button>
+            </div>
+
+            <div
+              className="add"
+              style={{
+                position: "relative",
+                fontSize: "35px",
+                paddingLeft: "auto",
+                paddingRight: "auto",
+              }}
+            >
+              <button onClick={() => addExercise()}>
+                <i className="fas fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>{" "}
+          {/* editMode */}
+          <div className="exercise-title"></div>
           <div className="box">
             {exercises.map((exercise, index) => (
               <ExerciseBox
@@ -172,8 +249,9 @@ export default function Workout() {
                 sets={exercise.sets}
                 reps={exercise.reps}
                 updateExercise={updateExercise} // Pass updateWeight function here
+                removeExercise={removeExercise}
+                addExercise={addExercise}
                 editMode={editMode} // Pass edit mode to control input fields visibility
-                onDelete={() => removeExercise(index)}
               />
             ))}
           </div>
@@ -184,6 +262,9 @@ export default function Workout() {
   );
 }
 
+//ExerciseBox********************************************************************************************************************
+//**************************************************************************************************************
+
 const ExerciseBox = ({
   index,
   exercise,
@@ -192,7 +273,7 @@ const ExerciseBox = ({
   reps,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
-  onDelete,
+  removeExercise,
 }) => {
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
@@ -235,24 +316,19 @@ const ExerciseBox = ({
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
 
+  //Exercise Box Structure********************************************************************************************************************
   return (
     <>
       <div className="exercise-title">
-        {editMode ? (
-          <input
-            type="text"
-            value={editedExerciseName}
-            onChange={(e) => setEditedExerciseName(e.target.value)}
-            className="name-input"
-          />
-        ) : (
-          <b>{exercise}</b>
-        )}
+        {/* editMode ? (
+        <b value={exercise} onChange={(e) => setEditedExerciseName(e.target.value)} className="name-input" />
+      ) : (*/}
+        <b>{exercise}</b>
       </div>
+
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
-          <button onClick={onDelete}>Delete</button>
             <div className="edit-exercise-weight">
               <input
                 type="number"
@@ -317,6 +393,23 @@ const ExerciseBox = ({
             ></button>
           ))}
         </div>
+        {editMode && (
+          <div
+            className="RemoveButton"
+            style={{
+              fontSize: "30px",
+              padding: "10px",
+              marginRight: "10px",
+            }}
+          >
+            <button onClick={() => removeExercise(index)}>
+              <i class="fas fa-solid fa-minus">
+                {" "}
+                <br />
+              </i>
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
