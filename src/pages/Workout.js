@@ -173,11 +173,17 @@ export default function Workout() {
         <h1
           className="day"
           style={{
+            flexDirection: "row",
+            marginLeft: "auto",
+            marginRight: "auto",
             display: "flex",
             justifyContent: "center",
-            marginLeft: "auto",
-            paddingLeft: "140px",
-            position: "relative",
+            alignContent: "center", 
+            maxWidth: "60ch",
+            marginTop: "20px",
+            fontSize: "40px",
+            fontWeight: "bold",
+            
           }}
         >
           {" "}
@@ -187,48 +193,23 @@ export default function Workout() {
           className="container"
           style={{
             display: "flex",
-            justifyContent: "center",
-            position: "relative",
-            maxWidth: "100%",
-            marginLeft: "auto",
-            marginTop: "70px", //the margin sets the distance from the top of the page
-            paddingLeft: isSidebarOpen ? "140px" : "0",
-            display: "flex",
+            marginLeft:  isSidebarOpen ? "100px" : "0px",
+            marginTop: "20px", //the margin sets the distance from the top of the page
           }}
         >
           <div
             className="editMode"
             style={{
-              display: "flex",
-              paddingLeft: isSidebarOpen ? "300px" : "auto",
-              marginLeft: "auto",
-              marginRight: "auto",
-              position: "absolute",
-              justifyContent: "space-around",
-              maxWidth: "60%",
-              top: -60,
-              left: 0,
-              right: 0,
-              display: "flex",
               fontSize: "20px",
+             
             }}
           >
-            <div
-              style={{
-                marginTop: "10px",
-                marginLeft: "auto",
-                marginRight: "auto",
-                paddingLeft: "auto",
-                right: 100,
-                position: "relative",
-                display: "flex",
-              }}
-            >
               <button onClick={toggleEditMode}>
                 {editMode ? "Cancel" : "Edit"}
               </button>
               <button
                 style={{
+                 
                   marginLeft: "12px",
                 }}
                 onClick={() => {
@@ -238,14 +219,10 @@ export default function Workout() {
                 Save
               </button>
             </div>
-
             <div
               className="add"
               style={{
-                position: "relative",
-                fontSize: "35px",
-                paddingLeft: "auto",
-                paddingRight: "auto",
+                marginLeft: "auto",
               }}
             >
               <button onClick={() => addExercise()}>
@@ -257,37 +234,37 @@ export default function Workout() {
           <div className="exercise-title"></div>
           <div className="box">
           <button onClick={() => setEditPlanMode(!editPlanMode)}>
-  {editPlanMode ? "Finish Editing Plan" : "Edit Plan"}
-</button>
-  {editPlanMode ? (
-   plans.map((plan, index) => (
-    <EditPlan
-      key={index}
-      className={plan.className}
-      exerciseName={plan.exerciseName}
-      weight={plan.weight}
-      reps={plan.reps}
-      sets={plan.sets}
-    />
-  ))) : (
-    exercises.map((exercise, index) => (
-      <ExerciseBox
-        key={index}
-        index={index}
-        exercise={exercise.name}
-        weight={exercise.weight}
-        sets={exercise.sets}
-        reps={exercise.reps}
-        updateExercise={updateExercise} // Pass updateWeight function here
-        removeExercise={removeExercise}
-        addExercise={addExercise}
-        editMode={editMode} // Pass edit mode to control input fields visibility
-      />
-    ))
-  )}
-</div>
+          {editPlanMode ? "Finish Editing Plan" : "Edit Plan"}
+          </button>
+            {editPlanMode ? (
+            plans.map((plan, index) => (
+              <EditPlan
+                key={index}
+                className={plan.className}
+                exerciseName={plan.exerciseName}
+                weight={plan.weight}
+                reps={plan.reps}
+                sets={plan.sets}
+              />
+            ))) : (
+              exercises.map((exercise, index) => (
+                <ExerciseBox
+                  key={index}
+                  index={index}
+                  exercise={exercise.name}
+                  weight={exercise.weight}
+                  sets={exercise.sets}
+                  reps={exercise.reps}
+                  updateExercise={updateExercise} // Pass updateWeight function here
+                  removeExercise={removeExercise}
+                  addExercise={addExercise}
+                  editMode={editMode} // Pass edit mode to control input fields visibility
+                />
+              ))
+            )}
+          </div>
         </div>
-      </div>
+    
       
       <Timer />
      

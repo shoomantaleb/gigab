@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/EditPlan.css";
 
-
-
 export const EditPlan = ({ className, exerciseName, weight, reps, sets }) => {
   
   return (

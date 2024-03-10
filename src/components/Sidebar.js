@@ -11,7 +11,8 @@ const sidebarWidth = Math.max(250, width * 0.2); // Example: Sidebar takes up to
 // Example custom style object
 const customStyleWhenSidebarOpen = {
     padding: '20px', //padding is the space between the content and the border
-    margin: '-20px', //margin is the space outside the border
+    margin: '0px 23px 20px -20px', //margin is the space outside the border
+    
     // Add any other styles you want to apply when the sidebar is open
   };
 
