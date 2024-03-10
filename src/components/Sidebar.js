@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/sidebar.css';
 import useWindowSize from '../components/WindowResize';
 import Exercises from '../pages/Exercises';
+import EditPlan from '../components/EditPlan';
 const Sidebar = ({ isOpen }) => {
 
 
@@ -23,7 +24,9 @@ const customStyleWhenSidebarOpen = {
         style={isOpen ? customStyleWhenSidebarOpen : {}}
         />
         </div>
+       
       </div>
+      
     );
   };
   

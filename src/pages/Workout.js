@@ -4,14 +4,19 @@ import { db, auth } from "../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
+import EditPlan from "../components/EditPlan";
 
 //Workout********************************************************************************************************************
 export default function Workout() {
+  
+//States********************************************************************************************************************
   const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
   const [dayOfWeek, setDayOfWeek] = useState("monday");
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [editPlanMode, setEditPlanMode] = useState(false);
+
 
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -86,6 +91,7 @@ export default function Workout() {
     fetchDocument();
   }, []);
 
+//Functions********************************************************************************************************************
   const addExercise = () => {
     const newExercise = {
       name: "New Exercise", // You can set a default name or leave it empty
@@ -99,6 +105,17 @@ export default function Workout() {
     const newExercises = exercises.filter((exercise, i) => i !== index);
     setExercises(newExercises);
   };
+
+  const plans = [
+    { className: 'day1', exerciseName: 'Bench Press', weight: '350', reps: '10', sets: '5' },
+    { className: 'day2', exerciseName: 'Squat', weight: '300', reps: '12', sets: '4' },
+    { className: 'day3', exerciseName: 'Incline Press', weight: '300', reps: '12', sets: '4' },
+    { className: 'day4', exerciseName: 'Squat', weight: '300', reps: '12', sets: '4' },
+    { className: 'day5', exerciseName: 'Squat', weight: '300', reps: '12', sets: '4' },
+    { className: 'day6', exerciseName: 'Squat', weight: '300', reps: '12', sets: '4' },
+    { className: 'day7', exerciseName: 'Squat', weight: '300', reps: '12', sets: '4' },
+    // Add more objects for each plan you want to render
+  ];
 
   useEffect(() => {
     if (!user) {
@@ -202,7 +219,7 @@ export default function Workout() {
                 marginLeft: "auto",
                 marginRight: "auto",
                 paddingLeft: "auto",
-                right: 250,
+                right: 100,
                 position: "relative",
                 display: "flex",
               }}
@@ -215,8 +232,7 @@ export default function Workout() {
                   marginLeft: "12px",
                 }}
                 onClick={() => {
-                  setEditMode(false);
-                  toggleEditMode();
+                  setEditMode();
                 }}
               >
                 Save
@@ -240,24 +256,41 @@ export default function Workout() {
           {/* editMode */}
           <div className="exercise-title"></div>
           <div className="box">
-            {exercises.map((exercise, index) => (
-              <ExerciseBox
-                key={index}
-                index={index}
-                exercise={exercise.name}
-                weight={exercise.weight}
-                sets={exercise.sets}
-                reps={exercise.reps}
-                updateExercise={updateExercise} // Pass updateWeight function here
-                removeExercise={removeExercise}
-                addExercise={addExercise}
-                editMode={editMode} // Pass edit mode to control input fields visibility
-              />
-            ))}
-          </div>
+          <button onClick={() => setEditPlanMode(!editPlanMode)}>
+  {editPlanMode ? "Finish Editing Plan" : "Edit Plan"}
+</button>
+  {editPlanMode ? (
+   plans.map((plan, index) => (
+    <EditPlan
+      key={index}
+      className={plan.className}
+      exerciseName={plan.exerciseName}
+      weight={plan.weight}
+      reps={plan.reps}
+      sets={plan.sets}
+    />
+  ))) : (
+    exercises.map((exercise, index) => (
+      <ExerciseBox
+        key={index}
+        index={index}
+        exercise={exercise.name}
+        weight={exercise.weight}
+        sets={exercise.sets}
+        reps={exercise.reps}
+        updateExercise={updateExercise} // Pass updateWeight function here
+        removeExercise={removeExercise}
+        addExercise={addExercise}
+        editMode={editMode} // Pass edit mode to control input fields visibility
+      />
+    ))
+  )}
+</div>
         </div>
       </div>
+      
       <Timer />
+     
     </>
   );
 }
