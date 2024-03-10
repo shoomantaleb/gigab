@@ -14,9 +14,6 @@ select {
 .box{
   align-items: center;
   position: relative;
-
-
-
 }
 
 /* Further style adjustments  option hover */
@@ -31,18 +28,65 @@ select:focus {
 }
 
 
-/* Workout Plan Exercise Components */
-.exercise-box {
-display: flex;
-align-items: center;
-justify-content: space-between;
-border-radius: 10px;
-width: 100%;
-background-color: #669CB2;
-margin: 0 auto 10px;
-overflow-x: auto;
+/****************** General page Layout *********************** */
+.container {
+  display: "flex";
+  margin-top: "20px"; /*the margin sets the distance from the top of the page */
 }
 
+
+
+
+/****************** Edit/Save/Cancel Buttons *********************** */
+
+/* .savePlanBtn{
+  margin-left: 12px;
+} */
+
+.editBtns{
+  display: flex;
+  justify-content: right;
+  overflow: none;
+  font-weight: 500;
+  margin-right: 5px;
+  /* position: fixed; */
+}
+
+.savePlanBtn{
+  margin-left: 20px;
+}
+
+.addExerciseBtn{
+  margin-top: 15px;
+}
+
+/******************* WORKOUT BOX ********************** */
+
+.day {
+  flex-direction: "row";  
+  margin-left: "auto";
+  margin-right: "auto";
+  display: "flex";
+  justify-content: "center";
+  align-content: "center"; 
+  max-width: "60ch";
+  margin-top: "20px";
+  font-size: "40px";
+  font-weight: "bold";
+}
+
+
+/*Workout Plan Exercise Components */
+.exercise-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #669CB2;
+  margin: 0 auto 10px;
+  overflow-x: auto;
+}
 
 .exercise-title, .edit-exercise-weight, .weight-state {
 display: flex;
@@ -50,12 +94,10 @@ margin-right: auto; /* Specifically for exercise-title */
 font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
 font-size: 25px; /* Default for exercise-title */
 }
-
 .edit-exercise-weight, .weight-state {
 font-size: 40px; /* Override for these classes */
 margin-right: 10px; /* Specifically for edit-exercise-weight */
 }
-
 .content {
 border-radius: 10px;
 display: flex;
@@ -64,7 +106,6 @@ white-space: nowrap;
 padding: 10px 20px;
 background-color: rgb(255, 255, 255);
 }
-
 
 .edit-sets-reps, .sets-reps-container {
 display: grid;
@@ -128,13 +169,20 @@ background-color: #2f2f2f;
 
 }
 
+/********************************************************************** */
 
 
+
+
+
+
+
+
+
+/************     TIMER MODULE      *********** */
 .plus{
 margin-left: 5px;
 }
-
-
 
 .timer {
 background-color: #042550;
@@ -177,6 +225,10 @@ font-weight: bold;
 .start-btn{
 grid-column-end: span 2; 
 }
+/********************************************************************** */
+
+
+
 
 
 .workout-form {

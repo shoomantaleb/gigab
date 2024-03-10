@@ -170,33 +170,13 @@ export default function Workout() {
       <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
       {/*page*/}
       <div className="page">
-        <h1
-          className="day"
-          style={{
-            flexDirection: "row",
-            marginLeft: "auto",
-            marginRight: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignContent: "center", 
-            maxWidth: "60ch",
-            marginTop: "20px",
-            fontSize: "40px",
-            fontWeight: "bold",
-            
-          }}
-        >
-          {" "}
-          Monday
+        <h1 className="day"> 
+          {" "}Monday
         </h1>
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            marginLeft:  isSidebarOpen ? "100px" : "0px",
-            marginTop: "20px", //the margin sets the distance from the top of the page
-          }}
-        >
+
+        <div 
+          className="container" 
+          style={{marginLeft:  isSidebarOpen ? "100px" : "0px"}}>
           <div
             className="editMode"
             style={{
@@ -204,38 +184,43 @@ export default function Workout() {
              
             }}
           >
-              <button onClick={toggleEditMode}>
-                {editMode ? "Cancel" : "Edit"}
-              </button>
-              <button
-                style={{
-                 
-                  marginLeft: "12px",
-                }}
-                onClick={() => {
-                  setEditMode();
-                }}
-              >
-                Save
-              </button>
+             
+              
             </div>
-            <div
-              className="add"
-              style={{
-                marginLeft: "auto",
-              }}
-            >
-              <button onClick={() => addExercise()}>
-                <i className="fas fa-solid fa-plus"></i>
-              </button>
-            </div>
+            
           </div>{" "}
           {/* editMode */}
-          <div className="exercise-title"></div>
+
+
           <div className="box">
-          <button onClick={() => setEditPlanMode(!editPlanMode)}>
-          {editPlanMode ? "Finish Editing Plan" : "Edit Plan"}
-          </button>
+
+            <div className="editBtns">
+              {/* EDIT BUTTON */}
+              {editMode ? ("") :
+                (<button className="editPlanBtn"
+                  onClick={toggleEditMode}>
+                  Edit
+                </button>
+              )}
+
+              {/* CANCEL BUTTON - cancelEditMode does not exist*/}
+              {/* {editMode ?
+                (<button className="cancelPlanBtn"
+                  onClick={() => { cancelEditMode();}}> 
+                  Cancel
+                </button>
+              ) : ("")} */}
+              
+              {/* SAVE BUTTON */}
+              {editMode ?
+                (<button className="savePlanBtn"
+                  onClick={() => { setEditMode(); }}>
+                  Save
+                </button>
+              ) :  ("")}
+              
+            </div>
+
             {editPlanMode ? (
             plans.map((plan, index) => (
               <EditPlan
@@ -262,6 +247,10 @@ export default function Workout() {
                 />
               ))
             )}
+            <button className="addExerciseBtn"
+              onClick={() => addExercise()}>
+              <i className="fas fa-solid fa-plus"></i>
+            </button>
           </div>
         </div>
     
@@ -271,6 +260,8 @@ export default function Workout() {
     </>
   );
 }
+
+
 
 //ExerciseBox********************************************************************************************************************
 //**************************************************************************************************************
