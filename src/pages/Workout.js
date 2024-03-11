@@ -17,14 +17,9 @@ export default function Workout() {
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
-
-  const [exerciseTitle, setExerciseTitle] = useState('');
-
-  const handleInputChange = (event) => {
-    setExerciseTitle(event.target.value); 
-  };
-  // Function to toggle sidebar open/close state
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  
+     // Function to toggle sidebar open/close state
+     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   useEffect(() => {
     if (!user) {
@@ -48,6 +43,8 @@ export default function Workout() {
         console.log("No such document!");
       }
     };
+
+
 
     async function defaultWorkouts() {
       if (!user) {
@@ -87,7 +84,7 @@ export default function Workout() {
           .set(defaultData);
 
         const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
-
+        
         // await setDoc(docRef, exercisesData);
       }
     }
@@ -248,8 +245,6 @@ export default function Workout() {
                   updateExercise={updateExercise} // Pass updateWeight function here
                   removeExercise={removeExercise}
                   addExercise={addExercise}
-                  exerciseTitle={workouts.name} 
-                  handleInputChange={(e) => handleInputChange(e, index)}
                   editMode={editMode} // Pass edit mode to control input fields visibility
                 />
               ))
@@ -281,8 +276,6 @@ const ExerciseBox = ({
   reps,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
-  handleInputChange,
-  exerciseTitle,
   removeExercise,
   
 }) => {
@@ -290,10 +283,15 @@ const ExerciseBox = ({
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
   );
-  const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
+  const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
+
+  const [exerciseTitle, setExerciseTitle] = useState('');
+
+  
+
 
   //HANDLES********************************************************************************************************************
 
@@ -303,6 +301,12 @@ const ExerciseBox = ({
       newCheckedButtons[index] = !newCheckedButtons[index];
       return newCheckedButtons;
     });
+  };
+
+
+  const handleInputChange = (event) => {
+    const newWorkout = event.target.value;
+    setSelectedWorkout(newWorkout); 
   };
 
   const handleWeightChange = async (event) => {
@@ -331,11 +335,12 @@ const ExerciseBox = ({
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-         <div className="workouts-list">
+    {editMode ? (
+      <div className="workouts-list">
       <input 
         list={dataListId} 
         onChange={handleInputChange} 
-        value={exerciseTitle} 
+        value={selectedWorkout} 
       />
       <datalist id={dataListId}>
         {workouts.map((workout, idx) => (
@@ -343,6 +348,13 @@ const ExerciseBox = ({
         ))}
       </datalist>
     </div>
+    ):(<div className="workout-state">
+    {selectedWorkout}
+  </div>
+  )}
+
+
+         
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
@@ -360,38 +372,38 @@ const ExerciseBox = ({
                 value={selectedSets}
                 onChange={handleSetsChange}
                 className="sets-input"
+            
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                <option value="1">1 Sets</option>
+                <option value="2">2 Sets</option>
+                <option value="3">3 Sets</option>
+                <option value="4">4 Sets</option>
+                <option value="5">5 Sets</option>
+                <option value="6">6 Sets</option>
               </select>
-              <div className="input-label-sets">Sets</div>
               <select
                 value={selectedReps}
                 onChange={handleRepsChange}
                 className="reps-input"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
+                <option value="1">1 Reps</option>
+                <option value="2">2 Reps</option>
+                <option value="3">3 Reps</option>
+                <option value="4">4 Reps</option>
+                <option value="5">5 Reps</option>
+                <option value="6">6 Reps</option>
+                <option value="7">7 Reps</option>
+                <option value="8">8 Reps</option>
+                <option value="9">9 Reps</option>
+                <option value="10">10 Reps</option>
+                <option value="11">11 Reps</option>
+                <option value="12">12 Reps</option>
                 //Add more options as needed
               </select>
-              <div class="input-label-reps">Reps</div>
             </div>
           </div>
         ) : (
+         
           // View mode: Display current values without input fields
           <div className="content">
             <div className="weight-state">{selectedWeight}</div>
@@ -408,6 +420,7 @@ const ExerciseBox = ({
               className={`circle-button ${isChecked ? "checked" : ""}`}
               onClick={() => handleToggle(index)}
             ></button>
+            
           ))}
         </div>
         {editMode && (
