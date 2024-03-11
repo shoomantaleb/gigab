@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar"
 import './styles/App.css';
 import Workout from "./pages/Workout"
 import Friends from "./pages/Friends"
+import Exercises from "./pages/Exercises"
 import Profile from "./pages/Profile"
 import {Route, Routes} from "react-router-dom"
 import { auth } from './firebaseConfig';
@@ -62,7 +63,7 @@ function SignIn({ setIsGuest }){
 
   return (
     <>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
     <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setIsGuest(true)}>Continue as Guest</button> 
     </>// + Button for guest users
   )
@@ -115,6 +116,7 @@ function HomePage() {
           <Route path ="/" element ={<Workout />} />
           <Route path ="/Friends" element ={<Friends />} />
           <Route path ="/Workout" element ={<Workout />} />
+          <Route path ="/exercises" element ={<Exercises />} />
           <Route path ="/Profile" element ={<Profile />} />
         </Routes>
         </div>

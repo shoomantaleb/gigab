@@ -3,7 +3,6 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyAYxjvnG_EtV5OJ2YZKsu0NuOtBhmyY_uQ",
     authDomain: "gigab-d299f.firebaseapp.com",
@@ -15,8 +14,8 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
-  
+
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-export {db, auth}
+export { db, auth };

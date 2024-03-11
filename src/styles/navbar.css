@@ -30,20 +30,33 @@ body{
 
 }
 
-.site-title{
-    background-color: #186D8F;
-    padding: 1rem;
-    font-family: Inter;
+.site-title {
+    position: relative;
+    font-family: Tahoma, sans-serif;
     font-size: 40px;
     font-style: italic;
     font-weight: 700;
     line-height: normal;
+    z-index: 1;
 }
+
+.site-title::before {
+    content: "";
+    position: absolute;
+    top: -10px; /* Adjust to hide the dark blue area */
+    left: -20px; /* Adjust to hide the dark blue area */
+    width: calc(100% + 20px); /* Adjust width to cover the entire skewed area */
+    height: calc(100% + 9.8px); /* Adjust height to cover the entire skewed area */
+    background-color: #186D8F;
+    z-index: -1;
+    transform: skewX(-20deg); /* Adjust the degree of skewing as needed */
+}
+
 
 h1 {
     /* font-weight: 900; */
     font-size: 2rem;
-    font-family: Inter;
+    font-family: Inter, Tahoma, sans-serif;
     color: #535353;
 }
 
@@ -65,16 +78,16 @@ h1 {
     padding:1.25rem 1.25rem; 
 }
 
-.nav a[href="/Friends"], .nav a[href="/Workout"], .nav a[href="/Profile"]{
+.nav a[href="/Friends"], .nav a[href="/Workout"], .nav a[href="/Exercises"], .nav a[href="/Profile"]{
     font-size: 1.5rem;
-    font-family: Inter;
+    font-family: Inter, Tahoma, sans-serif;
     /* font-style: italic; */
     /* font-weight: 400; */
     line-height: normal;
     color: #E6E6E6;
 }
 
-.nav li {
+.nav .normal {
     width: 50%;
     transition: transform 0.2s ease-in-out;
 }
@@ -85,8 +98,26 @@ h1 {
     /* background-color: #186D8F; */
 } 
 
-.nav li:hover{
-    transform: scale(1.03); /* Adjust the scale factor as needed */
+.nav .normal:hover{
+    transform: scale(1.04); /* Adjust the scale factor as needed */
     /* background-color:  #4d4d4d; */
 }
+
+.profile-link {
+    position: absolute;
+    right: 20px;
+    transition: transform 0.2s ease-in-out;
+    color: #E6E6E6;
+}
+.profile-link:hover{
+    transform: scale(1.025); /* Adjust the scale factor as needed */
+    /* background-color:  #4d4d4d; */
+}
+.profile-name{
+    color: #E6E6E6;
+}
+.active-name{
+    font-weight: 200;
+}
+
 

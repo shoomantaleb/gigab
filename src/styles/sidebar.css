@@ -1,0 +1,53 @@
+/* sidebar.css */
+
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .sidebar-toggle {
+  position: fixed;
+  z-index: 1050; /* High enough to be above most elements */
+  top: 10px; /* Adjust as necessary */
+  left: 10px; /* Adjust based on the sidebar's width */
+}
+
+
+  .toggle-button.sidebar {
+    position: absolute;
+    right: -50px;
+    top: 20px;
+    /* Adjustments for better visibility */
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  /* sidebar.css */
+  
+
+.sidebar {
+  width: 250px;
+  position: fixed;
+  left: -550px;
+  top: 0;
+  height: 100vh;
+  background-color: #eee;
+  transition: left 0.3s ease;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-toggle {
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  border-radius: 50%;
+  font-size: 20px; /* Adjust based on the icon's size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
