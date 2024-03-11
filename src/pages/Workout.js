@@ -45,54 +45,53 @@ export default function Workout() {
       }
     };
 
-    async function defaultWorkouts() {
-      if (!user) {
-        return;
-      }
-      // Check if the document for the user already exists
-      const userDoc = await db
-        .collection("users")
-        .doc(user.uid)
-        .collection("workout-plan")
-        .doc(daysOfWeek[activeDate.getDay()])
-        .get();
-      // If the document does not exist, set the default data
-      if (!userDoc.exists) {
-        const defaultData = {
-          exercises: [
-            {
-              name: "DefaultExercise1",
-              reps: 8,
-              sets: 3,
-              weight: 15,
-            },
-            {
-              name: "DefaultExercise2",
-              reps: 10,
-              sets: 2,
-              weight: 12,
-            },
-          ],
-        };
-        // Set the default data for the user
-        await db
-          .collection("users")
-          .doc(user.uid)
-          .collection("workout-plan")
-          .doc(daysOfWeek[activeDate.getDay()])
-          .set(defaultData);
-
-        const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
-
-        // await setDoc(docRef, exercisesData);
-      }
-    }
-
     defaultWorkouts();
     fetchDocument();
   }, []);
 
 //Functions********************************************************************************************************************
+  async function defaultWorkouts() {
+    if (!user) {
+      return;
+    }
+    // Check if the document for the user already exists
+    const userDoc = await db
+      .collection("users")
+      .doc(user.uid)
+      .collection("workout-plan")
+      .doc(daysOfWeek[activeDate.getDay()])
+      .get();
+    // If the document does not exist, set the default data
+    if (!userDoc.exists) {
+      const defaultData = {
+        exercises: [
+          {
+            name: "DefaultExercise1",
+            reps: 8,
+            sets: 3,
+            weight: 15,
+          },
+          {
+            name: "DefaultExercise2",
+            reps: 10,
+            sets: 2,
+            weight: 12,
+          },
+        ],
+      };
+      // Set the default data for the user
+      await db
+        .collection("users")
+        .doc(user.uid)
+        .collection("workout-plan")
+        .doc(daysOfWeek[activeDate.getDay()])
+        .set(defaultData);
+
+      const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
+
+      // await setDoc(docRef, exercisesData);
+    }
+  }
   const addExercise = () => {
     const newExercise = {
       name: "New Exercise", // You can set a default name or leave it empty
@@ -123,17 +122,18 @@ export default function Workout() {
       return;
     }
     if (user && exercises.length > 0) {
-    const getData = async () => {
-      console.log(activeDate)
-      const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
-      const docSnap = await getDoc(docRef);
+      const getData = async () => {
+        await defaultWorkouts()
+        const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
+        const docSnap = await getDoc(docRef);
 
-      console.log('getData', docSnap.data().exercises)
-
-      setExercises(docSnap.data().exercises)
-      console.log('exercises',exercises)
-    }
-    getData();
+        console.log('getData', docSnap.data().exercises)
+        if (docSnap.exists()) {
+          setExercises(docSnap.data().exercises)
+        }
+      }
+      
+      getData();
   }
     
   }, [activeDate]);
