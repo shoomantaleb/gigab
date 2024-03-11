@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
+import { workouts } from './Exercises'; // Adjust the path as necessary
 
 //Workout********************************************************************************************************************
 export default function Workout() {
@@ -17,7 +18,11 @@ export default function Workout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
 
+  const [exerciseTitle, setExerciseTitle] = useState('');
 
+  const handleInputChange = (event) => {
+    setExerciseTitle(event.target.value); 
+  };
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -243,6 +248,8 @@ export default function Workout() {
                   updateExercise={updateExercise} // Pass updateWeight function here
                   removeExercise={removeExercise}
                   addExercise={addExercise}
+                  exerciseTitle={workouts.name} 
+                  handleInputChange={(e) => handleInputChange(e, index)}
                   editMode={editMode} // Pass edit mode to control input fields visibility
                 />
               ))
@@ -274,8 +281,12 @@ const ExerciseBox = ({
   reps,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
+  handleInputChange,
+  exerciseTitle,
   removeExercise,
+  
 }) => {
+  const dataListId = `workouts-${index}`;
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
   );
@@ -320,13 +331,18 @@ const ExerciseBox = ({
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-      <div className="exercise-title">
-        {/* editMode ? (
-        <b value={exercise} onChange={(e) => setEditedExerciseName(e.target.value)} className="name-input" />
-      ) : (*/}
-        <b>{exercise}</b>
-      </div>
-
+         <div className="workouts-list">
+      <input 
+        list={dataListId} 
+        onChange={handleInputChange} 
+        value={exerciseTitle} 
+      />
+      <datalist id={dataListId}>
+        {workouts.map((workout, idx) => (
+          <option key={idx} value={workout.name} />
+        ))}
+      </datalist>
+    </div>
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">

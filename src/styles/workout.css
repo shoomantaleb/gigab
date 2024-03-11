@@ -88,12 +88,21 @@ select:focus {
   overflow-x: auto;
 }
 
-.exercise-title, .edit-exercise-weight, .weight-state {
+.edit-exercise-weight, .weight-state {
 display: flex;
 margin-right: auto; /* Specifically for exercise-title */
 font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
 font-size: 25px; /* Default for exercise-title */
 }
+
+.workouts-list{
+  display: flex;
+  margin-right: auto;
+  padding: 10px;
+  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 25px;
+}
+
 .edit-exercise-weight, .weight-state {
 font-size: 40px; /* Override for these classes */
 margin-right: 10px; /* Specifically for edit-exercise-weight */
