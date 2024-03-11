@@ -60,6 +60,7 @@ select:focus {
   margin-top: 15px;
 }
 
+
 /******************* WORKOUT BOX ********************** */
 
 .day {
@@ -86,81 +87,83 @@ select:focus {
   background-color: #669CB2;
   margin: 0 auto 10px;
   overflow-x: auto;
+
+  box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
 }
 
 .exercise-title, .edit-exercise-weight, .weight-state {
-display: flex;
-margin-right: auto; /* Specifically for exercise-title */
-font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
-font-size: 25px; /* Default for exercise-title */
+  display: flex;
+  margin-right: auto; /* Specifically for exercise-title */
+  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 25px; /* Default for exercise-title */
 }
 .edit-exercise-weight, .weight-state {
-font-size: 40px; /* Override for these classes */
-margin-right: 10px; /* Specifically for edit-exercise-weight */
+  font-size: 40px; /* Override for these classes */
+  margin-right: 10px; /* Specifically for edit-exercise-weight */
 }
 .content {
-border-radius: 10px;
-display: flex;
-flex-direction: row;
-white-space: nowrap;
-padding: 10px 20px;
-background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  padding: 10px 20px;
+  background-color: rgb(255, 255, 255);
 }
 
 .edit-sets-reps, .sets-reps-container {
-display: grid;
-font-size: 20px;
-color: #7E7E7E;
+  display: grid;
+  font-size: 20px;
+  color: #7E7E7E;
 }
 
 .edit-sets-reps {
-grid-template-columns: auto auto;
-gap: 0;
-padding: 0;
-text-align: center;
+  grid-template-columns: auto auto;
+  gap: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .sets-reps-container {
-margin-left: auto;
-padding-left: auto;
+  margin-left: auto;
+  padding-left: auto;
 }
 
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
-grid-row: auto; /* Automatically place in the next available row */
-grid-column: auto; /* Automatically place in the next available column */
-border: 0;
+  grid-row: auto; /* Automatically place in the next available row */
+  grid-column: auto; /* Automatically place in the next available column */
+  border: 0;
 }
 .reps-input, .sets-input, select {
-width: 40px;
-margin-bottom: 1px;
+  width: 40px;
+  margin-bottom: 1px;
 }
 
 .weight-input, .weight-state {
-width: 110px;
-max-width: 105px;
-font-size: 40px; /* Override for weight-state */
+  width: 110px;
+  max-width: 105px;
+  font-size: 40px; /* Override for weight-state */
 }
 .weight-input {
   border-bottom: 1px #2F2F2F solid;
 }
 
 .buttons {
-display: flex;
-justify-content: space-around;
-width: 80%;
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;
 }
 
 .circle-button {
-border: 3px solid #2f2f2f;
-border-radius: 30%;
-width: 30px;
-height: 30px;
-margin-left: 5px;
-background-color: white;
+  border: 3px solid #525252;
+  border-radius: 30%;
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  background-color: white;
 }
 
 .circle-button.checked {
-background-color: #2f2f2f;
+  background-color: #323232;
 }
 
 .-toggle{
