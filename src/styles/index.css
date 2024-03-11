@@ -15,8 +15,6 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Inter',
     sans-serif;
 
-  
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,14 +31,15 @@ code {
 }
 
 .container {
+  width: 100%;
   display: flex;
-  margin: 1rem;
+  /* margin: 1rem; */
   text-align: center;
 }
 
 
 h1 {
-  margin-top: 5px;
+  margin-top: 15px;
   font-weight: bold;
 }
 .box {
@@ -57,7 +56,7 @@ h1 {
   box-sizing: border-box;
   margin: 0 auto; /*Center horizontally*/
   overflow: scroll;
-  margin-top: -10px;
+  margin-top: 10px;
 }
 .box::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
@@ -96,11 +95,6 @@ h1 {
   font-style: italic;
   font-weight: 700;
   color: rgb(60, 60, 60);
-}
-
-b {
-  /* color: rgb(161, 76, 76); */
-  color: #0b2d5bde;
 }
 
 .sign-in-subtitle{
