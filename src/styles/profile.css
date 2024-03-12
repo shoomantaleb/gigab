@@ -2,6 +2,11 @@ body {
   overflow: auto;
 }
 
+page {
+  align-items: center; /* Center children vertically */
+  position: relative;
+}
+
 .profile-card {
   background-color: #F0F0F0;
   border-radius: 39px;
@@ -9,12 +14,12 @@ body {
   max-width: 600px;
   box-sizing: border-box;
   margin: 0 auto;
-
-  position: fixed;
+  margin-top: 120px;
+  margin-bottom: 100px;
   left: 30%;
   top: 100px;
   overflow: hidden;
-  /* position: fixed; */
+  /* position: relative; */
 }
 
 .user-info {
@@ -38,8 +43,19 @@ body {
   flex-shrink: 0;
   border: 3px solid #E6E6E6;
   object-fit: cover;
+  margin-right: 5px;
   border-radius: 50%;
-  margin-right: 20px;
+  /* position: absolute;
+  width: 150px;
+  flex-shrink: 0;
+  border: 3px solid #E6E6E6;
+  object-fit: cover;
+  border-radius: 50%;
+  top: 120px;
+  /* margin-top: 100px; */
+  /* transform: translateX(220%); */
+  /* left: 685px; */
+  /* z-index: 10; */
 }
 
 .username {
@@ -56,7 +72,7 @@ body {
   padding: 0;
   font-size: 23px;
   font-weight: 200;
-
+  margin-top: 1px;
 }
 
 .tier-subheading {
@@ -189,13 +205,13 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 20px;
 }
 
-
-
-
 .align {
-  margin-left: 28.5%;
+  /* margin-left: 188px; */
+  margin-left: 10px;
+  text-align: left;
 }
 
 .emoji {
