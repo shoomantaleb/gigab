@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -61,6 +62,9 @@ select:focus {
 =======
 @ -60,6 +60,7 @@ select:focus {
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+@ -60,6 +60,7 @@ select:focus {
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
   margin-top: 15px;
 }
 
@@ -68,6 +72,7 @@ select:focus {
 /******************* WORKOUT BOX ********************** */
 
 .day {
+<<<<<<< HEAD
 <<<<<<< HEAD
   flex-direction: "row";  
   margin-left: "auto";
@@ -97,6 +102,8 @@ select:focus {
 }
 
 =======
+=======
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 @ -86,25 +87,21 @@ select:focus {
   max-height: 100%;
   margin: 2px;
@@ -117,6 +124,9 @@ width: 90px;
 }
 
 .workouts-list{
+<<<<<<< HEAD
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 .exercise-title, .edit-exercise-weight, .weight-state {
   display: flex;
@@ -150,6 +160,9 @@ height: 80px;
 padding: 10px 20px;
 background-color: rgb(255, 255, 255);
 overflow-y:hidden;
+<<<<<<< HEAD
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
   border-radius: 10px;
   display: flex;
@@ -184,6 +197,9 @@ color: #7E7E7E;
 =======
 
 .reps-input, .sets-input, .input-label-sets, .input-label-reps, .reps-state, .sets-state {
+<<<<<<< HEAD
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
   grid-row: auto; /* Automatically place in the next available row */
@@ -196,7 +212,11 @@ color: #7E7E7E;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 
 
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
@@ -230,10 +250,14 @@ color: #7E7E7E;
 
 .-toggle{
 <<<<<<< HEAD
+<<<<<<< HEAD
   z-index: 999;
   font-size: 25px;
 
 }
+=======
+@ -191,9 +187,32 @@ background-color: #2f2f2f;
+>>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 @ -191,9 +187,32 @@ background-color: #2f2f2f;
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
