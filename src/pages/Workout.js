@@ -6,6 +6,8 @@ import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
 import { hover } from "@testing-library/user-event/dist/hover";
+import { workouts } from './Exercises'; // Adjust the path as necessary
+
 
 //Workout********************************************************************************************************************
 export default function Workout() {
