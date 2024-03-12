@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 
 
 
@@ -59,12 +62,15 @@ select:focus {
 }
 
 .addExerciseBtn{
+<<<<<<< HEAD
 =======
 @ -60,6 +60,7 @@ select:focus {
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 @ -60,6 +60,7 @@ select:focus {
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
   margin-top: 15px;
 }
 
@@ -74,6 +80,9 @@ select:focus {
 .day {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
   flex-direction: "row";  
   margin-left: "auto";
   margin-right: "auto";
@@ -93,6 +102,7 @@ select:focus {
   align-items: center;
   justify-content: space-between;
   border-radius: 10px;
+<<<<<<< HEAD
   width: 100%;
   background-color: #669CB2;
   margin: 0 auto 10px;
@@ -105,33 +115,28 @@ select:focus {
 =======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 @ -86,25 +87,21 @@ select:focus {
+=======
+  max-width: 100%;
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
   max-height: 100%;
   margin: 2px;
   background-color: #669CB2;
-  overflow: hidden;
-}
   margin: 0 auto 10px;
   overflow-x: auto;
 
-.edit-exercise-weight, .weight-state, .weight-input{
-display: flex;
-margin-right: auto; /* Specifically for exercise-title */
-font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
-font-size: 35px; /* Default for exercise-title */
-padding: 4px 0px; 
-width: 90px;
   box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
 }
 
+<<<<<<< HEAD
 .workouts-list{
 <<<<<<< HEAD
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 .exercise-title, .edit-exercise-weight, .weight-state {
   display: flex;
-  margin-right: auto;
-  padding: 5px;
   margin-right: auto; /* Specifically for exercise-title */
   font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
   font-size: 25px; /* Default for exercise-title */
@@ -145,10 +150,17 @@ width: 90px;
 =======
 
 .workout-state{
-@ -118,69 +115,68 @@ width: 90px;
+  display: flex;
+  margin-right: auto;
+  padding: 5px;
+  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 25px;
+}
+
 
 
 .content {
+<<<<<<< HEAD
 border-radius: 10px;
 display: flex;
 flex-grow: 0;
@@ -164,6 +176,8 @@ overflow-y:hidden;
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -173,9 +187,6 @@ overflow-y:hidden;
 }
 
 .edit-sets-reps, .sets-reps-container {
-display: grid;
-font-size: 20px;
-color: #7E7E7E;
   display: grid;
   font-size: 20px;
   color: #7E7E7E;
@@ -194,6 +205,7 @@ color: #7E7E7E;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 .reps-input, .sets-input, .input-label-sets, .input-label-reps, .reps-state, .sets-state {
@@ -201,6 +213,8 @@ color: #7E7E7E;
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
   grid-row: auto; /* Automatically place in the next available row */
   grid-column: auto; /* Automatically place in the next available column */
@@ -213,6 +227,7 @@ color: #7E7E7E;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 
@@ -220,6 +235,8 @@ color: #7E7E7E;
 
 
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 .weight-input, .weight-state {
   width: 110px;
   max-width: 105px;
@@ -251,16 +268,22 @@ color: #7E7E7E;
 .-toggle{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
   z-index: 999;
   font-size: 25px;
 
 }
+<<<<<<< HEAD
 =======
 @ -191,9 +187,32 @@ background-color: #2f2f2f;
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 @ -191,9 +187,32 @@ background-color: #2f2f2f;
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 
 /********************************************************************** */
 
@@ -346,6 +369,7 @@ grid-column-end: span 2;
 
 
 
+<<<<<<< HEAD
 
 .workout-form {
   display: flex;
@@ -353,3 +377,5 @@ grid-column-end: span 2;
   justify-content: flex-start;
   align-items: flex-end; /* Align dropdowns to the right */ 
 }
+=======
+>>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
