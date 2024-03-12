@@ -1,62 +1,4 @@
-
-
-
-/* Adjusting Dropdown Styles */
-select {
-  background-color: white; /* Sets the dropdown background to white */
-  border: 1px solid #ccc; /* Optional: sets a light grey border */
-  color: #525252; /* Sets the text color to match other inputs */
-  padding: 5px; /* Adds some padding inside the dropdown for better text visibility */
-  border-radius: 5px; /* Optional: rounds the corners of the dropdown */
-  font-family: Inter, Tahoma, sans-serif; /* Ensures font consistency */
-  font-size: 16px; /* Adjusts the font size for better readability */
-}
-.box{
-  align-items: center;
-  position: relative;
-}
-
-/* Further style adjustments  option hover */
-select:hover {
-  background-color: #f9f9f9; /* Light grey background on hover for better user interaction */
-}
-
-/* Style adjustments for option focus */
-select:focus {
-  outline: none; /* Removes the default focus outline */
-  border-color: #669CB2; /* Adds a border color to match the theme when focused */
-}
-
-
-/****************** General page Layout *********************** */
-.container {
-  display: "flex";
-  margin-top: "20px"; /*the margin sets the distance from the top of the page */
-}
-
-
-
-
-/****************** Edit/Save/Cancel Buttons *********************** */
-
-/* .savePlanBtn{
-  margin-left: 12px;
-} */
-
-.editBtns{
-  display: flex;
-  justify-content: right;
-  overflow: none;
-  font-weight: 500;
-  margin-right: 5px;
-  /* position: fixed; */
-}
-
-.savePlanBtn{
-  margin-left: 20px;
-}
-
-.addExerciseBtn{
+@ -60,6 +60,7 @@ select:focus {
   margin-top: 15px;
 }
 
@@ -64,39 +6,34 @@ select:focus {
 /******************* WORKOUT BOX ********************** */
 
 .day {
-  flex-direction: "row";  
-  margin-left: "auto";
-  margin-right: "auto";
-  display: "flex";
-  justify-content: "center";
-  align-content: "center"; 
-  max-width: "60ch";
-  margin-top: "20px";
-  font-size: "40px";
-  font-weight: "bold";
-}
-
-
-/*Workout Plan Exercise Components */
-.exercise-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 10px;
-  max-width: 100%;
+@ -86,25 +87,21 @@ select:focus {
   max-height: 100%;
   margin: 2px;
   background-color: #669CB2;
+  overflow: hidden;
+}
   margin: 0 auto 10px;
   overflow-x: auto;
 
+.edit-exercise-weight, .weight-state, .weight-input{
+display: flex;
+margin-right: auto; /* Specifically for exercise-title */
+font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+font-size: 35px; /* Default for exercise-title */
+padding: 4px 0px; 
+width: 90px;
   box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
 }
 
+.workouts-list{
 .exercise-title, .edit-exercise-weight, .weight-state {
   display: flex;
+  margin-right: auto;
+  padding: 5px;
   margin-right: auto; /* Specifically for exercise-title */
   font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 25px;
+  box-sizing: border-box;
   font-size: 25px; /* Default for exercise-title */
 }
 .edit-exercise-weight, .weight-state {
@@ -105,16 +42,21 @@ select:focus {
 }
 
 .workout-state{
-  display: flex;
-  margin-right: auto;
-  padding: 5px;
-  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
-  font-size: 25px;
-}
-
+@ -118,69 +115,68 @@ width: 90px;
 
 
 .content {
+border-radius: 10px;
+display: flex;
+flex-grow: 0;
+flex-shrink: 0;
+flex-direction: row;
+white-space: nowrap;
+width: 200px;
+height: 80px;
+padding: 10px 20px;
+background-color: rgb(255, 255, 255);
+overflow-y:hidden;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -124,10 +66,14 @@ select:focus {
 }
 
 .edit-sets-reps, .sets-reps-container {
+display: grid;
+font-size: 20px;
+color: #7E7E7E;
   display: grid;
   font-size: 20px;
   color: #7E7E7E;
 }
+
 
 .edit-sets-reps {
   grid-template-columns: auto auto;
@@ -137,19 +83,33 @@ select:focus {
 }
 
 .sets-reps-container {
+  display: flex;
+  flex-direction: column;
+}
+.reps-input, .sets-input{
+  font-size: 20px;
+  max-height: 35px;
+  margin: -4px 0px 0px -0px ;
+  font-weight: 500;
+  margin-left: 6px;
   margin-left: auto;
   padding-left: auto;
 }
 
+
+.reps-input, .sets-input, .input-label-sets, .input-label-reps, .reps-state, .sets-state {
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
   grid-row: auto; /* Automatically place in the next available row */
   grid-column: auto; /* Automatically place in the next available column */
   border: 0;
+
 }
 .reps-input, .sets-input, select {
   width: 40px;
   margin-bottom: 1px;
 }
+
+
 
 .weight-input, .weight-state {
   width: 110px;
@@ -161,12 +121,22 @@ select:focus {
 }
 
 .buttons {
+display: flex;
+justify-content: space-around;
+width: 80%;
   display: flex;
   justify-content: space-evenly;
   width: 80%;
 }
 
 .circle-button {
+border: 3px solid #2f2f2f;
+border-radius: 30%;
+min-width: 30px;
+height: 30px;
+margin-left: 5px;
+padding: 10px;
+background-color: white;
   border: 3px solid #525252;
   border-radius: 30%;
   width: 30px;
@@ -176,14 +146,12 @@ select:focus {
 }
 
 .circle-button.checked {
+background-color: #2f2f2f;
   background-color: #323232;
 }
 
 .-toggle{
-  z-index: 999;
-  font-size: 25px;
-
-}
+@ -191,9 +187,32 @@ background-color: #2f2f2f;
 
 /********************************************************************** */
 
@@ -198,14 +166,14 @@ select:focus {
 
 .exercise-info-title {
   font-size: 40px;
-  margin-top: -15px;
+
 }
 
 .exercise-info-category {
   font-size: 30px;
   font-style: italic;
   margin-top: -5px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .exercise-info-description{
@@ -213,59 +181,6 @@ select:focus {
   margin-top: 20px;
   font-size: 18px;
 }
-
-
-
-
-
-/************     TIMER MODULE      *********** */
-.plus{
-margin-left: 5px;
-}
-
-.timer {
-background-color: #042550;
-position: absolute;
-right: 20px;
-bottom: 20px;
-display: flex;
-width: 300px;
-height: 100px;
-border-radius: 20px;
-padding: 20px;
-
-flex-direction: row;
-}
-.time-display{
-background-color: white;
-border-radius: 15px;
-width: 70%;
-font-family: Inter, Tahoma, serif;
-font-size: 40px;
-text-align: center;
-color: #525252;
-}
-.controls {
-margin-left: 10px;
-display: grid;
-grid-template-columns: repeat(2, 1fr); /* Two columns */
-grid-gap: 10%; /* Adjust the gap between buttons */
-width: 25%;
-
-font-family: Inter, Tahoma, serif;
-color: #525252;
-}
-.btn {
-background-color: #F0F0F0;
-text-align: center;
-border-radius: 10px;
-font-weight: bold;
-}
-.start-btn{
-grid-column-end: span 2; 
-}
-/********************************************************************** */
-
 
 
 
