@@ -5,7 +5,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
+import { hover } from "@testing-library/user-event/dist/hover";
 import { workouts } from './Exercises'; // Adjust the path as necessary
+
 
 //Workout********************************************************************************************************************
 export default function Workout() {
@@ -17,10 +19,13 @@ export default function Workout() {
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
-  
-     // Function to toggle sidebar open/close state
-     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const [displayExercise, setDisplayExercise] = useState(true);
 
+
+  // Function to toggle sidebar open/close state
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  // Set Guest User info
   useEffect(() => {
     if (!user) {
       console.log("Guest user detected. Setting default exercises.");
@@ -43,6 +48,8 @@ export default function Workout() {
         console.log("No such document!");
       }
     };
+
+
 
     async function defaultWorkouts() {
       if (!user) {
@@ -82,7 +89,7 @@ export default function Workout() {
           .set(defaultData);
 
         const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
-
+        
         // await setDoc(docRef, exercisesData);
       }
     }
@@ -117,6 +124,8 @@ export default function Workout() {
     // Add more objects for each plan you want to render
   ];
 
+
+  // Update exercises in Firebase when 
   useEffect(() => {
     if (!user) {
       return;
@@ -134,6 +143,7 @@ export default function Workout() {
     }
   }, [exercises, user, dayOfWeek]);
 
+  // Update the corresponding document in the database
   const updateExercise = async (index, details) => {
     // Assuming details can include name, category, weight, sets, reps
     const updatedExercises = exercises.map((exercise, i) => {
@@ -149,12 +159,18 @@ export default function Workout() {
     console.log("Updating exercises:", updatedExercises);
 
     setExercises(updatedExercises);
-
-    // Update the corresponding document in the database
   };
 
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
+
+  const checkHover = (hover, workout) => {
+    if(hover){
+      setDisplayExercise(workout);
+    } else {
+      setDisplayExercise(null);
+    }
+  }
 
   //Workout Structure********************************************************************************
   return (
@@ -162,104 +178,106 @@ export default function Workout() {
       {/*sidebar*/}
       <button className="-toggle" onClick={toggleSidebar}>
         {isSidebarOpen ? (
-          <i class="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left"></i>
         ) : (
-          <i class="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right"></i>
         )}
       </button>
-      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
+      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
       {/*page*/}
       <div className="page">
         <h1 className="day"> 
-          {" "}Monday
+          {displayExercise ? (<span style={{color:"white"}}>placeholder</span>) : ("MONDAY")}
         </h1>
 
-        <div 
-          className="container" 
-          style={{marginLeft:  isSidebarOpen ? "100px" : "0px"}}>
-          <div
-            className="editMode"
-            style={{
-              fontSize: "20px",
-             
-            }}
-          >
-             
-              
-            </div>
+
             
-          </div>{" "}
-          {/* editMode */}
 
 
+
+          {/* ACTUAL BOX */}
           <div className="box">
+            {displayExercise ? (
+              <div className="exercise-info">
+                <h1 className="exercise-info-title">{displayExercise.name}</h1>
+                <h2 className="exercise-info-category">{displayExercise.category}</h2>
+                <img src={displayExercise.imageUrl} style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
+                <p className="exercise-info-description">{displayExercise.description}</p>
+              </div>
+            ) : (
+              <>
+              <div className="editBtns">
+                {/* EDIT BUTTON */}
+                {editMode ? ("") :
+                  (<button className="editPlanBtn"
+                    onClick={toggleEditMode}>
+                    Edit
+                  </button>
+                )}
 
-            <div className="editBtns">
-              {/* EDIT BUTTON */}
-              {editMode ? ("") :
-                (<button className="editPlanBtn"
-                  onClick={toggleEditMode}>
-                  Edit
-                </button>
-              )}
+                {/* CANCEL BUTTON - cancelEditMode does not exist*/}
+                {/* {editMode ?
+                  (<button className="cancelPlanBtn"
+                    onClick={() => { cancelEditMode();}}> 
+                    Cancel
+                  </button>
+                ) : ("")} */}
+                
+                {/* SAVE BUTTON */}
+                {editMode ?
+                  (<button className="savePlanBtn"
+                    onClick={() => { setEditMode(); }}>
+                    Save
+                  </button>
+                ) :  ("")}
+              </div>
 
-              {/* CANCEL BUTTON - cancelEditMode does not exist*/}
-              {/* {editMode ?
-                (<button className="cancelPlanBtn"
-                  onClick={() => { cancelEditMode();}}> 
-                  Cancel
-                </button>
-              ) : ("")} */}
-              
-              {/* SAVE BUTTON */}
-              {editMode ?
-                (<button className="savePlanBtn"
-                  onClick={() => { setEditMode(); }}>
-                  Save
-                </button>
-              ) :  ("")}
-              
-            </div>
-
-            {editPlanMode ? (
-            plans.map((plan, index) => (
-              <EditPlan
-                key={index}
-                className={plan.className}
-                exerciseName={plan.exerciseName}
-                weight={plan.weight}
-                reps={plan.reps}
-                sets={plan.sets}
-              />
-            ))) : (
-              exercises.map((exercise, index) => (
-                <ExerciseBox
+              {editPlanMode ? (
+              plans.map((plan, index) => (
+                <EditPlan
                   key={index}
-                  index={index}
-                  exercise={exercise.name}
-                  weight={exercise.weight}
-                  sets={exercise.sets}
-                  reps={exercise.reps}
-                  updateExercise={updateExercise} // Pass updateWeight function here
-                  removeExercise={removeExercise}
-                  addExercise={addExercise}
-                  editMode={editMode} // Pass edit mode to control input fields visibility
+                  className={plan.className}
+                  exerciseName={plan.exerciseName}
+                  weight={plan.weight}
+                  reps={plan.reps}
+                  sets={plan.sets}
                 />
-              ))
+              ))) : (
+                exercises.map((exercise, index) => (
+                  <ExerciseBox
+                    key={index}
+                    index={index}
+                    exercise={exercise.name}
+                    weight={exercise.weight}
+                    sets={exercise.sets}
+                    reps={exercise.reps}
+                    updateExercise={updateExercise} // Pass updateWeight function here
+                    removeExercise={removeExercise}
+                    addExercise={addExercise}
+                    editMode={editMode} // Pass edit mode to control input fields visibility
+                  />
+                ))
+              )}
+              <button className="addExerciseBtn"
+                onClick={() => addExercise()}>
+                <i className="fas fa-solid fa-plus"></i>
+              </button>
+            </>
             )}
-            <button className="addExerciseBtn"
-              onClick={() => addExercise()}>
-              <i className="fas fa-solid fa-plus"></i>
-            </button>
-          </div>
-        </div>
-    
-      
-      <Timer />
-     
-    </>
+       </div>
+       <Timer />
+     </div>
+     </>
   );
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -275,14 +293,21 @@ const ExerciseBox = ({
   updateExercise,
   editMode, // Prop to control the visibility of input fields
   removeExercise,
+  
 }) => {
+  const dataListId = `workouts-${index}`;
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
   );
-  const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
+  const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
+
+  const [exerciseTitle, setExerciseTitle] = useState('');
+
+  
+
 
   //HANDLES********************************************************************************************************************
 
@@ -292,6 +317,12 @@ const ExerciseBox = ({
       newCheckedButtons[index] = !newCheckedButtons[index];
       return newCheckedButtons;
     });
+  };
+
+
+  const handleInputChange = (event) => {
+    const newWorkout = event.target.value;
+    setSelectedWorkout(newWorkout); 
   };
 
   const handleWeightChange = async (event) => {
@@ -320,13 +351,26 @@ const ExerciseBox = ({
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-      <div className="exercise-title">
-        {/* editMode ? (
-        <b value={exercise} onChange={(e) => setEditedExerciseName(e.target.value)} className="name-input" />
-      ) : (*/}
-        <b>{exercise}</b>
-      </div>
+    {editMode ? (
+      <div className="workouts-list">
+      <input 
+        list={dataListId} 
+        onChange={handleInputChange} 
+        value={selectedWorkout} 
+      />
+      <datalist id={dataListId}>
+        {workouts.map((workout, idx) => (
+          <option key={idx} value={workout.name} />
+        ))}
+      </datalist>
+    </div>
+    ):(<div className="workout-state">
+    {selectedWorkout}
+  </div>
+  )}
 
+
+         
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
@@ -344,38 +388,38 @@ const ExerciseBox = ({
                 value={selectedSets}
                 onChange={handleSetsChange}
                 className="sets-input"
+            
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                <option value="1">1 Sets</option>
+                <option value="2">2 Sets</option>
+                <option value="3">3 Sets</option>
+                <option value="4">4 Sets</option>
+                <option value="5">5 Sets</option>
+                <option value="6">6 Sets</option>
               </select>
-              <div className="input-label-sets">Sets</div>
               <select
                 value={selectedReps}
                 onChange={handleRepsChange}
                 className="reps-input"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
+                <option value="1">1 Reps</option>
+                <option value="2">2 Reps</option>
+                <option value="3">3 Reps</option>
+                <option value="4">4 Reps</option>
+                <option value="5">5 Reps</option>
+                <option value="6">6 Reps</option>
+                <option value="7">7 Reps</option>
+                <option value="8">8 Reps</option>
+                <option value="9">9 Reps</option>
+                <option value="10">10 Reps</option>
+                <option value="11">11 Reps</option>
+                <option value="12">12 Reps</option>
                 //Add more options as needed
               </select>
-              <div class="input-label-reps">Reps</div>
             </div>
           </div>
         ) : (
+         
           // View mode: Display current values without input fields
           <div className="content">
             <div className="weight-state">{selectedWeight}</div>
@@ -392,6 +436,7 @@ const ExerciseBox = ({
               className={`circle-button ${isChecked ? "checked" : ""}`}
               onClick={() => handleToggle(index)}
             ></button>
+            
           ))}
         </div>
         {editMode && (
