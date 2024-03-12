@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/exercises.css';
 
-const Exercises = ({sidebarWidth, style}) => {
+const Exercises = ({sidebarWidth, style, checkHover}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
   const [hoveredExercise, setHoveredExercise] = useState(null);
@@ -35,8 +35,14 @@ const Exercises = ({sidebarWidth, style}) => {
                 <li 
                   key={workout.id} 
                   className="workout-item" 
-                  onMouseEnter={() => setHoveredExercise(workout)}
-                  onMouseLeave={() => setHoveredExercise(null)}
+                  onMouseEnter={() => {
+                    setHoveredExercise(workout);
+                    checkHover(true, workout);
+                    }}
+                  onMouseLeave={() => {
+                    setHoveredExercise(null);
+                    checkHover(false, workout);
+                  }}
                 >
                   <span className="workout-name">{workout.name}</span>
                   <span className="workout-category">{workout.category}</span>
@@ -49,11 +55,11 @@ const Exercises = ({sidebarWidth, style}) => {
       </div>
       {hoveredExercise && (
       <div className="exercise-detail">
-        <img src={hoveredExercise.imageUrl} alt={hoveredExercise.name} />
-        <div className="exercise-description">
+        {/* <img src={hoveredExercise.imageUrl} alt={hoveredExercise.name} /> */}
+        {/* <div className="exercise-description">
           <h4>{hoveredExercise.name}</h4>
           <p>{hoveredExercise.description}</p>
-        </div>
+        </div> */}
       </div>
       )}
     </div>

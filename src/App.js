@@ -59,7 +59,9 @@ function SignInPage({ setIsGuest }){
     <>
     <div className='sign-in-page'>
       <div className='sign-in-box'>
-        <h1 className='sign-in-title'>Giga<span id='title-b'>B</span></h1>
+        <h1 className='sign-in-title'>
+          Giga
+          <span id="big-b">B</span></h1>
         <h2 className='sign-in-subtitle'>The Ultimate Workout Experience</h2>
         <button id="sign-in-btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
           onClick={signInWithGoogle}>
@@ -81,6 +83,9 @@ function SignOut() {
   )
 }
 
+/* HOME PAGE 
+    * Template page that contains links to all the other 
+*/
 function HomePage() {
 
   return (<>
@@ -92,6 +97,7 @@ function HomePage() {
           <Route path ="/" element ={<Workout />} />
           <Route path ="/Friends" element ={<Friends />} />
           <Route path ="/Workout" element ={<Workout />} />
+          <Route path ="/exercises" element ={<Exercises />} />
           <Route path ="/Profile" element ={<Profile />} />
         </Routes>
         </div>
