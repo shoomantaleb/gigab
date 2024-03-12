@@ -3,7 +3,7 @@ import '../styles/sidebar.css';
 import useWindowSize from '../components/WindowResize';
 import Exercises from '../pages/Exercises';
 import EditPlan from '../components/EditPlan';
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, checkHover}) => {
 
 
 const [width, height] = useWindowSize(); // Destructure the width and height from the hook
@@ -22,7 +22,8 @@ const customStyleWhenSidebarOpen = {
           {/* Sidebar content here */}
           <Exercises
          sidebarWidth={sidebarWidth}
-        style={isOpen ? customStyleWhenSidebarOpen : {}}
+          style={isOpen ? customStyleWhenSidebarOpen : {}}
+          checkHover={checkHover}
         />
         </div>
        

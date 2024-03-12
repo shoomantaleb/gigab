@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
-import { workouts } from './Exercises'; // Adjust the path as necessary
+import { hover } from "@testing-library/user-event/dist/hover";
 
 //Workout********************************************************************************************************************
 export default function Workout() {
@@ -17,10 +17,13 @@ export default function Workout() {
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
-  
-     // Function to toggle sidebar open/close state
-     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const [displayExercise, setDisplayExercise] = useState(true);
 
+
+  // Function to toggle sidebar open/close state
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  // Set Guest User info
   useEffect(() => {
     if (!user) {
       console.log("Guest user detected. Setting default exercises.");
@@ -119,6 +122,8 @@ export default function Workout() {
     // Add more objects for each plan you want to render
   ];
 
+
+  // Update exercises in Firebase when 
   useEffect(() => {
     if (!user) {
       return;
@@ -136,6 +141,7 @@ export default function Workout() {
     }
   }, [exercises, user, dayOfWeek]);
 
+  // Update the corresponding document in the database
   const updateExercise = async (index, details) => {
     // Assuming details can include name, category, weight, sets, reps
     const updatedExercises = exercises.map((exercise, i) => {
@@ -151,12 +157,18 @@ export default function Workout() {
     console.log("Updating exercises:", updatedExercises);
 
     setExercises(updatedExercises);
-
-    // Update the corresponding document in the database
   };
 
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
+
+  const checkHover = (hover, workout) => {
+    if(hover){
+      setDisplayExercise(workout);
+    } else {
+      setDisplayExercise(null);
+    }
+  }
 
   //Workout Structure********************************************************************************
   return (
@@ -164,104 +176,106 @@ export default function Workout() {
       {/*sidebar*/}
       <button className="-toggle" onClick={toggleSidebar}>
         {isSidebarOpen ? (
-          <i class="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left"></i>
         ) : (
-          <i class="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right"></i>
         )}
       </button>
-      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
+      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
       {/*page*/}
       <div className="page">
         <h1 className="day"> 
-          {" "}Monday
+          {displayExercise ? (<span style={{color:"white"}}>placeholder</span>) : ("MONDAY")}
         </h1>
 
-        <div 
-          className="container" 
-          style={{marginLeft:  isSidebarOpen ? "100px" : "0px"}}>
-          <div
-            className="editMode"
-            style={{
-              fontSize: "20px",
-             
-            }}
-          >
-             
-              
-            </div>
+
             
-          </div>{" "}
-          {/* editMode */}
 
 
+
+          {/* ACTUAL BOX */}
           <div className="box">
+            {displayExercise ? (
+              <div className="exercise-info">
+                <h1 className="exercise-info-title">{displayExercise.name}</h1>
+                <h2 className="exercise-info-category">{displayExercise.category}</h2>
+                <img src="https://i.redd.it/l0m6jy5zqwxa1.png" style={{width:"80%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
+                <p className="exercise-info-description">{displayExercise.description}</p>
+              </div>
+            ) : (
+              <>
+              <div className="editBtns">
+                {/* EDIT BUTTON */}
+                {editMode ? ("") :
+                  (<button className="editPlanBtn"
+                    onClick={toggleEditMode}>
+                    Edit
+                  </button>
+                )}
 
-            <div className="editBtns">
-              {/* EDIT BUTTON */}
-              {editMode ? ("") :
-                (<button className="editPlanBtn"
-                  onClick={toggleEditMode}>
-                  Edit
-                </button>
-              )}
+                {/* CANCEL BUTTON - cancelEditMode does not exist*/}
+                {/* {editMode ?
+                  (<button className="cancelPlanBtn"
+                    onClick={() => { cancelEditMode();}}> 
+                    Cancel
+                  </button>
+                ) : ("")} */}
+                
+                {/* SAVE BUTTON */}
+                {editMode ?
+                  (<button className="savePlanBtn"
+                    onClick={() => { setEditMode(); }}>
+                    Save
+                  </button>
+                ) :  ("")}
+              </div>
 
-              {/* CANCEL BUTTON - cancelEditMode does not exist*/}
-              {/* {editMode ?
-                (<button className="cancelPlanBtn"
-                  onClick={() => { cancelEditMode();}}> 
-                  Cancel
-                </button>
-              ) : ("")} */}
-              
-              {/* SAVE BUTTON */}
-              {editMode ?
-                (<button className="savePlanBtn"
-                  onClick={() => { setEditMode(); }}>
-                  Save
-                </button>
-              ) :  ("")}
-              
-            </div>
-
-            {editPlanMode ? (
-            plans.map((plan, index) => (
-              <EditPlan
-                key={index}
-                className={plan.className}
-                exerciseName={plan.exerciseName}
-                weight={plan.weight}
-                reps={plan.reps}
-                sets={plan.sets}
-              />
-            ))) : (
-              exercises.map((exercise, index) => (
-                <ExerciseBox
+              {editPlanMode ? (
+              plans.map((plan, index) => (
+                <EditPlan
                   key={index}
-                  index={index}
-                  exercise={exercise.name}
-                  weight={exercise.weight}
-                  sets={exercise.sets}
-                  reps={exercise.reps}
-                  updateExercise={updateExercise} // Pass updateWeight function here
-                  removeExercise={removeExercise}
-                  addExercise={addExercise}
-                  editMode={editMode} // Pass edit mode to control input fields visibility
+                  className={plan.className}
+                  exerciseName={plan.exerciseName}
+                  weight={plan.weight}
+                  reps={plan.reps}
+                  sets={plan.sets}
                 />
-              ))
+              ))) : (
+                exercises.map((exercise, index) => (
+                  <ExerciseBox
+                    key={index}
+                    index={index}
+                    exercise={exercise.name}
+                    weight={exercise.weight}
+                    sets={exercise.sets}
+                    reps={exercise.reps}
+                    updateExercise={updateExercise} // Pass updateWeight function here
+                    removeExercise={removeExercise}
+                    addExercise={addExercise}
+                    editMode={editMode} // Pass edit mode to control input fields visibility
+                  />
+                ))
+              )}
+              <button className="addExerciseBtn"
+                onClick={() => addExercise()}>
+                <i className="fas fa-solid fa-plus"></i>
+              </button>
+            </>
             )}
-            <button className="addExerciseBtn"
-              onClick={() => addExercise()}>
-              <i className="fas fa-solid fa-plus"></i>
-            </button>
-          </div>
-        </div>
-    
-      
-      <Timer />
-     
-    </>
+       </div>
+       <Timer />
+     </div>
+     </>
   );
 }
+
+
+
+
+
+
+
+
 
 
 
