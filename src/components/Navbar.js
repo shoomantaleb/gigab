@@ -16,8 +16,8 @@ export default function Navbar() {
             <ul>
                 <CustomLink to="/Friends" className="normal"> Friends </CustomLink>
                 <CustomLink to="/Workout" className="normal"> Workout </CustomLink>
-                <CustomLink to="/Exercises" className="normal"> Exercises</CustomLink>
-                
+                {/* <CustomLink to="/Exercises" className="normal"> Exercises</CustomLink> */}
+
 
                 {user ? (
                     <CustomLink to="/Profile" className="profile-link" displayName={user.displayName} photoURL={user.photoURL} />
