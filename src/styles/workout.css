@@ -1,4 +1,4 @@
-@ -60,6 +60,7 @@ select:focus {
+select:focus {
   margin-top: 15px;
 }
 
@@ -6,30 +6,18 @@
 /******************* WORKOUT BOX ********************** */
 
 .day {
-@ -86,25 +87,21 @@ select:focus {
   max-height: 100%;
   margin: 2px;
   background-color: #669CB2;
   overflow: hidden;
-}
   margin: 0 auto 10px;
   overflow-x: auto;
-
-.edit-exercise-weight, .weight-state, .weight-input{
-display: flex;
-margin-right: auto; /* Specifically for exercise-title */
-font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
-font-size: 35px; /* Default for exercise-title */
-padding: 4px 0px; 
-width: 90px;
-  box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
 }
 
-.workouts-list{
+
+
 .exercise-title, .edit-exercise-weight, .weight-state {
   display: flex;
-  margin-right: auto;
-  padding: 5px;
   margin-right: auto; /* Specifically for exercise-title */
   font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
   font-size: 25px;
@@ -42,21 +30,11 @@ width: 90px;
 }
 
 .workout-state{
-@ -118,69 +115,68 @@ width: 90px;
-
+width: 90px;
+}
 
 .content {
-border-radius: 10px;
-display: flex;
-flex-grow: 0;
-flex-shrink: 0;
-flex-direction: row;
-white-space: nowrap;
-width: 200px;
-height: 80px;
-padding: 10px 20px;
-background-color: rgb(255, 255, 255);
-overflow-y:hidden;
+  display: flex;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -66,9 +44,6 @@ overflow-y:hidden;
 }
 
 .edit-sets-reps, .sets-reps-container {
-display: grid;
-font-size: 20px;
-color: #7E7E7E;
   display: grid;
   font-size: 20px;
   color: #7E7E7E;
@@ -98,7 +73,6 @@ color: #7E7E7E;
 
 
 .reps-input, .sets-input, .input-label-sets, .input-label-reps, .reps-state, .sets-state {
-.reps-input, .sets-input, .input-label-sets, .input-label-reps {
   grid-row: auto; /* Automatically place in the next available row */
   grid-column: auto; /* Automatically place in the next available column */
   border: 0;
@@ -109,7 +83,16 @@ color: #7E7E7E;
   margin-bottom: 1px;
 }
 
-
+.edit-exercise-weight, .weight-state, .weight-input{
+  display: flex;
+  margin-right: auto; /* Specifically for exercise-title */
+  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 35px; /* Default for exercise-title */
+  padding: 4px 0px; 
+  width: 90px;
+  box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
+  }
+  
 
 .weight-input, .weight-state {
   width: 110px;
@@ -151,8 +134,8 @@ background-color: #2f2f2f;
 }
 
 .-toggle{
-@ -191,9 +187,32 @@ background-color: #2f2f2f;
-
+ background-color: #2f2f2f;
+}
 /********************************************************************** */
 
 /************     Dictionary Index MODULE      *********** */
