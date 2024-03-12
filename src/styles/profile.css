@@ -39,6 +39,7 @@ body {
   border: 3px solid #E6E6E6;
   object-fit: cover;
   border-radius: 50%;
+  margin-right: 20px;
 }
 
 .username {
