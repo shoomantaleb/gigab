@@ -27,16 +27,22 @@ export default function App() {
   //Signed out - user is null
 
   return (
-    <div className="App">      
+    <div className="App">
+      <header>
+
+      </header>
+      
       <section >
-        {user ? <HomePage /> : isGuest ? <HomePage /> : <SignInPage setIsGuest={setIsGuest} />} 
+        {/* Sign in component */}
+        {user ? <HomePage /> : isGuest ? <HomePage /> : <SignIn setIsGuest={setIsGuest} />} 
+      
       </section>
     </div>
   );
   
 }
 
-function SignInPage({ setIsGuest }){
+function SignIn({ setIsGuest }){
   //Opens google sign in window
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -57,22 +63,9 @@ function SignInPage({ setIsGuest }){
 
   return (
     <>
-    <div className='sign-in-page'>
-      <div className='sign-in-box'>
-        <h1 className='sign-in-title'>
-          Giga
-          <span id="big-b">B</span></h1>
-        <h2 className='sign-in-subtitle'>The Ultimate Workout Experience</h2>
-        <button id="sign-in-btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
-          onClick={signInWithGoogle}>
-            Sign in with Google
-        </button>
-      </div>
-    </div>
-
-    {/* GUEST USER BUTTON */}
-    {/* <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setIsGuest(true)}>Continue as Guest</button>  */}
-    </>
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={signInWithGoogle}>Sign in with Google</button>
+    <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setIsGuest(true)}>Continue as Guest</button> 
+    </>// + Button for guest users
   )
 }
 
@@ -83,11 +76,37 @@ function SignOut() {
   )
 }
 
-/* HOME PAGE 
-    * Template page that contains links to all the other 
-*/
 function HomePage() {
 
+ /* const dummy = useRef();
+  const messagesRef = firestore.collection('messages');
+  const query = messagesRef.orderBy('createdAt').limit(25);
+
+  const [messages] = useCollectionData(query, { idField: 'id' });
+
+  const [formValue, setFormValue] = useState('');
+
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    const { uid, photoURL } = auth.currentUser;
+
+    await messagesRef.add({
+      text: formValue,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      photoURL
+    })
+
+    setFormValue('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
+    
+   
+
+  }
+*/
+  
   return (<>
     <main>
       
@@ -104,5 +123,37 @@ function HomePage() {
       
 
       </main>
+{/*
+      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+     
+      <span ref={dummy}></span>
+      
+    </main>
+
+    <form onSubmit={sendMessage}>
+
+      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
+
+      <button type="submit" disabled={!formValue}>🕊️</button>
+
+    </form>
+  */}
+
   </>)
 }
+
+
+/*
+function ChatMessage(props) {
+  const { text, uid, photoURL } = props.message;
+
+  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+
+  return (<>
+    <div className={`message ${messageClass}`}>
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
+      <p>{text}</p>
+    </div>
+  </>)
+}
+*/

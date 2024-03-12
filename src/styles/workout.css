@@ -74,7 +74,6 @@ select:focus {
   margin-top: 15px;
 }
 
-
 /******************* WORKOUT BOX ********************** */
 
 .day {
@@ -121,12 +120,10 @@ select:focus {
   max-height: 100%;
   margin: 2px;
   background-color: #669CB2;
-  margin: 0 auto 10px;
-  overflow-x: auto;
-
-  box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
+  overflow: hidden;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 .workouts-list{
 <<<<<<< HEAD
@@ -136,14 +133,24 @@ select:focus {
 =======
 >>>>>>> parent of 9444d51b (Fixed Merge Commit Workout.css)
 .exercise-title, .edit-exercise-weight, .weight-state {
-  display: flex;
-  margin-right: auto; /* Specifically for exercise-title */
-  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
-  font-size: 25px; /* Default for exercise-title */
+=======
+.edit-exercise-weight, .weight-state, .weight-input{
+display: flex;
+margin-right: auto; /* Specifically for exercise-title */
+font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+font-size: 35px; /* Default for exercise-title */
+padding: 4px 0px; 
+width: 90px;
 }
-.edit-exercise-weight, .weight-state {
-  font-size: 40px; /* Override for these classes */
-  margin-right: 10px; /* Specifically for edit-exercise-weight */
+
+.workouts-list{
+>>>>>>> parent of d128b3d0 (Merge branch 'main' of https://github.com/shoomantaleb/gigab)
+  display: flex;
+  margin-right: auto;
+  padding: 5px;
+  font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
+  font-size: 25px;
+  box-sizing: border-box;
 }
 <<<<<<< HEAD
 .content {
@@ -161,6 +168,9 @@ select:focus {
 
 .content {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of d128b3d0 (Merge branch 'main' of https://github.com/shoomantaleb/gigab)
 border-radius: 10px;
 display: flex;
 flex-grow: 0;
@@ -173,6 +183,7 @@ padding: 10px 20px;
 background-color: rgb(255, 255, 255);
 overflow-y:hidden;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
 =======
 >>>>>>> parent of 43231b9c (Fixed Merge Conflict)
@@ -184,26 +195,31 @@ overflow-y:hidden;
   white-space: nowrap;
   padding: 10px 20px;
   background-color: rgb(255, 255, 255);
+=======
+>>>>>>> parent of d128b3d0 (Merge branch 'main' of https://github.com/shoomantaleb/gigab)
 }
 
 .edit-sets-reps, .sets-reps-container {
-  display: grid;
-  font-size: 20px;
-  color: #7E7E7E;
+display: grid;
+font-size: 20px;
+color: #7E7E7E;
 }
 
-.edit-sets-reps {
-  grid-template-columns: auto auto;
-  gap: 0;
-  padding: 0;
-  text-align: center;
-}
+
 
 .sets-reps-container {
-  margin-left: auto;
-  padding-left: auto;
+  display: flex;
+  flex-direction: column;
+}
+.reps-input, .sets-input{
+  font-size: 20px;
+  max-height: 35px;
+  margin: -4px 0px 0px -0px ;
+  font-weight: 500;
+  margin-left: 6px;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -218,13 +234,15 @@ overflow-y:hidden;
 .reps-input, .sets-input, .input-label-sets, .input-label-reps {
   grid-row: auto; /* Automatically place in the next available row */
   grid-column: auto; /* Automatically place in the next available column */
+=======
+
+.reps-input, .sets-input, .input-label-sets, .input-label-reps, .reps-state, .sets-state {
+>>>>>>> parent of d128b3d0 (Merge branch 'main' of https://github.com/shoomantaleb/gigab)
   border: 0;
-}
-.reps-input, .sets-input, select {
-  width: 40px;
-  margin-bottom: 1px;
+
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -242,27 +260,32 @@ overflow-y:hidden;
   max-width: 105px;
   font-size: 40px; /* Override for weight-state */
 }
+=======
+
+
+>>>>>>> parent of d128b3d0 (Merge branch 'main' of https://github.com/shoomantaleb/gigab)
 .weight-input {
   border-bottom: 1px #2F2F2F solid;
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-evenly;
-  width: 80%;
+display: flex;
+justify-content: space-around;
+width: 80%;
 }
 
 .circle-button {
-  border: 3px solid #525252;
-  border-radius: 30%;
-  width: 30px;
-  height: 30px;
-  margin-left: 5px;
-  background-color: white;
+border: 3px solid #2f2f2f;
+border-radius: 30%;
+min-width: 30px;
+height: 30px;
+margin-left: 5px;
+padding: 10px;
+background-color: white;
 }
 
 .circle-button.checked {
-  background-color: #323232;
+background-color: #2f2f2f;
 }
 
 .-toggle{
@@ -287,32 +310,9 @@ overflow-y:hidden;
 
 /********************************************************************** */
 
-/************     Dictionary Index MODULE      *********** */
 
 
-.exercise-info{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.exercise-info-title {
-  font-size: 40px;
-
-}
-
-.exercise-info-category {
-  font-size: 30px;
-  font-style: italic;
-  margin-top: -5px;
-  margin-bottom: 10px;
-}
-
-.exercise-info-description{
-  width: 80%;
-  margin-top: 20px;
-  font-size: 18px;
-}
 
 
 
