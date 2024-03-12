@@ -197,7 +197,7 @@ export default function Workout() {
               <div className="exercise-info">
                 <h1 className="exercise-info-title">{displayExercise.name}</h1>
                 <h2 className="exercise-info-category">{displayExercise.category}</h2>
-                <img src={displayExercise.imageUrl} style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
+                <img src="https://i.redd.it/l0m6jy5zqwxa1.png" style={{width:"80%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
                 <p className="exercise-info-description">{displayExercise.description}</p>
               </div>
             ) : (

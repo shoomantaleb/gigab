@@ -298,14 +298,14 @@ overflow-y:hidden;
 
 .exercise-info-title {
   font-size: 40px;
-  margin-top: -15px;
+
 }
 
 .exercise-info-category {
   font-size: 30px;
   font-style: italic;
   margin-top: -5px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .exercise-info-description{
