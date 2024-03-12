@@ -13,6 +13,7 @@ import {
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import '../styles/friends.css';
+import default_pfp from '../default_pfp.jpg'
 
 export default function Friends() {
     const [user] = useAuthState(auth);
@@ -264,14 +265,17 @@ export default function Friends() {
 
 
                     <div id="friend-list">
+
                         {/* DISPLAY USERS THAT MATCH THE SEARCH  */}
+                        {/* <img src={default_pfp}></img> */}
+                        {console.log(user[2])}
                         {searchResults.map((user, index) => (
                             // {uid, username, photoURL, score, isFollowed}
                             <UserBox
                                 key={index}
                                 uid={user[0]}
                                 username={user[1]}
-                                photoURL={user[2]}
+                                photoURL={(user[2] == null || user[2] == undefined) ? default_pfp : user[2]}
                                 score={user[3]}
                                 isFollowed={user[4]}
                                 handleFollow={(uid, isFollowed) => handleFollow(uid, isFollowed)} // Pass updateWeight function here
