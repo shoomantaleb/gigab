@@ -34,6 +34,10 @@ select:focus {
   margin-top: "20px"; /*the margin sets the distance from the top of the page */
 }
 
+.toggle-sidebar  {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 
 
@@ -71,7 +75,7 @@ select:focus {
   justify-content: "center";
   align-content: "center"; 
   max-width: "60ch";
-  margin-top: "20px";
+  margin-top: 20px;
   font-size: "40px";
   font-weight: "bold";
 }

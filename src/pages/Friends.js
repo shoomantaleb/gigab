@@ -13,6 +13,7 @@ import {
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import '../styles/friends.css';
+import src from '../default_pfp.jpeg'
 
 export default function Friends() {
     const [user] = useAuthState(auth);
@@ -263,7 +264,7 @@ export default function Friends() {
                                 key={index}
                                 uid={user[0]}
                                 username={user[1]}
-                                photoURL={user[2]}
+                                photoURL={user[2] == null ? src : user[2]}
                                 score={user[3]}
                                 isFollowed={user[4]}
                                 handleFollow={(uid, isFollowed) => handleFollow(uid, isFollowed)} // Pass updateWeight function here
@@ -285,7 +286,7 @@ export default function Friends() {
                                 position={user[0]}
                                 uid={user[1]}
                                 username={user[2]}
-                                photoURL={user[3]}
+                                photoURL={user[3] == null ? src : user[3]}
                                 score={user[4]}
                             />
                         ))}

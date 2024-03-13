@@ -13,6 +13,7 @@ import {
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import WeightGraph from '../components/WeightGraph.js';
+import defaultPfp from '../default_pfp.jpeg'
 
 export default function Profile() {
   const [user] = useAuthState(auth);
@@ -135,7 +136,7 @@ export default function Profile() {
     <div className='page'>
       <div className='profile-card'>
         <div className='user-info'>
-        <img src={user.photoURL} alt="User" className="user-photo" />
+        <img src={user.photoURL == null ? defaultPfp : user.photoURL} alt="User" className="user-photo" />
         <div className='columnOrganizer'>
             <p className='username' >{user ? user.displayName : 'User'}</p>
           <p className='tier-subheading'>

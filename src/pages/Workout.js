@@ -24,9 +24,6 @@ export default function Workout() {
 
  
 
-
- 
-
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -166,6 +163,8 @@ export default function Workout() {
     setExercises(updatedExercises);
   };
 
+
+
   // Toggle edit mode
   const toggleEditMode = () => setEditMode(!editMode);
 
@@ -188,9 +187,9 @@ export default function Workout() {
       {/*sidebar*/}
       <button className="-toggle" onClick={toggleSidebar}>
         {isSidebarOpen ? (
-          <i className="fas fa-chevron-left"></i>
+          <i className="toggle-sidebar fas fa-chevron-left"></i>
         ) : (
-          <i className="fas fa-chevron-right"></i>
+          <i className="toggle-sidebar fas fa-chevron-right"></i>
         )}
       </button>
       <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
@@ -206,7 +205,8 @@ export default function Workout() {
               <div className="exercise-info">
                 <h1 className="exercise-info-title">{displayExercise.title}</h1>
                 <h2 className="exercise-info-category">{displayExercise.category}</h2>
-                <img src={displayExercise.imageUrl} style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
+                <img src={displayExercise.imageUrl} 
+                  style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
                 <p className="exercise-info-description">{displayExercise.description}</p>
               </div>
             ) : (
@@ -275,7 +275,6 @@ export default function Workout() {
      </>
   );
 }
-
 
 
 
