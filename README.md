@@ -1,6 +1,8 @@
 # GigaB: boost fitness motivation and community engagement. 
 
 
+<img width="403" alt="Profile image GIGAB" src="https://github.com/shoomantaleb/gigab/assets/129248303/3956e29d-d67b-4703-97e0-29da78983f1a">
+
 
 
 
