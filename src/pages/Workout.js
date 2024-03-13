@@ -5,29 +5,26 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
-import { hover } from "@testing-library/user-event/dist/hover";
 import { workouts } from './Exercises'; // Adjust the path as necessary
+import Calendar from '../components/Calendar';
+import { debounce } from 'lodash';
 
-
-//Workout********************************************************************************************************************
+const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+//Workout********************************************************************************************************************ssdcsdc
 export default function Workout() {
   
 //States********************************************************************************************************************
   const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
-  const [dayOfWeek, setDayOfWeek] = useState("monday");
+  const [activeDate, setActiveDate] = useState(new Date());
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
   const [displayExercise, setDisplayExercise] = useState(false);
-
-
- 
-
+  
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Set Guest User info
   useEffect(() => {
     if (!user) {
       console.log("Guest user detected. Setting default exercises.");
@@ -40,7 +37,7 @@ export default function Workout() {
       return;
     }
     const fetchDocument = async () => {
-      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
+      const docRef = doc(db, "users", user.uid, "workout-plan", getDateString());
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -51,54 +48,83 @@ export default function Workout() {
       }
     };
 
-    async function defaultWorkouts() {
-      if (!user) {
-        return;
-      }
-      // Check if the document for the user already exists
-      const userDoc = await db
-        .collection("users")
-        .doc(user.uid)
-        .collection("workout-plan")
-        .doc("monday")
-        .get();
-      // If the document does not exist, set the default data
-      if (!userDoc.exists) {
-        const defaultData = {
-          exercises: [
-            {
-              name: "DefaultExercise1",
-              reps: 8,
-              sets: 3,
-              weight: 15,
-            },
-            {
-              name: "DefaultExercise2",
-              reps: 10,
-              sets: 2,
-              weight: 12,
-            },
-          ],
-        };
-        // Set the default data for the user
-        await db
-          .collection("users")
-          .doc(user.uid)
-          .collection("workout-plan")
-          .doc("monday")
-          .set(defaultData);
-
-        const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
-
-        // await setDoc(docRef, exercisesData);
-      }
-    }
-
     defaultWorkouts();
     fetchDocument();
   }, []);
 
-//Functions********************************************************************************************************************
+  //Functions********************************************************************************************************************
+  function getDateString() {
+    return `${activeDate.getMonth() + 1}-${activeDate.getDate()}-${activeDate.getFullYear()}`
+  }
+
+
+
+  async function defaultWorkouts() {
+    if (!user) {
+      return;
+    }
+    // Check if the document for the user already exists
+    const userDoc = await db
+      .collection("users")
+      .doc(user.uid)
+      .collection("workout-plan")
+      .doc(getDateString())
+      .get();
+    // If the document does not exist, set the default data
+    if (!userDoc.exists) {
+      let defaultData = {
+        exercises: [
+          {
+            name: "DefaultExercise1",
+            reps: 8,
+            sets: 3,
+            weight: 15,
+          },
+          {
+            name: "DefaultExercise2",
+            reps: 10,
+            sets: 2,
+            weight: 12,
+          },
+        ],
+      };
+
+      // if checking previous day and it doesnt exist
+      if (!isSameOrGreaterDay(activeDate)) {
+        console.log('before?')
+        defaultData = {
+          exercises: [],
+        };
+      }
+      else {
+        // checking if theres a dayofWeek workout
+        console.log('further')
+        const dayDoc = await db
+          .collection("users")
+          .doc(user.uid)
+          .collection("workout-plan")
+          .doc(daysOfWeek[activeDate.getDay()])
+          .get();
+
+        if (dayDoc.exists) {
+          defaultData = {
+            exercises: dayDoc.data().exercises
+          }
+        }
+        
+      }
+
+      // Set the default data for the user
+      await db
+      .collection("users")
+      .doc(user.uid)
+      .collection("workout-plan")
+      .doc(getDateString())
+      .set(defaultData);
+
+    }
+  }
+
   const addExercise = () => {
     const newExercise = {
       name: "New Exercise", // You can set a default name or leave it empty
@@ -125,27 +151,27 @@ export default function Workout() {
   ];
 
 
-  
 
-  // Update exercises in Firebase when 
   useEffect(() => {
     if (!user) {
       return;
     }
-    if (user && exercises.length > 0) {
-      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
-      const exercisesData = { exercises: exercises };
+    if (user) {
+      const getData = async () => {
+        await defaultWorkouts()
+        const docRef = doc(db, "users", user.uid, "workout-plan", getDateString());
+        const docSnap = await getDoc(docRef);
 
-      const updateExercisesInFirebase = async () => {
-        await setDoc(docRef, exercisesData, { merge: true });
-        console.log("Exercises updated in Firebase");
-      };
+        if (docSnap.exists()) {
+          setExercises(docSnap.data().exercises)
+        }
+      }
+      
+      getData();
+  }
+    
+  }, [activeDate]);
 
-      updateExercisesInFirebase();
-    }
-  }, [exercises, user, dayOfWeek]);
-
-  // Update the corresponding document in the database
   const updateExercise = async (index, details) => {
     // Assuming details can include name, category, weight, sets, reps
     const updatedExercises = exercises.map((exercise, i) => {
@@ -161,24 +187,53 @@ export default function Workout() {
     console.log("Updating exercises:", updatedExercises);
 
     setExercises(updatedExercises);
+
+    // Update the corresponding document in the database
   };
 
-
-
   // Toggle edit mode
-  const toggleEditMode = () => setEditMode(!editMode);
+  const toggleEditMode = async () => {
+    
+    if (editMode) {
+      const docRef = doc(db, "users", user.uid, "workout-plan", getDateString());
+      const exercisesData = { exercises: exercises };
+      await setDoc(docRef, exercisesData, { merge: true });
+
+      // updates overarching monday-sunday workouts
+      if (isSameOrGreaterDay(activeDate)) {
+        const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
+        
+        const newExercises = exercises.map(({ completedSets, ...rest }) => rest);
+
+        const exercisesData = { exercises: newExercises };
+        await setDoc(docRef, exercisesData, { merge: true });
+      }
+
+      console.log("Exercises updated in Firebase");
+    }
+    
+    setEditMode(!editMode);
+  }
 
   const checkHover = (hover, workout) => {
     if(hover){
       setDisplayExercise(workout);
     } else {
       setDisplayExercise(null);
-    }
+  } }
+
+  function isSameOrGreaterDay(date1) {
+    let date2 = new Date();
+
+    // Set both dates to the start of the day for accurate comparison
+    date1 = new Date(date1.setHours(0, 0, 0, 0));
+    date2 = new Date(date2.setHours(0, 0, 0, 0));
+
+    // Use the valueOf() method to get the time value of the dates for comparison
+    return date1.valueOf() >= date2.valueOf();
   }
 
-    
-  
-
+  const dynamicSizing = isSidebarOpen ? 'page-sidebar-open' : 'page-sidebar-closed';
 
 
   //Workout Structure********************************************************************************
@@ -186,7 +241,7 @@ export default function Workout() {
     <>
       {/*sidebar*/}
       <button className="-toggle" onClick={toggleSidebar}>
-        {isSidebarOpen ? (
+      {isSidebarOpen ? (
           <i className="toggle-sidebar fas fa-chevron-left"></i>
         ) : (
           <i className="toggle-sidebar fas fa-chevron-right"></i>
@@ -194,16 +249,18 @@ export default function Workout() {
       </button>
       <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
       {/*page*/}
-      <div className="page">
+      <div className={`page ${dynamicSizing}`}>
         <h1 className="day"> 
-          {displayExercise ? (<span style={{color:"white"}}>placeholder</span>) : ("MONDAY")}
+          {daysOfWeek[activeDate.getDay()]} {`${activeDate.getMonth() + 1}/${activeDate.getDate()}`}
         </h1>
+        <Calendar activeDate={activeDate} setActiveDate={setActiveDate}/>
+
 
           {/* ACTUAL BOX */}
           <div className="box">
             {displayExercise ? (
               <div className="exercise-info">
-                <h1 className="exercise-info-title">{displayExercise.title}</h1>
+                <h1 className="exercise-info-title">{displayExercise.name}</h1>
                 <h2 className="exercise-info-category">{displayExercise.category}</h2>
                 <img src={displayExercise.imageUrl} 
                   style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
@@ -227,11 +284,11 @@ export default function Workout() {
                     Cancel
                   </button>
                 ) : ("")} */}
-                
+
                 {/* SAVE BUTTON */}
                 {editMode ?
                   (<button className="savePlanBtn"
-                    onClick={() => { setEditMode(); }}>
+                    onClick={toggleEditMode}>
                     Save
                   </button>
                 ) :  ("")}
@@ -248,86 +305,105 @@ export default function Workout() {
                   sets={plan.sets}
                 />
               ))) : (
-                exercises.map((exercise, index) => (
-                  <ExerciseBox
-                    key={index}
-                    index={index}
-                    exercise={exercise.name}
-                    weight={exercise.weight}
-                    sets={exercise.sets}
-                    reps={exercise.reps}
-                    updateExercise={updateExercise} // Pass updateWeight function here
-                    removeExercise={removeExercise}
-                    addExercise={addExercise}
-                    editMode={editMode} // Pass edit mode to control input fields visibility
-                  />
-                ))
+                exercises.length > 0 &&
+              exercises.map((exercise, index) => (
+                <ExerciseBox
+                  key={Math.random()} 
+                  index={index}
+                  uid={user.uid}
+                  activeDate={activeDate}
+                  exercises={exercises}
+                  exercise={exercise.name}
+                  weight={exercise.weight}
+                  sets={exercise.sets}
+                  reps={exercise.reps}
+                  completedSets={exercise.completedSets}
+                  updateExercise={updateExercise} // Pass updateWeight function here
+                  removeExercise={removeExercise}
+                  addExercise={addExercise}
+                  getDateString={getDateString}
+                  editMode={editMode} // Pass edit mode to control input fields visibility
+                />
+              )) 
               )}
               <button className="addExerciseBtn"
                 onClick={() => addExercise()}>
+                {exercises.length < 1 && <div style={{fontSize: 20}}>Rest Day 💪 (no exercises)</div>}
                 <i className="fas fa-solid fa-plus"></i>
               </button>
             </>
             )}
        </div>
-       <Timer />
+    
+      
+      <Timer />
      </div>
-     </>
+    </>
   );
 }
 
 
 
-
-
-
-
-
-
-
-//ExerciseBox********************************************************************************************************************
-//**************************************************************************************************************
-
-
-//Props********************************************************************************************************************
+//ExerciseBox****************************************************************************************************************
 const ExerciseBox = ({
   index,
+  uid,
+  exercises,
   exercise,
   weight,
   sets,
   reps,
+  completedSets,
   updateExercise,
+  getDateString,
   editMode, // Prop to control the visibility of input fields
   removeExercise,
-  
 }) => {
-  const [checkedButtons, setCheckedButtons] = useState(
-    Array.from({ length: sets }, () => false)
-    
-  );
+  const dataListId = `workouts-${index}`;
+  const [checkedButtons, setCheckedButtons] = useState(completedSets == null ? Array.from({ length: sets }, () => false) : completedSets);
   const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
-  const[selectedWorkout, setSelectedWorkout] = useState("");//New state to manage the selected workout
-
-
-
-  //Props********************************************************************************************************************
- 
-
-
-  //HANDLES********************************************************************************************************************
+  const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
   
-  const dataListId = `workouts-list-${index}`;
 
-  
-  const handleToggle = (index) => {
+ //HANDLES*******************************************************************************************************************
+
+  const handleToggle = async (idx) => {
+    const test = [...checkedButtons]
+    test[idx] = !test[idx]
+    exercises[index].completedSets = test
+      
+    await db
+          .collection("users")
+          .doc(uid)
+          .collection("workout-plan")
+          .doc(getDateString())
+          .set({exercises: exercises});
+
     setCheckedButtons((prevCheckedButtons) => {
       const newCheckedButtons = [...prevCheckedButtons];
-      newCheckedButtons[index] = !newCheckedButtons[index];
+      newCheckedButtons[idx] = !newCheckedButtons[idx];
       return newCheckedButtons;
     });
+  };
+
+
+  const debouncedUpdateExercise = debounce((index, details) => {
+    updateExercise(index, details);
+  }, 500); // Increased delay to 500 milliseconds
+
+  const handleInputChange = (event) => {
+    setSelectedWorkout(event.target.value);
+    console.log('Autocomplete field selected:', event.target.value);
+    
+  };
+
+  const handleInputBlur = (event) => {
+    const newWorkout = event.target.value;
+    setSelectedWorkout(newWorkout);
+    updateExercise(index, { name: newWorkout });
   };
 
   const handleWeightChange = async (event) => {
@@ -353,34 +429,34 @@ const ExerciseBox = ({
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
 
-  const handleInputChange = (event) => {
-    const newWorkout = event.target.value;
-    setSelectedWorkout(newWorkout); 
-  };
 
 
+
+// ...other code...
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-        {editMode ? (
-        <div className="workouts-list">
-          <input
-            list={dataListId}
-            onChange={handleInputChange}
-            value={selectedWorkout}
-          />
-          <datalist id={dataListId}>
+    {editMode ? (
+      <div className="workouts-list">
+      <input 
+        list={dataListId} 
+        onChange={handleInputChange} 
+        onBlur={handleInputBlur}
+        value={selectedWorkout} 
+      />
+      <datalist id={dataListId}>
             {workouts.map((workout) => (
               <option key={workout.id} value={workout.name} />
             ))}
           </datalist>
-        </div>
-      ) : (
-        <div className="workout-state">
-          {selectedWorkout || exercise} 
-        </div>
-      )}
+    </div>
+    ):(<div className="workout-state">
+    {exercise}
+  </div>
+  )}
 
+
+         
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
@@ -398,8 +474,9 @@ const ExerciseBox = ({
                 value={selectedSets}
                 onChange={handleSetsChange}
                 className="sets-input"
+            
               >
-                <option value="1">1</option>
+               <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -430,6 +507,7 @@ const ExerciseBox = ({
             </div>
           </div>
         ) : (
+         
           // View mode: Display current values without input fields
           <div className="content">
             <div className="weight-state">{selectedWeight}</div>
@@ -446,6 +524,7 @@ const ExerciseBox = ({
               className={`circle-button ${isChecked ? "checked" : ""}`}
               onClick={() => handleToggle(index)}
             ></button>
+            
           ))}
         </div>
         {editMode && (

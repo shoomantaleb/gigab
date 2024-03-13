@@ -16,6 +16,14 @@ select {
   position: relative;
 }
 
+
+@media (max-width: 1068px) {
+  .page-sidebar-open {
+    margin-left: 200px;
+  }
+
+}
+
 /* Further style adjustments  option hover */
 select:hover {
   background-color: #f9f9f9; /* Light grey background on hover for better user interaction */
@@ -102,10 +110,16 @@ select:focus {
   font-size: 25px; /* Default for exercise-title */
 }
 
-.workouts-list{
+.workouts-list input{
   margin: 4px;
-
+  border-radius: 5px;
+  padding-left: 5px;
+  background-color: transparent;
+  border: 1px solid rgb(185, 185, 185);
+  /* border-bottom: 1px #8f8f8f solid; */
+  /* margin-bottom: 8px; */
 }
+
 .edit-exercise-weight, .weight-state {
   font-size: 40px; /* Override for these classes */
   margin-right: 10px; /* Specifically for edit-exercise-weight */
@@ -193,15 +207,15 @@ select:focus {
 }
 
 .exercise-info-title {
-  font-size: 40px;
-  margin-top: -15px;
+  font-size: 50px;
+
 }
 
 .exercise-info-category {
   font-size: 30px;
   font-style: italic;
   margin-top: -5px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .exercise-info-description{
@@ -209,8 +223,6 @@ select:focus {
   margin-top: 20px;
   font-size: 18px;
 }
-
-
 
 
 
