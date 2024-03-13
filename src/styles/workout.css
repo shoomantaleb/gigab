@@ -91,11 +91,16 @@ select:focus {
   box-shadow: 0 2px 4px -1px rgba(40, 40, 40, 0.697);
 }
 
-.exercise-title, .edit-exercise-weight, .weight-state {
+.exercise-title, .edit-exercise-weight, .weight-state, .workout-state, .workouts-list {
   display: flex;
   margin-right: auto; /* Specifically for exercise-title */
   font-weight: 800; /* Specifically for edit-exercise-weight and weight-state */
   font-size: 25px; /* Default for exercise-title */
+}
+
+.workouts-list{
+  margin: 4px;
+
 }
 .edit-exercise-weight, .weight-state {
   font-size: 40px; /* Override for these classes */
