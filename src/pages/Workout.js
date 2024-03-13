@@ -17,7 +17,7 @@ export default function Workout() {
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
-  const [displayExercise, setDisplayExercise] = useState(true);
+  const [displayExercise, setDisplayExercise] = useState(false);
 
 
   // Function to toggle sidebar open/close state
