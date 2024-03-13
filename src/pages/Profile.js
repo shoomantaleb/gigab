@@ -35,16 +35,16 @@ export default function Profile() {
   };
 
   const handleSaveClick = async () => {
-    setDisplayedWeight(inputWeight);
     setInputWeight('');
-  
-
-    // Save to local storage
     localStorage.setItem('displayedWeight', inputWeight);
-
+  
     const savedWeight = await saveWeightToFirestore(inputWeight);
-    setWeights([...weights, savedWeight]);
+    if (savedWeight != null) { // Check if savedWeight is not null
+      setWeights(weights => [...weights, savedWeight]);
+      setDisplayedWeight(inputWeight);
+    }
   };
+  
 
   // const defaultWorkouts = async () => {
   //   const workoutsCollectionRef = collection(db, 'workouts');
@@ -65,10 +65,14 @@ export default function Profile() {
       });
   
       const storedWeights = JSON.parse(localStorage.getItem('weights')) || [];
-      storedWeights.push(parseFloat(weight));
+      const parsedWeight = parseFloat(weight);
+      storedWeights.push(parsedWeight);
       localStorage.setItem('weights', JSON.stringify(storedWeights));
+  
+      return parsedWeight; // Ensure this function returns the new weight
     }
-  };
+    return null; // Return null or an appropriate value when the user is not defined
+  };  
   
 
   useEffect(() => {
