@@ -9,8 +9,8 @@ body {
   max-width: 600px;
   box-sizing: border-box;
   margin: 0 auto;
-
-  position: fixed;
+  margin-top: 100px;
+  margin-bottom: 100px;
   left: 30%;
   top: 100px;
   overflow: hidden;
@@ -190,6 +190,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 20px;
 }
 
 
