@@ -132,11 +132,13 @@ export default function Profile() {
     }
   }, [user]); 
 
+  console.log(user.providerData)
+
   return (
     <div className='page'>
       <div className='profile-card'>
         <div className='user-info'>
-        <img src={user.photoURL == null ? defaultPfp : user.photoURL} alt="User" className="user-photo" />
+        <img src={user.photoURL == null ? defaultPfp : user.providerData[0].photoURL} className="user-photo" />
         <div className='columnOrganizer'>
             <p className='username' >{user ? user.displayName : 'User'}</p>
           <p className='tier-subheading'>
