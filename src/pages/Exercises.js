@@ -4,7 +4,6 @@ import '../styles/exercises.css';
 const Exercises = ({sidebarWidth, style}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
-  const [hoveredExercise, setHoveredExercise] = useState(null);
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
@@ -15,53 +14,51 @@ const Exercises = ({sidebarWidth, style}) => {
     setFilteredWorkouts(filtered);
   };
 
+  const midIndex = Math.ceil(filteredWorkouts.length / 2);
+  const leftColumnWorkouts = filteredWorkouts.slice(0, midIndex);
+  const rightColumnWorkouts = filteredWorkouts.slice(midIndex);
+
   return (
-    <div className = "container">
-      <div style={{ ...style, width: `${sidebarWidth}px` }}>    <div className='page'>
-        <h1> Exercises </h1>
-        <div className="container">
-          <div className="exercises-box">
-            <div className="search-bar-container">
-                <input 
-                  type="text" 
-                  className="search-input"
-                  placeholder="Search by name/muscle" 
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-            </div>
-            <div className="workout-columns">
-              {workouts.map(workout => (
-                <li 
-                  key={workout.id} 
-                  className="workout-item" 
-                  onMouseEnter={() => setHoveredExercise(workout)}
-                  onMouseLeave={() => setHoveredExercise(null)}
-                >
+    <div style={{ ...style, width: `${sidebarWidth}px` }}>    <div className='page'>
+      <h1> Exercises </h1>
+      <div className="container">
+        <div className="exercises-box">
+          <div className="search-bar-container">
+              <input 
+                type="text" 
+                className="search-input"
+                placeholder="Search by name or muscle..." 
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+          </div>
+          <div className="workout-columns">
+            <ul className="workout-column">
+              {leftColumnWorkouts.map(workout => (
+                <li key={workout.id} className="workout-item">
                   <span className="workout-name">{workout.name}</span>
                   <span className="workout-category">{workout.category}</span>
                 </li>
-                ))}
-            </div>
+              ))}
+            </ul>
+            <ul className="workout-column">
+              {rightColumnWorkouts.map(workout => (
+                <li key={workout.id} className="workout-item">
+                  <span className="workout-name">{workout.name}</span>
+                  <span className="workout-category">{workout.category}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        </div>
       </div>
-      {hoveredExercise && (
-      <div className="exercise-detail">
-        <img src={hoveredExercise.imageUrl} alt={hoveredExercise.name} />
-        <div className="exercise-description">
-          <h4>{hoveredExercise.name}</h4>
-          <p>{hoveredExercise.description}</p>
-        </div>
-      </div>
-      )}
     </div>
+  </div>
   );
 };
 
 export const workouts = [
-  { id: 1, name: "Push-ups", category: "Chest", description: "Body-weight exercise, done by lying with your face down and pushing your hands to raise your body." },
+  { id: 1, name: "Push-ups", category: "Chest" },
   { id: 2, name: "Dips", category: "Chest" },
   { id: 3, name: "Bench Press", category: "Chest" },
   { id: 4, name: "Incline Press", category: "Chest" },

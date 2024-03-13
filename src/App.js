@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import Navbar from "./components/Navbar"
 import './styles/App.css';
@@ -10,15 +9,14 @@ import {Route, Routes} from "react-router-dom"
 import { auth } from './firebaseConfig';
 import { db } from './firebaseConfig';
 import { setDoc, doc } from 'firebase/firestore';
-
 //Tutorial for firebase x react:
 //https://www.youtube.com/watch?v=zQyrwxMPm88&ab_channel=Fireship
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'; //for the databse
 import 'firebase/compat/auth'; //for the authentication
-
 //makes it easier to work with firebase in react
 import { useAuthState } from 'react-firebase-hooks/auth'; 
+
 
 export default function App() {
   const [user] = useAuthState(auth);
@@ -33,7 +31,7 @@ export default function App() {
       </section>
     </div>
   );
-  
+
 }
 
 function SignInPage({ setIsGuest }){
@@ -42,24 +40,21 @@ function SignInPage({ setIsGuest }){
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(async (res) => {
       const user = res.user
-
       const data = {
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL
       }
-
       await setDoc(doc(db, 'users', user.uid), data)
       
     })
-
   }
 
   return (
     <>
     <div className='sign-in-page'>
       <div className='sign-in-box'>
-        <h1 className='sign-in-title'>Giga<span id='title-b'>B</span></h1>
+        <h1 className='sign-in-title'>Giga<b>B</b></h1>
         <h2 className='sign-in-subtitle'>The Ultimate Workout Experience</h2>
         <button id="sign-in-btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
           onClick={signInWithGoogle}>
@@ -85,17 +80,18 @@ function HomePage() {
 
   return (<>
     <main>
-      
+
       <Navbar/>
       <div className="container"> 
         <Routes>
           <Route path ="/" element ={<Workout />} />
           <Route path ="/Friends" element ={<Friends />} />
           <Route path ="/Workout" element ={<Workout />} />
+          <Route path ="/exercises" element ={<Exercises />} />
           <Route path ="/Profile" element ={<Profile />} />
         </Routes>
         </div>
-      
+
 
       </main>
   </>)

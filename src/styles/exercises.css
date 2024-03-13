@@ -58,24 +58,7 @@
     justify-content: space-between; /* Aligns name and category on opposite ends */
     padding: 5px 0; /* Gives a bit of vertical space between items */
     border-bottom: 1px solid #ccc;
-    font-family: Inter, sans-serif;
-    cursor: pointer;
 }
-
-.workout-description {
-    display: none; /* Hide the description layer initially */
-    position: absolute;
-    left: 100%; /* Position to the right of the workout item */
-    top: 0;
-    width: 200px; /* Set a fixed width for the description box */
-    background: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.workout-item:hover .workout-description {
-    display: block; /* Show the description on hover */
-  }
 
 .workout-name {
     text-align: left;

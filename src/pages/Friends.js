@@ -13,6 +13,7 @@ import {
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import '../styles/friends.css';
+import default_pfp from '../default_pfp.jpg'
 
 export default function Friends() {
     const [user] = useAuthState(auth);
@@ -163,15 +164,17 @@ export default function Friends() {
         return friendsArray;
     }
 
-    // Dynamically update search results 
+    // Handle change in search bar 
     const handleInputChange = async (event) => {
         setInputSearch(event.target.value);
         searchUsername();
+        console.log("Input change");
     };
 
 
-    /* Update and display the list of users that match the search input */
+    // Handle change of search input
     const searchUsername = async () => {
+        // console.log(inputSearch)
         try {
             const snapshot = await db.collection("users").orderBy('displayName').startAt(inputSearch).endAt(inputSearch + '\uf8ff').get();
             if (snapshot.empty) {
@@ -190,25 +193,29 @@ export default function Friends() {
                         let userId = doc.id;
                         let username = doc.data().displayName;
                         let photoURL = doc.data().photoURL;
+
                         let score = doc.data().currentStreak;
                     
+
                         // Find if already friends
                         // console.log(friendList)
                         let isFriend = friendList.includes(userId);
                         
                         resultsArray.push([userId,username,photoURL,score,isFriend]);
+                        // resultsArray.push([doc.id, doc.data()]);
                     }
                 });
 
                 setSearchResults(resultsArray);
+                // console.log(resultsArray);
             }
-        } catch (error) {
+          } catch (error) {
             console.error("Error searching for substring:", error);
-        }  
+          }  
         
     }
 
-    // Handle Follow/Unfollow based on button input
+    // Follow button pressed
     const handleFollow = async (isFollowed, newID) => {
         if (user){
             // user collection, update "friends" field
@@ -216,12 +223,14 @@ export default function Friends() {
             const friendCopy = friendList;
 
             if (isFollowed){
-                // Unfollow - Remove from followers list
+                // Unfollow this bitch
+                console.log(friendCopy.indexOf(newID));
                 friendCopy.splice(friendCopy.indexOf(newID), 1)
             } else {
                 //Add to followers list
                 friendCopy.push(newID);
             }
+            console.log(friendCopy);
             await cityRef.update({friends: friendCopy});
             setFriendList(friendCopy);
             setUpdateVar(updateVar + 1); //updates the friend list/follow without recursively editing friendlist
@@ -244,7 +253,7 @@ export default function Friends() {
                     </div> */}
 
 
-                    {/* <div id="search-friends"> */}
+                    <div id="search-friends">
                         <div className='friend-input-box'>
                             <input
                             type='text'
@@ -252,18 +261,21 @@ export default function Friends() {
                             onChange={handleInputChange}
                             />
                         </div>
-                    {/* </div> */}
+                    </div>
 
 
-                    {/* DISPLAY USERS THAT MATCH THE SEARCH  */}
                     <div id="friend-list">
+
+                        {/* DISPLAY USERS THAT MATCH THE SEARCH  */}
+                        {/* <img src={default_pfp}></img> */}
+                        {console.log(user[2])}
                         {searchResults.map((user, index) => (
                             // {uid, username, photoURL, score, isFollowed}
                             <UserBox
                                 key={index}
                                 uid={user[0]}
                                 username={user[1]}
-                                photoURL={user[2]}
+                                photoURL={(user[2] == null || user[2] == undefined) ? default_pfp : user[2]}
                                 score={user[3]}
                                 isFollowed={user[4]}
                                 handleFollow={(uid, isFollowed) => handleFollow(uid, isFollowed)} // Pass updateWeight function here
@@ -273,7 +285,6 @@ export default function Friends() {
 
                 </div>
                 
-                {/* DISPLAY FRIENDS IN ORDER OF STREAK */}
                 <div className="box" id='leaderboard'>
                     <h2 className="friend-title"> Leaderboard <i style={{fontSize:"12pt"}}>(Current Streak)</i></h2>
                     <div className='leaderboard-list'>
@@ -297,22 +308,20 @@ export default function Friends() {
     );
 }
 
-
-/* Display all the information for one user */
-/* Used in the search results list */
 const UserBox = ({uid, username, photoURL, score, isFollowed, handleFollow}) => {
 
     return (
         <div className='friend-box'>
-            {/* Display profile pic if it exists */}
-            {photoURL && (
-                <img src={photoURL} id='friend-box-pfp' alt="Profile" 
-                style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
-            )}
-            <p id='friend-box-username'>{username}</p>
-            <p id='friend-box-score'>{score} 🔥</p>
+            {/* <div className='friend-box-left-elements'> */}
+                {photoURL && (
+                    <img src={photoURL} id='friend-box-pfp' alt="Profile" style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
+                )}
+                <p id='friend-box-username'>{username}</p>
+                <p id='friend-box-score'>{score} 🔥</p>
+            {/* </div> */}
 
-            {/* Follow button */}
+
+            {/* <button id= {'add-friend-btn' + {isFollowed ? "Follow" : "Following"}}>{isFollowed ? "Follow" : "Following"}</button> */}
             <button 
                 className="add-friend-btn" 
                 onClick={() => handleFollow(isFollowed, uid)}
@@ -324,21 +333,18 @@ const UserBox = ({uid, username, photoURL, score, isFollowed, handleFollow}) => 
 }
 
 
-/* Display info for each friend in the leaderboard */
+
 const LeaderBoardBox = ({position, uid, username, photoURL, score}) => {
     return (
-        // Each element of list is part of a gradient
-        <div className='friend-box leaderboard-box' 
-        style={{backgroundColor: `rgba(255, 85, 0, ${1/(Math.exp(.3*position))})`}}>
-            
-            <p id = "leaderboard-box-pos">{position}</p>
-            {photoURL && (
-                <img src={photoURL} id='friend-box-pfp' alt="Profile" 
-                style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
-            )}
-            <p id='leaderboard-box-username'>{username}</p>
-            <p id='leaderboard-box-score'>{score} 🔥</p>
-
+        <div className='friend-box leaderboard-box' style={{backgroundColor: `rgba(255, 85, 0, ${1/(Math.exp(.3*position))})`    }}>
+            {/* <div className='friend-box-left-elements'> */}
+                <p id = "leaderboard-box-pos">{position}</p>
+                {photoURL && (
+                    <img src={photoURL} id='friend-box-pfp' alt="Profile" style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
+                )}
+                <p id='leaderboard-box-username'>{username}</p>
+                <p id='leaderboard-box-score'>{score} 🔥</p>
+            {/* </div> */}
         </div>
     )
 }

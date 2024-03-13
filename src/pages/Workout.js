@@ -5,22 +5,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
-import Calendar from '../components/Calendar';
+import { workouts } from './Exercises'; // Adjust the path as necessary
 
-const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-//Workout********************************************************************************************************************
+//Workout********************************************************************************************************************ssdcsdc
 export default function Workout() {
   
 //States********************************************************************************************************************
   const [exercises, setExercises] = useState([]); // Function to update the fields for an exercise
-  const [activeDate, setActiveDate] = useState(new Date());
+  const [dayOfWeek, setDayOfWeek] = useState("monday");
   const [editMode, setEditMode] = useState(false); // New state to manage edit mode
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
-
-  // Function to toggle sidebar open/close state
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  
+     // Function to toggle sidebar open/close state
+     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   useEffect(() => {
     if (!user) {
@@ -34,7 +33,7 @@ export default function Workout() {
       return;
     }
     const fetchDocument = async () => {
-      const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
+      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -45,53 +44,56 @@ export default function Workout() {
       }
     };
 
+
+
+    async function defaultWorkouts() {
+      if (!user) {
+        return;
+      }
+      // Check if the document for the user already exists
+      const userDoc = await db
+        .collection("users")
+        .doc(user.uid)
+        .collection("workout-plan")
+        .doc("monday")
+        .get();
+      // If the document does not exist, set the default data
+      if (!userDoc.exists) {
+        const defaultData = {
+          exercises: [
+            {
+              name: "DefaultExercise1",
+              reps: 8,
+              sets: 3,
+              weight: 15,
+            },
+            {
+              name: "DefaultExercise2",
+              reps: 10,
+              sets: 2,
+              weight: 12,
+            },
+          ],
+        };
+        // Set the default data for the user
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .collection("workout-plan")
+          .doc("monday")
+          .set(defaultData);
+
+        const docRef = doc(db, "users", user.uid, "workout-plan", "monday");
+        
+        // await setDoc(docRef, exercisesData);
+      }
+    }
+
     defaultWorkouts();
     fetchDocument();
   }, []);
 
 //Functions********************************************************************************************************************
-  async function defaultWorkouts() {
-    if (!user) {
-      return;
-    }
-    // Check if the document for the user already exists
-    const userDoc = await db
-      .collection("users")
-      .doc(user.uid)
-      .collection("workout-plan")
-      .doc(daysOfWeek[activeDate.getDay()])
-      .get();
-    // If the document does not exist, set the default data
-    if (!userDoc.exists) {
-      const defaultData = {
-        exercises: [
-          {
-            name: "DefaultExercise1",
-            reps: 8,
-            sets: 3,
-            weight: 15,
-          },
-          {
-            name: "DefaultExercise2",
-            reps: 10,
-            sets: 2,
-            weight: 12,
-          },
-        ],
-      };
-      // Set the default data for the user
-      await db
-        .collection("users")
-        .doc(user.uid)
-        .collection("workout-plan")
-        .doc(daysOfWeek[activeDate.getDay()])
-        .set(defaultData);
-
-      const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
-
-      // await setDoc(docRef, exercisesData);
-    }
-  }
   const addExercise = () => {
     const newExercise = {
       name: "New Exercise", // You can set a default name or leave it empty
@@ -122,21 +124,17 @@ export default function Workout() {
       return;
     }
     if (user && exercises.length > 0) {
-      const getData = async () => {
-        await defaultWorkouts()
-        const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
-        const docSnap = await getDoc(docRef);
+      const docRef = doc(db, "users", user.uid, "workout-plan", dayOfWeek);
+      const exercisesData = { exercises: exercises };
 
-        console.log('getData', docSnap.data().exercises)
-        if (docSnap.exists()) {
-          setExercises(docSnap.data().exercises)
-        }
-      }
-      
-      getData();
-  }
-    
-  }, [activeDate]);
+      const updateExercisesInFirebase = async () => {
+        await setDoc(docRef, exercisesData, { merge: true });
+        console.log("Exercises updated in Firebase");
+      };
+
+      updateExercisesInFirebase();
+    }
+  }, [exercises, user, dayOfWeek]);
 
   const updateExercise = async (index, details) => {
     // Assuming details can include name, category, weight, sets, reps
@@ -154,23 +152,11 @@ export default function Workout() {
 
     setExercises(updatedExercises);
 
-
     // Update the corresponding document in the database
   };
 
   // Toggle edit mode
-  const toggleEditMode = async () => {
-    
-    if (editMode) {
-      const docRef = doc(db, "users", user.uid, "workout-plan", daysOfWeek[activeDate.getDay()]);
-      const exercisesData = { exercises: exercises };
-      await setDoc(docRef, exercisesData, { merge: true });
-      console.log("Exercises updated in Firebase");
-    }
-    
-    setEditMode(!editMode);
-    
-  }
+  const toggleEditMode = () => setEditMode(!editMode);
 
   //Workout Structure********************************************************************************
   return (
@@ -186,11 +172,10 @@ export default function Workout() {
       <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
       {/*page*/}
       <div className="page">
-
         <h1 className="day"> 
-          {daysOfWeek[activeDate.getDay()]} {`${activeDate.getMonth() + 1}/${activeDate.getDate()}`}
+          {" "}Monday
         </h1>
-        <Calendar activeDate={activeDate} setActiveDate={setActiveDate}/>
+
         <div 
           className="container" 
           style={{marginLeft:  isSidebarOpen ? "100px" : "0px"}}>
@@ -210,6 +195,7 @@ export default function Workout() {
 
 
           <div className="box">
+
             <div className="editBtns">
               {/* EDIT BUTTON */}
               {editMode ? ("") :
@@ -230,7 +216,7 @@ export default function Workout() {
               {/* SAVE BUTTON */}
               {editMode ?
                 (<button className="savePlanBtn"
-                  onClick={toggleEditMode}>
+                  onClick={() => { setEditMode(); }}>
                   Save
                 </button>
               ) :  ("")}
@@ -250,16 +236,12 @@ export default function Workout() {
             ))) : (
               exercises.map((exercise, index) => (
                 <ExerciseBox
-                  key={Math.random()} 
+                  key={index}
                   index={index}
-                  uid={user.uid}
-                  activeDate={activeDate}
-                  exercises={exercises}
                   exercise={exercise.name}
                   weight={exercise.weight}
                   sets={exercise.sets}
                   reps={exercise.reps}
-                  completedSets={exercise.completedSets}
                   updateExercise={updateExercise} // Pass updateWeight function here
                   removeExercise={removeExercise}
                   addExercise={addExercise}
@@ -288,42 +270,43 @@ export default function Workout() {
 
 const ExerciseBox = ({
   index,
-  activeDate,
-  uid,
-  exercises,
   exercise,
   weight,
   sets,
   reps,
-  completedSets,
   updateExercise,
   editMode, // Prop to control the visibility of input fields
   removeExercise,
+  
 }) => {
-  const [checkedButtons, setCheckedButtons] = useState(completedSets == null ? Array.from({ length: sets }, () => false) : completedSets);
-  const [editedExerciseName, setEditedExerciseName] = useState(exercise);
+  const dataListId = `workouts-${index}`;
+  const [checkedButtons, setCheckedButtons] = useState(
+    Array.from({ length: sets }, () => false)
+  );
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
+  const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
+
+  const [exerciseTitle, setExerciseTitle] = useState('');
+
+  
+
 
   //HANDLES********************************************************************************************************************
-  const handleToggle = async (idx) => {
-    const test = [...checkedButtons]
-    test[idx] = !test[idx]
-    exercises[index].completedSets = test
-      
-    await db
-          .collection("users")
-          .doc(uid)
-          .collection("workout-plan")
-          .doc(daysOfWeek[activeDate.getDay()])
-          .set({exercises: exercises});
 
+  const handleToggle = (index) => {
     setCheckedButtons((prevCheckedButtons) => {
       const newCheckedButtons = [...prevCheckedButtons];
-      newCheckedButtons[idx] = !newCheckedButtons[idx];
+      newCheckedButtons[index] = !newCheckedButtons[index];
       return newCheckedButtons;
     });
+  };
+
+
+  const handleInputChange = (event) => {
+    const newWorkout = event.target.value;
+    setSelectedWorkout(newWorkout); 
   };
 
   const handleWeightChange = async (event) => {
@@ -349,20 +332,29 @@ const ExerciseBox = ({
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
 
-  const updateSetsCompleted = async () => {
-    
-  }
-
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-      <div className="exercise-title">
-        {/* editMode ? (
-        <b value={exercise} onChange={(e) => setEditedExerciseName(e.target.value)} className="name-input" />
-      ) : (*/}
-        <b>{exercise}</b>
-      </div>
+    {editMode ? (
+      <div className="workouts-list">
+      <input 
+        list={dataListId} 
+        onChange={handleInputChange} 
+        value={selectedWorkout} 
+      />
+      <datalist id={dataListId}>
+        {workouts.map((workout, idx) => (
+          <option key={idx} value={workout.name} />
+        ))}
+      </datalist>
+    </div>
+    ):(<div className="workout-state">
+    {selectedWorkout}
+  </div>
+  )}
 
+
+         
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
           <div className="content">
@@ -380,38 +372,38 @@ const ExerciseBox = ({
                 value={selectedSets}
                 onChange={handleSetsChange}
                 className="sets-input"
+            
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                <option value="1">1 Sets</option>
+                <option value="2">2 Sets</option>
+                <option value="3">3 Sets</option>
+                <option value="4">4 Sets</option>
+                <option value="5">5 Sets</option>
+                <option value="6">6 Sets</option>
               </select>
-              <div className="input-label-sets">Sets</div>
               <select
                 value={selectedReps}
                 onChange={handleRepsChange}
                 className="reps-input"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
+                <option value="1">1 Reps</option>
+                <option value="2">2 Reps</option>
+                <option value="3">3 Reps</option>
+                <option value="4">4 Reps</option>
+                <option value="5">5 Reps</option>
+                <option value="6">6 Reps</option>
+                <option value="7">7 Reps</option>
+                <option value="8">8 Reps</option>
+                <option value="9">9 Reps</option>
+                <option value="10">10 Reps</option>
+                <option value="11">11 Reps</option>
+                <option value="12">12 Reps</option>
                 //Add more options as needed
               </select>
-              <div class="input-label-reps">Reps</div>
             </div>
           </div>
         ) : (
+         
           // View mode: Display current values without input fields
           <div className="content">
             <div className="weight-state">{selectedWeight}</div>
@@ -428,6 +420,7 @@ const ExerciseBox = ({
               className={`circle-button ${isChecked ? "checked" : ""}`}
               onClick={() => handleToggle(index)}
             ></button>
+            
           ))}
         </div>
         {editMode && (

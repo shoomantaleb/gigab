@@ -9,18 +9,13 @@ body {
   max-width: 600px;
   box-sizing: border-box;
   margin: 0 auto;
-
-  position: fixed;
-  left: 30%;
-  top: 100px;
+  margin-top: 50px;
   overflow: hidden;
-  /* position: fixed; */
+  /* position: relative; */
 }
 
 .user-info {
   display: flex;
-  justify-content: left;
-
   align-items: center;
   background: #032550;
   border-radius: 39px 39px 0px 0px;
@@ -185,6 +180,9 @@ body {
   font-size: 16px;
   text-align: center;
   text-decoration: none;
+  background-color: #dc3545; /* Choose your desired background color */
+  color: #fff; /* Choose your desired text color */
+  border: 1px solid #dc3545; /* Use the same color as background or a contrasting color for the border */
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
