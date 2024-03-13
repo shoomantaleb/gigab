@@ -19,6 +19,7 @@ export default function Workout() {
   const [user] = useAuthState(auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editPlanMode, setEditPlanMode] = useState(false);
+  const [displayExercise, setDisplayExercise] = useState(false);
   
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -209,6 +210,13 @@ export default function Workout() {
     setEditMode(!editMode);
   }
 
+  const checkHover = (hover, workout) => {
+    if(hover){
+      setDisplayExercise(workout);
+    } else {
+      setDisplayExercise(null);
+  } }
+
   function isSameOrGreaterDay(date1) {
     let date2 = new Date();
 
@@ -225,13 +233,13 @@ export default function Workout() {
     <>
       {/*sidebar*/}
       <button className="-toggle" onClick={toggleSidebar}>
-        {isSidebarOpen ? (
-          <i class="fas fa-chevron-left"></i>
+      {isSidebarOpen ? (
+          <i className="toggle-sidebar fas fa-chevron-left"></i>
         ) : (
-          <i class="fas fa-chevron-right"></i>
+          <i className="toggle-sidebar fas fa-chevron-right"></i>
         )}
       </button>
-      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} />
+      <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
       {/*page*/}
       <div className="page">
         <h1 className="day"> 
@@ -239,65 +247,58 @@ export default function Workout() {
         </h1>
         <Calendar activeDate={activeDate} setActiveDate={setActiveDate}/>
         
-        <div 
-          className="container" 
-          style={{marginLeft:  isSidebarOpen ? "100px" : "0px"}}>
-          <div
-            className="editMode"
-            style={{
-              fontSize: "20px",
-             
-            }}
-          >
-             
-              
-            </div>
-            
-          </div>{" "}
-          {/* editMode */}
 
 
+          {/* ACTUAL BOX */}
           <div className="box">
+            {displayExercise ? (
+              <div className="exercise-info">
+                <h1 className="exercise-info-title">{displayExercise.title}</h1>
+                <h2 className="exercise-info-category">{displayExercise.category}</h2>
+                <img src={displayExercise.imageUrl} 
+                  style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
+                <p className="exercise-info-description">{displayExercise.description}</p>
+              </div>
+            ) : (
+              <>
+              <div className="editBtns">
+                {/* EDIT BUTTON */}
+                {editMode ? ("") :
+                  (<button className="editPlanBtn"
+                    onClick={toggleEditMode}>
+                    Edit
+                  </button>
+                )}
 
-            <div className="editBtns">
-              {/* EDIT BUTTON */}
-              {editMode ? ("") :
-                (<button className="editPlanBtn"
-                  onClick={toggleEditMode}>
-                  Edit
-                </button>
-              )}
+                {/* CANCEL BUTTON - cancelEditMode does not exist*/}
+                {/* {editMode ?
+                  (<button className="cancelPlanBtn"
+                    onClick={() => { cancelEditMode();}}> 
+                    Cancel
+                  </button>
+                ) : ("")} */}
 
-              {/* CANCEL BUTTON - cancelEditMode does not exist*/}
-              {/* {editMode ?
-                (<button className="cancelPlanBtn"
-                  onClick={() => { cancelEditMode();}}> 
-                  Cancel
-                </button>
-              ) : ("")} */}
-              
-              {/* SAVE BUTTON */}
-              {editMode ?
-                (<button className="savePlanBtn"
-                  onClick={toggleEditMode}>
-                  Save
-                </button>
-              ) :  ("")}
-              
-            </div>
+                {/* SAVE BUTTON */}
+                {editMode ?
+                  (<button className="savePlanBtn"
+                    onClick={toggleEditMode}>
+                    Save
+                  </button>
+                ) :  ("")}
+              </div>
 
-            {editPlanMode ? (
-            plans.map((plan, index) => (
-              <EditPlan
-                key={index}
-                className={plan.className}
-                exerciseName={plan.exerciseName}
-                weight={plan.weight}
-                reps={plan.reps}
-                sets={plan.sets}
-              />
-            ))) : (
-              exercises.length > 0 &&
+              {editPlanMode ? (
+              plans.map((plan, index) => (
+                <EditPlan
+                  key={index}
+                  className={plan.className}
+                  exerciseName={plan.exerciseName}
+                  weight={plan.weight}
+                  reps={plan.reps}
+                  sets={plan.sets}
+                />
+              ))) : (
+                exercises.length > 0 &&
               exercises.map((exercise, index) => (
                 <ExerciseBox
                   key={Math.random()} 
@@ -317,19 +318,19 @@ export default function Workout() {
                   editMode={editMode} // Pass edit mode to control input fields visibility
                 />
               )) 
-
+              )}
+              <button className="addExerciseBtn"
+                onClick={() => addExercise()}>
+                {exercises.length < 1 && <div style={{fontSize: 20}}>Rest Day 💪 (no exercises)</div>}
+                <i className="fas fa-solid fa-plus"></i>
+              </button>
+            </>
             )}
-            <button className="addExerciseBtn"
-              onClick={() => addExercise()}>
-              {exercises.length < 1 && <div style={{fontSize: 20}}>Rest Day 💪 (no exercises)</div>}
-              <i className="fas fa-solid fa-plus"></i>
-            </button>
-          </div>
-        </div>
+       </div>
     
       
       <Timer />
-     
+     </div>
     </>
   );
 }
@@ -341,7 +342,6 @@ export default function Workout() {
 
 const ExerciseBox = ({
   index,
-  activeDate,
   uid,
   exercises,
   exercise,
@@ -356,12 +356,11 @@ const ExerciseBox = ({
 }) => {
   const dataListId = `workouts-${index}`;
   const [checkedButtons, setCheckedButtons] = useState(completedSets == null ? Array.from({ length: sets }, () => false) : completedSets);
+  const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
   const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
-
-  const [exerciseTitle, setExerciseTitle] = useState('');
 
   //HANDLES********************************************************************************************************************
 
@@ -424,13 +423,13 @@ const ExerciseBox = ({
         value={selectedWorkout} 
       />
       <datalist id={dataListId}>
-        {workouts.map((workout, idx) => (
-          <option key={idx} value={workout.name} />
-        ))}
-      </datalist>
+            {workouts.map((workout) => (
+              <option key={workout.id} value={workout.name} />
+            ))}
+          </datalist>
     </div>
     ):(<div className="workout-state">
-    {selectedWorkout}
+    {selectedWorkout || exercise}
   </div>
   )}
 
@@ -455,32 +454,34 @@ const ExerciseBox = ({
                 className="sets-input"
             
               >
-                <option value="1">1 Sets</option>
-                <option value="2">2 Sets</option>
-                <option value="3">3 Sets</option>
-                <option value="4">4 Sets</option>
-                <option value="5">5 Sets</option>
-                <option value="6">6 Sets</option>
+               <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
               </select>
+              <div className="input-label-sets">Sets</div>
               <select
                 value={selectedReps}
                 onChange={handleRepsChange}
                 className="reps-input"
               >
-                <option value="1">1 Reps</option>
-                <option value="2">2 Reps</option>
-                <option value="3">3 Reps</option>
-                <option value="4">4 Reps</option>
-                <option value="5">5 Reps</option>
-                <option value="6">6 Reps</option>
-                <option value="7">7 Reps</option>
-                <option value="8">8 Reps</option>
-                <option value="9">9 Reps</option>
-                <option value="10">10 Reps</option>
-                <option value="11">11 Reps</option>
-                <option value="12">12 Reps</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
                 //Add more options as needed
               </select>
+              <div class="input-label-reps">Reps</div>
             </div>
           </div>
         ) : (
