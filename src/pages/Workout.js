@@ -6,6 +6,8 @@ import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
 import { hover } from "@testing-library/user-event/dist/hover";
+import { workouts } from './Exercises'; // Adjust the path as necessary
+
 
 //Workout********************************************************************************************************************
 export default function Workout() {
@@ -19,6 +21,11 @@ export default function Workout() {
   const [editPlanMode, setEditPlanMode] = useState(false);
   const [displayExercise, setDisplayExercise] = useState(false);
 
+
+ 
+
+
+ 
 
   // Function to toggle sidebar open/close state
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -121,6 +128,8 @@ export default function Workout() {
   ];
 
 
+  
+
   // Update exercises in Firebase when 
   useEffect(() => {
     if (!user) {
@@ -168,6 +177,11 @@ export default function Workout() {
     }
   }
 
+    
+  
+
+
+
   //Workout Structure********************************************************************************
   return (
     <>
@@ -186,16 +200,11 @@ export default function Workout() {
           {displayExercise ? (<span style={{color:"white"}}>placeholder</span>) : ("MONDAY")}
         </h1>
 
-
-            
-
-
-
           {/* ACTUAL BOX */}
           <div className="box">
             {displayExercise ? (
               <div className="exercise-info">
-                <h1 className="exercise-info-title">{displayExercise.name}</h1>
+                <h1 className="exercise-info-title">{displayExercise.title}</h1>
                 <h2 className="exercise-info-category">{displayExercise.category}</h2>
                 <img src={displayExercise.imageUrl} style={{width:"40%", marginLeft:"auto", marginRight:"auto", borderRadius:"30px", boxShadow:"0 2px 5px grey"}} ></img>
                 <p className="exercise-info-description">{displayExercise.description}</p>
@@ -280,6 +289,8 @@ export default function Workout() {
 //ExerciseBox********************************************************************************************************************
 //**************************************************************************************************************
 
+
+//Props********************************************************************************************************************
 const ExerciseBox = ({
   index,
   exercise,
@@ -289,17 +300,29 @@ const ExerciseBox = ({
   updateExercise,
   editMode, // Prop to control the visibility of input fields
   removeExercise,
+  
 }) => {
   const [checkedButtons, setCheckedButtons] = useState(
     Array.from({ length: sets }, () => false)
+    
   );
   const [editedExerciseName, setEditedExerciseName] = useState(exercise);
   const [selectedWeight, setSelectedWeight] = useState(weight);
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
+  const[selectedWorkout, setSelectedWorkout] = useState("");//New state to manage the selected workout
+
+
+
+  //Props********************************************************************************************************************
+ 
+
 
   //HANDLES********************************************************************************************************************
+  
+  const dataListId = `workouts-list-${index}`;
 
+  
   const handleToggle = (index) => {
     setCheckedButtons((prevCheckedButtons) => {
       const newCheckedButtons = [...prevCheckedButtons];
@@ -331,15 +354,33 @@ const ExerciseBox = ({
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
 
+  const handleInputChange = (event) => {
+    const newWorkout = event.target.value;
+    setSelectedWorkout(newWorkout); 
+  };
+
+
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
-      <div className="exercise-title">
-        {/* editMode ? (
-        <b value={exercise} onChange={(e) => setEditedExerciseName(e.target.value)} className="name-input" />
-      ) : (*/}
-        <b>{exercise}</b>
-      </div>
+        {editMode ? (
+        <div className="workouts-list">
+          <input
+            list={dataListId}
+            onChange={handleInputChange}
+            value={selectedWorkout}
+          />
+          <datalist id={dataListId}>
+            {workouts.map((workout) => (
+              <option key={workout.id} value={workout.name} />
+            ))}
+          </datalist>
+        </div>
+      ) : (
+        <div className="workout-state">
+          {selectedWorkout || exercise} 
+        </div>
+      )}
 
       <div className="exercise-box">
         {editMode ? ( // Edit mode: Display input fields for editing
