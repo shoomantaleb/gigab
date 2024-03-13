@@ -7,6 +7,7 @@ import "../styles/sidebar.css";
 import EditPlan from "../components/EditPlan";
 import { workouts } from './Exercises'; // Adjust the path as necessary
 import Calendar from '../components/Calendar';
+import { debounce } from 'lodash';
 
 const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 //Workout********************************************************************************************************************ssdcsdc
@@ -343,9 +344,7 @@ export default function Workout() {
 
 
 
-//ExerciseBox********************************************************************************************************************
-//**************************************************************************************************************
-
+//ExerciseBox****************************************************************************************************************
 const ExerciseBox = ({
   index,
   uid,
@@ -367,8 +366,9 @@ const ExerciseBox = ({
   const [selectedSets, setSelectedSets] = useState(sets);
   const [selectedReps, setSelectedReps] = useState(reps);
   const [selectedWorkout, setSelectedWorkout] = useState(exercise); 
+  
 
-  //HANDLES********************************************************************************************************************
+ //HANDLES*******************************************************************************************************************
 
   const handleToggle = async (idx) => {
     const test = [...checkedButtons]
@@ -389,10 +389,21 @@ const ExerciseBox = ({
     });
   };
 
+
+  const debouncedUpdateExercise = debounce((index, details) => {
+    updateExercise(index, details);
+  }, 500); // Increased delay to 500 milliseconds
+
   const handleInputChange = (event) => {
+    setSelectedWorkout(event.target.value);
+    console.log('Autocomplete field selected:', event.target.value);
+    
+  };
+
+  const handleInputBlur = (event) => {
     const newWorkout = event.target.value;
     setSelectedWorkout(newWorkout);
-    updateExercise(index, {name: newWorkout});
+    updateExercise(index, { name: newWorkout });
   };
 
   const handleWeightChange = async (event) => {
@@ -418,6 +429,10 @@ const ExerciseBox = ({
     updateExercise(index, { reps: newReps }); //Update index@ Exercise.Reps to newReps
   };
 
+
+
+
+// ...other code...
   //Exercise Box Structure********************************************************************************************************************
   return (
     <>
@@ -426,6 +441,7 @@ const ExerciseBox = ({
       <input 
         list={dataListId} 
         onChange={handleInputChange} 
+        onBlur={handleInputBlur}
         value={selectedWorkout} 
       />
       <datalist id={dataListId}>
@@ -435,7 +451,7 @@ const ExerciseBox = ({
           </datalist>
     </div>
     ):(<div className="workout-state">
-    {selectedWorkout || exercise}
+    {exercise}
   </div>
   )}
 
