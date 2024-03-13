@@ -16,6 +16,14 @@ select {
   position: relative;
 }
 
+
+@media (max-width: 1068px) {
+  .page-sidebar-open {
+    margin-left: 200px;
+  }
+
+}
+
 /* Further style adjustments  option hover */
 select:hover {
   background-color: #f9f9f9; /* Light grey background on hover for better user interaction */

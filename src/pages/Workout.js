@@ -56,6 +56,8 @@ export default function Workout() {
     return `${activeDate.getMonth() + 1}-${activeDate.getDate()}-${activeDate.getFullYear()}`
   }
 
+
+
   async function defaultWorkouts() {
     if (!user) {
       return;
@@ -147,6 +149,8 @@ export default function Workout() {
     // Add more objects for each plan you want to render
   ];
 
+
+
   useEffect(() => {
     if (!user) {
       return;
@@ -228,6 +232,9 @@ export default function Workout() {
     return date1.valueOf() >= date2.valueOf();
   }
 
+  const dynamicSizing = isSidebarOpen ? 'page-sidebar-open' : 'page-sidebar-closed';
+
+
   //Workout Structure********************************************************************************
   return (
     <>
@@ -241,12 +248,11 @@ export default function Workout() {
       </button>
       <Sidebar isOpen={isSidebarOpen} style={{ position: "relative" }} checkHover={checkHover} />
       {/*page*/}
-      <div className="page">
+      <div className={`page ${dynamicSizing}`}>
         <h1 className="day"> 
           {daysOfWeek[activeDate.getDay()]} {`${activeDate.getMonth() + 1}/${activeDate.getDate()}`}
         </h1>
         <Calendar activeDate={activeDate} setActiveDate={setActiveDate}/>
-        
 
 
           {/* ACTUAL BOX */}
@@ -386,7 +392,7 @@ const ExerciseBox = ({
   const handleInputChange = (event) => {
     const newWorkout = event.target.value;
     setSelectedWorkout(newWorkout);
-    updateExercise(index, {name: newWorkout})
+    updateExercise(index, {name: newWorkout});
   };
 
   const handleWeightChange = async (event) => {
