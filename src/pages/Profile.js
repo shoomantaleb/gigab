@@ -9,6 +9,7 @@ import {
   query,
   where,
   getDocs,
+  map,
 } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -110,21 +111,20 @@ export default function Profile() {
         const userWeights = [];
         weightsSnapshot.forEach((doc) => {
           const weightData = doc.data();
-          userWeights.push({ weight: weightData.weight, timestamp: weightData.timestamp.toDate() });
-        });        
+          userWeights.push({ weight: weightData.weight, timestamp: weightData.timestamp });
+        });
     
         // Sort the weights based on their timestamps
         userWeights.sort((a, b) => a.timestamp - b.timestamp);
     
         // Extract sorted weights without timestamps
         const sortedWeights = userWeights.map((data) => data.weight);
-        // Extract timestamps as well
-        const timestamps = userWeights.map((data) => data.timestamp);
     
-        setWeights({ data: sortedWeights, timestamps: timestamps });
+        setWeights(sortedWeights);
       }
     };
-       
+    
+    
 
     if (user) {
       updateStreak();
@@ -135,6 +135,7 @@ export default function Profile() {
       }
     }
   }, [user]); 
+
 
   console.log(user.providerData)
 
