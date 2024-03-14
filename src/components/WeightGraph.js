@@ -37,5 +37,4 @@ const WeightGraph = ({ weights }) => {
   );
 };
 
-
 export default WeightGraph;
