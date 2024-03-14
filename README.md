@@ -43,6 +43,10 @@ To set up the necessary dependencies run the following in a bash shell:
 
 ```shell
  cd gigab
+ npm install
+```
+Running:
+```shell
 ./run.sh
 ```
 
