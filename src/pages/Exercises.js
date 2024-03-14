@@ -67,7 +67,7 @@ export const workouts = [
   { id: 7, name: "Cable Press", category: "Chest", description: "Cable exercise performed by bringing the cables out in front to squeeze the chest muscles", imageUrl: "https://imgur.com/90obIuM.gif" },
 
   { id: 8, name: "Tricep Pushdown", category: "Triceps", description: "Machine exercise performed by pushing a bar , fully extending your arms.", imageUrl: "https://imgur.com/KnxB2yp.gif" },
-  { id: 9, name: "Overhead Tricep Extension", category: "Triceps", description: "Machine exercise performed by holding a rope behind your head and fully extending your arms upward.", imageUrl: "https://imgur.com/dhTqAwN.gif" },
+  { id: 9, name: "Overhead Tricep Ext.", category: "Triceps", description: "Machine exercise performed by holding a rope behind your head and fully extending your arms upward.", imageUrl: "https://imgur.com/dhTqAwN.gif" },
   { id: 10, name: "Rope Pulldown", category: "Triceps", description: "Machine exercise performed by pulling the rope down, fully extending your arms.", imageUrl: "https://imgur.com/SfYqRvh.gif" },
   { id: 11, name: "Tricep Kickback", category: "Triceps", description: "Machine exercise performed by bending over at a 90 degree angle and fully extending your arm.", imageUrl: "https://imgur.com/nPMi9np.gif" },
 
@@ -87,6 +87,8 @@ export const workouts = [
   { id: 23, name: "Shoulder Press", category: "Shoulders", description: "Weighted exercise performed by lifting the weights from shoulder height to above your head.", imageUrl: "https://imgur.com/occmEkZ.gif" },
   { id: 24, name: "Front Raises", category: "Shoulders", description: "Weighted exercise performed by holding the weights at your hips, palms facing behind you, and lifting straight out.", imageUrl: "https://imgur.com/AMIAf14.gif" },
   { id: 25, name: "Rear Delt Flys", category: "Shoulders", description: "Machine exercise performed by facing inwards on the machine and pushing your elbows back.", imageUrl: "https://imgur.com/Kp3fIpj.gif" },
+  { id: 38, name: "Arnold Press", category: "Shoulders", description: "Weighted exercise performed with weights at shoulder height, palms facing towards you, and lifting to a normal shoulder press.", imageUrl: "https://imgur.com/yVVfoa8.gif" },
+  { id: 42, name: "Shrugs", category: "Shoulders", description: "Weighted exercise performed by holding weights at your side and shrugging the shoulders upwards.", imageUrl: "https://imgur.com/k4uMACf.gif" },
 
   { id: 26, name: "Squats", category: "Legs", description: "Weighted exercise performed by resting the weights on your traps and squat down to a 90 degree angle.", imageUrl: "https://imgur.com/6IDzdW4.gif" },
   { id: 27, name: "Calf-Raises", category: "Legs", description: "Weighted exercise perfomed by lifting weights by raising the heels and keeping the toes on the ground.", imageUrl: "https://imgur.com/dCyx9fQ.gif" },
@@ -98,7 +100,19 @@ export const workouts = [
   { id: 33, name: "Hip Abduction", category: "Legs", description: "Weighted exercise performed by pressing your legs outwards away from the center of the body.", imageUrl: "https://imgur.com/UERHFo2.gif" },
   { id: 34, name: "Hip Adduction", category: "Legs", description: "Weighted exercise performed by pressing your legs inwards towards the center of the body.", imageUrl: "https://imgur.com/CM9C4Oq.gif"},
   { id: 35, name: "Sissy Squats", category: "Legs", description: "Weighted exercise performed by leaning backwards while bending at the knee and returning upwards.", imageUrl: "https://imgur.com/SKp1GW9.gif" },
-  { id: 36, name: "Hip-Thrust", category: "Legs", description: "Weighted Exercise performed by thrusting the hip upwards, driving through the heels.", imageUrl: "https://imgur.com/TIwMa4d.gif" },
+  { id: 36, name: "Hip-Thrust", category: "Legs", description: "Weighted exercise performed by thrusting the hip upwards, driving through the heels.", imageUrl: "https://imgur.com/TIwMa4d.gif" },
+  { id: 40, name: "Donkey Kicks", category: "Legs", description: "Weighted exercise performed by cuffing your ankle and kicking upwards.", imageUrl: "https://imgur.com/d2hMtFV.gif" },
+  { id: 41, name: "Jump Squats", category: "Legs", description: "Weighted exercise performed by holding weights at your side and jumping.", imageUrl: "https://imgur.com/LOk7H4J.gif" },
+
+  { id: 37, name: "Burpees", category: "Core", description: "Body-weight exercise performed by doing a pushup immediately followed by a leap in the air.", imageUrl: "https://imgur.com/NEuGQXu.gif" },
+  { id: 39, name: "Plank", category: "Core", description: "Body-weight exercise performed by laying paralell to the ground with your forearms on the ground.", imageUrl: "https://imgur.com/9jogAvb.gif" },
+  { id: 43, name: "Crunches", category: "Core", description: "Body weight exercise performed by doing a partial situp, stopping halfway.", imageUrl: "https://imgur.com/fHgmybb.gif" }, 
+  { id: 44, name: "Sit-ups", category: "Core", description: "Body weight exercise performed by lying on your back and raising the back to an upward position.", imageUrl: "https://imgur.com/ORnOhig.gif" },
+  { id: 45, name: "Mountain Climbers", category: "Core", description: "Body-weight exercise performed in a pushup position and moving the knees to the chest.", imageUrl: "https://imgur.com/eBb6xIA.gif" },
+  { id: 46, name: "Scissor Kicks", category: "Core", description: "Body-weight exercise performed by lying on your back and kicking up and down.", imageUrl: "https://imgur.com/8AyqIwd.gif" },
+  { id: 47, name: "Leg-Raises", category: "Core", description: "Body-weight exercise performed by lying on your back and lifting your legs to the sky.", imageUrl: "https://imgur.com/jaSaqNh.gif" },
+
+  { id: 48, name: "Wrist Curls", category: "Forearms", description: "Weighted exercise performed by lying your forearm flat and bending the wrist.", imageUrl: "https://imgur.com/qDlgUII.gif" },
 ];
 
 export default Exercises;

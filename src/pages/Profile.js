@@ -45,16 +45,6 @@ export default function Profile() {
     }
   };
   
-
-  // const defaultWorkouts = async () => {
-  //   const workoutsCollectionRef = collection(db, 'workouts');
-  //   const workoutsSnapshot = await getDocs(workoutsCollectionRef);
-
-  //   workoutsSnapshot.forEach((doc) => {
-  //     console.log(doc.id, '=>', doc.data());
-  //   });
-  // };
-
   const saveWeightToFirestore = async (weight) => {
     if (user) {
       const weightsCollectionRef = collection(db, 'weights');
@@ -119,12 +109,22 @@ export default function Profile() {
         const weightsSnapshot = await getDocs(weightsQuery);
         const userWeights = [];
         weightsSnapshot.forEach((doc) => {
-          userWeights.push(doc.data().weight);
-        });
+          const weightData = doc.data();
+          userWeights.push({ weight: weightData.weight, timestamp: weightData.timestamp.toDate() });
+        });        
     
-        setWeights(userWeights);
+        // Sort the weights based on their timestamps
+        userWeights.sort((a, b) => a.timestamp - b.timestamp);
+    
+        // Extract sorted weights without timestamps
+        const sortedWeights = userWeights.map((data) => data.weight);
+        // Extract timestamps as well
+        const timestamps = userWeights.map((data) => data.timestamp);
+    
+        setWeights({ data: sortedWeights, timestamps: timestamps });
       }
     };
+       
 
     if (user) {
       updateStreak();
@@ -140,12 +140,13 @@ export default function Profile() {
 
   return (
     <div className='page'>
+     <div className='card'> 
+      <img src={user.photoURL == null ? defaultPfp : user.providerData[0].photoURL} className="user-photo" />
       <div className='profile-card'>
         <div className='user-info'>
-        <img src={user.photoURL == null ? defaultPfp : user.providerData[0].photoURL} className="user-photo" />
         <div className='columnOrganizer'>
-            <p className='username' >{user ? user.displayName : 'User'}</p>
-          <p className='tier-subheading'>
+            <p className='username align' >{user ? user.displayName : 'User'}</p>
+          <p className='tier-subheading align'>
             <span className='tier-subheading'>gigachad</span>{' '}
             <span className='tier'>tier</span>
           </p>
@@ -193,6 +194,7 @@ export default function Profile() {
               <p> Sign Out</p>
            </div>
       {/* </div> */}
+      </div>
       </div>
     </div>
     
