@@ -59,6 +59,7 @@ const ExerciseBox = ({
       console.log('Autocomplete field selected:', event.target.value);
       
     };
+
   
     const handleInputBlur = (event) => {
       const newWorkout = event.target.value;
@@ -70,7 +71,13 @@ const ExerciseBox = ({
       //Weight event
       const newWeight = event.target.value;
       setSelectedWeight(newWeight); //Update Weight state
-      updateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
+    };
+
+    const handleWeightBlur = async (event) => {
+      //Weight event
+      const newWeight = event.target.value;
+      setSelectedWeight(newWeight); //Update Weight state
+      debouncedUpdateExercise(index, { weight: newWeight }); //Update index@ Exercise.Weights to newWeight
     };
   
     const handleSetsChange = (event) => {
@@ -125,6 +132,7 @@ const ExerciseBox = ({
                   type="number"
                   value={selectedWeight}
                   onChange={handleWeightChange}
+                  onBlur={handleWeightBlur}
                   className="weight-input"
                   step="2.5" //Increment weight by 0.5
                 />
