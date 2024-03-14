@@ -12,7 +12,8 @@ GigaB is a workout web app powered by Firebase, ReactJS, and Node.js. Seamlessly
 - [Setup](#setup)
 - [Authors](#authors)
 
-### <a name="features"> Features </a> 
+ <a name="features">  </a> 
+### Features
 - Exercise Tracking: This app allows users to build a workout plan by tracking various exercises and the sets, reps, and weight completed. Exercises are tracked via a calendar where the user can look at past completed workouts and plan future workouts.
 - Exercise Suggestions: When naming an exercise users are automatically prompted with various common exercises. By selecting the exercise bank users can see common exercises, what muscles they target, and a live image and description of how to do the exercise.
 - Timer: Workouts page has a built in timer for rest time between workouts
