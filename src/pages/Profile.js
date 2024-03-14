@@ -122,7 +122,9 @@ export default function Profile() {
     
         setWeights(sortedWeights);
       }
-    };     
+    };
+    
+    
 
     if (user) {
       updateStreak();
@@ -133,6 +135,7 @@ export default function Profile() {
       }
     }
   }, [user]); 
+
 
   console.log(user.providerData)
 
