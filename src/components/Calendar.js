@@ -41,6 +41,7 @@ const Calendar = ({activeDate, setActiveDate}) => {
     setActiveDay(i)
     const newDate = new Date(currentYear, currentMonth, i)
     setActiveDate(newDate)
+    toggleVisibility()
   };
 
   const changeMonth = (direction) => {

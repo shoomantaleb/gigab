@@ -49,8 +49,7 @@ function SignInPage({ setIsGuest }){
         photoURL: user.photoURL
       }
 
-      await setDoc(doc(db, 'users', user.uid), data)
-      
+      await setDoc(doc(db, 'users', user.uid), data, { merge: true });
     })
 
   }
