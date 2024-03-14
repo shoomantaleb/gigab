@@ -20,7 +20,8 @@ GigaB is a workout web app powered by Firebase, ReactJS, and Node.js. Seamlessly
 - Friends and Leaderboard: Users can search for and follow friends via the friends page. Friends can view each others streak, which measures how many consecutive days one has logged exercises, via a leaderboard.
 - Weight Graph: On the profile page we've implemented a graph that allows users to track their weight across time. 
 
-### <a name="technologies"> Technologies </a> 
+<a name="technologies"> </a>
+###  Technologies 
 - Javascript <img src="https://github.com/shoomantaleb/gigab/assets/129248303/e815d6f9-d9c0-4223-b33d-acceb414d34c" alt= "Javscript Logo" width = "25">
 
 - Node.js <img src="https://github.com/shoomantaleb/gigab/assets/129248303/9c731510-06d7-4987-b02d-b924584687bd" alt = "NodeJS Logo" width = "25">
@@ -30,7 +31,8 @@ GigaB is a workout web app powered by Firebase, ReactJS, and Node.js. Seamlessly
 
 - Firebase <img src="https://github.com/shoomantaleb/gigab/assets/129248303/6b8a12d7-b5f9-48a8-867c-87039099c035" alt="Firebase Logo" width="25">
 
-### <a name="setup"> Setup </a> 
+ <a name="setup"> </a> 
+### Setup
 In order to run a local instance of GigaB, first clone or download a copy of this repository. 
 
 ```shell
@@ -51,8 +53,8 @@ This will prompt you to enter the api key, type the api key and press enter
 
 The application will be available on http://localhost:3000, which should appear in your browser automatically.
 
-
-### <a name="authors"> Authors </a> 
+ <a name="authors">  </a> 
+### Authors
 
 GigaB was made as a project for CS 35L taught by Professor Paul Eggert at UCLA in Winter 2024. Made by: Caleb Lee, Cheryl Lim, Justin Nguyen, Omar Taleb, Shaun Staudinger, & Zachary Fischer,   
 
