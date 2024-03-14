@@ -39,7 +39,7 @@ In order to run a local instance of GigaB, first clone or download a copy of thi
  git clone https://github.com/shoomantaleb/gigab.git
 ```
 
-To set up the necessary dependencies run: 
+To set up the necessary dependencies run the following in a bash shell: 
 
 ```shell
  cd gigab
@@ -47,6 +47,7 @@ To set up the necessary dependencies run:
 ```
 Running:
 ```shell
+chmod +x run.sh
 ./run.sh
 ```
 This will prompt you to enter the api key, type the api key and press enter
