@@ -43,14 +43,12 @@ To set up the necessary dependencies run the following in a bash shell:
 
 ```shell
  cd gigab
- npm install
-```
-Running:
-```shell
-chmod +x run.sh
 ./run.sh
 ```
-This will prompt you to enter the api key, type the api key and press enter
+
+This will prompt you to enter the api key, type the api key and press enter, after dependencies install: ```$npm_start```
+
+* Shell will not prompt for api key after provided once 
 
 The application will be available on http://localhost:3000, which should appear in your browser automatically.
 
