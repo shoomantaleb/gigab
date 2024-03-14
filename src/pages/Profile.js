@@ -140,12 +140,13 @@ export default function Profile() {
 
   return (
     <div className='page'>
+     <div className='card'> 
+      <img src={user.photoURL == null ? defaultPfp : user.providerData[0].photoURL} className="user-photo" />
       <div className='profile-card'>
         <div className='user-info'>
-        <img src={user.photoURL == null ? defaultPfp : user.providerData[0].photoURL} className="user-photo" />
         <div className='columnOrganizer'>
-            <p className='username' >{user ? user.displayName : 'User'}</p>
-          <p className='tier-subheading'>
+            <p className='username align' >{user ? user.displayName : 'User'}</p>
+          <p className='tier-subheading align'>
             <span className='tier-subheading'>gigachad</span>{' '}
             <span className='tier'>tier</span>
           </p>
@@ -193,6 +194,7 @@ export default function Profile() {
               <p> Sign Out</p>
            </div>
       {/* </div> */}
+      </div>
       </div>
     </div>
     
