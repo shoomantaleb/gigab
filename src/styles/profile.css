@@ -2,14 +2,25 @@ body {
   overflow: auto;
 }
 
-.profile-card {
-  background-color: #F0F0F0;
+.card {
+  /* background-color: #F0F0F0; */
   border-radius: 39px;
   width: 60%;
   max-width: 600px;
+  margin: 0 auto;
+  margin-top: 10px;
+  /* left: 30%; */
+  /* position: fixed; */
+}
+
+.profile-card {
+  background-color: #F0F0F0;
+  border-radius: 39px;
+  width: 100%;
+  max-width: 600px;
   box-sizing: border-box;
   margin: 0 auto;
-  margin-top: 100px;
+  /* margin-top: 100px; */
   margin-bottom: 100px;
   left: 30%;
   top: 100px;
@@ -27,20 +38,29 @@ body {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   padding: 20px;
   color: #f0f0f0;
-  text-align: center;
   width: 100%;
   margin: 0;
   position: relative;
 }
 
 .user-photo {
-  width: 150px;
+  /* width: 150px;
   height: 150px;
   flex-shrink: 0;
   border: 3px solid #E6E6E6;
   object-fit: cover;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 20px; */
+  position: relative;
+  width: 150px;
+  flex-shrink: 0;
+  border: 3px solid #E6E6E6;
+  object-fit: cover;
+  border-radius: 50%;
+  top: 75px;
+  transform: translateX(-190%);
+  margin-left: 330px;
+  z-index: 10;
 }
 
 .username {
@@ -49,6 +69,7 @@ body {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  overflow: hidden;
 }
 
 .tier {
@@ -197,7 +218,8 @@ body {
 
 
 .align {
-  margin-left: 28.5%;
+  margin-left: 192px;
+  text-align: left;
 }
 
 .emoji {
