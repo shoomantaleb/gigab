@@ -93,10 +93,8 @@ export default function Friends() {
                     console.log("No friends womp womp");
                     return([]);
                 } else {
-                    
                     // Reset sorted array
                     unsortedFriends = [];
-                    console.log(unsortedFriends)
     
                     //Go through each document in the user dataset that matches 
                     snapshot.forEach(async (doc) => {
@@ -107,9 +105,9 @@ export default function Friends() {
                         }
                         
                         if(friendList.includes(doc.id) || doc.id == user.uid){
-                            console.log(friendList)
-                            console.log(doc.id)
-                            console.log(doc.data().displayName)
+                            // console.log(friendList)
+                            // console.log(doc.id)
+                            // console.log(doc.data().displayName)
 
                             let username = doc.data().displayName;
                             let photoURL = doc.data().photoURL;
