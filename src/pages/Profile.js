@@ -31,20 +31,34 @@ export default function Profile() {
   const signOutUser = () => {
     auth.signOut();
   }
-  const handleInputChange = (event) => {
-    setInputWeight(event.target.value);
-  };
-
-  const handleSaveClick = async () => {
-    setInputWeight('');
-    localStorage.setItem('displayedWeight', inputWeight);
   
-    const savedWeight = await saveWeightToFirestore(inputWeight);
-    if (savedWeight != null) { // Check if savedWeight is not null
-      setWeights(weights => [...weights, savedWeight]);
-      setDisplayedWeight(inputWeight);
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    // Check if the input value is a valid number
+    if (/^\d*\.?\d*$/.test(value)) {
+      setInputWeight(value);
     }
   };
+  
+
+  const handleSaveClick = async () => {
+    // Check if inputWeight is a valid number
+    if (!isNaN(parseFloat(inputWeight)) && isFinite(inputWeight)) {
+      setInputWeight('');
+      localStorage.setItem('displayedWeight', inputWeight);
+  
+      const savedWeight = await saveWeightToFirestore(inputWeight);
+      if (savedWeight != null) {
+        setWeights((weights) => [...weights, savedWeight]);
+        setDisplayedWeight(inputWeight);
+      }
+    } else {
+      // Handle invalid input (optional)
+      console.log('Invalid input. Please enter a valid number.');
+    }
+  };
+  
+  
   
   const saveWeightToFirestore = async (weight) => {
     if (user) {
