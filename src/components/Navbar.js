@@ -29,14 +29,15 @@ export default function Navbar() {
                 <CustomLink to="/Friends" className="normal"> Friends </CustomLink>
                 <CustomLink to="/Workout" className="normal"> Workout </CustomLink>
                 {user ? (
-            <CustomLink to="/Profile" className="profile-link" displayName={user.displayName} photoURL={user.photoURL}>
-                <div className="streak-container">
-                    <span className="streak-display">{currentStreak}🔥</span>
-                </div>
-            </CustomLink>
-            ) : (
-    <CustomLink to="/Profile" className="profile-link"> Profile </CustomLink>
-)}
+                    <CustomLink to="/Profile" className="profile-link" displayName={user.displayName} photoURL={user.photoURL}>
+                    <div className="streak-container">
+                        <span className="streak-display">{currentStreak}🔥</span>
+                    </div>
+                    </CustomLink>
+                    ) : (
+                        <CustomLink to="/Profile" className="profile-link"> Profile </CustomLink>
+                    )
+                }
             </ul>
         </nav>
     )

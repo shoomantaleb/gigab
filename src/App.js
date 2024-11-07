@@ -99,9 +99,8 @@ function HomePage() {
           <Route path ="/exercises" element ={<Exercises />} />
           <Route path ="/Profile" element ={<Profile />} />
         </Routes>
-        </div>
-      
+      </div>
 
-      </main>
+    </main>
   </>)
 }
