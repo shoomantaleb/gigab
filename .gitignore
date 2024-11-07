@@ -1,3 +1,6 @@
+# Push API key as "REPLACE_API_KEY"
+firebaseConfig.js
+
 # Logs
 logs
 *.log

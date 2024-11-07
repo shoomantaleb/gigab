@@ -305,7 +305,7 @@ const UserBox = ({uid, username, photoURL, score, isFollowed, handleFollow}) => 
         <div className='friend-box'>
             {/* Display profile pic if it exists */}
             {photoURL && (
-                <img src={photoURL} id='friend-box-pfp' alt="Profile" 
+                <img src={photoURL} id='friend-box-pfp' alt="" 
                 style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
             )}
             <p id='friend-box-username'>{username}</p>
@@ -332,7 +332,7 @@ const LeaderBoardBox = ({position, uid, username, photoURL, score}) => {
             
             <p id = "leaderboard-box-pos">{position}</p>
             {photoURL && (
-                <img src={photoURL} id='friend-box-pfp' alt="Profile" 
+                <img src={photoURL} id='friend-box-pfp' alt="" 
                 style={{ width: '35px', height: '35px', borderRadius: '50%', marginLeft: '2px' }} />
             )}
             <p id='leaderboard-box-username'>{username}</p>

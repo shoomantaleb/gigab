@@ -4,7 +4,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 
 const firebaseConfig = {
-    apiKey: "REPLACE_API_KEY",
+    apiKey: "AIzaSyCi5ReSC2poxuiUdIGbbKrsTjynqf7eqhY",
     authDomain: "gigab-d299f.firebaseapp.com",
     projectId: "gigab-d299f",
     storageBucket: "gigab-d299f.appspot.com",
